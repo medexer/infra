@@ -128,3 +128,8 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+.vscode
+
+*libs/common/database/migrations
+*libs/common/database/migrations_temp
