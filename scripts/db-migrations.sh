@@ -6,7 +6,7 @@ read migration_name
 
 # Run the migration generate command with the provided value
 echo "[GENERATE-MIGRATION-FILE-PROCESSING]"
-npm run migration:generate ./lib/common/database/migrations/$migration_name
+npm run migration:generate ./libs/common/src/database/migrations/$migration_name
 
 # Check if the generate command was successful
 if [ $? -eq 0 ]; then

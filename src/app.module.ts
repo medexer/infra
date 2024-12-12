@@ -3,42 +3,69 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { LoggerModule } from 'nestjs-pino';
 import { AppService } from './app.service';
 import { RouterModule } from '@nestjs/core';
-import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { TerminusModule } from '@nestjs/terminus';
-import { JwtStrategy } from '../libs/common/auth';
+import { CacheModule } from '@nestjs/cache-manager';
+import { JwtStrategy } from '../libs/common/src/auth';
 import { AuthServiceModule } from '@app/auth-service';
 import { HealthModule } from './health/health.module';
+import { DonorServiceModule } from '@app/donor-service';
+import { AccountServiceModule } from '@app/account-service';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { CommonModule } from 'libs/common/src/common.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SuccessResponseMiddleware } from './success.middleware';
-import { AppLogger } from '../libs/common/logger/logger.service';
-import { DatabaseSource } from '../libs/common/database/database-source';
+import { AppLogger } from '../libs/common/src/logger/logger.service';
+import { DatabaseSource } from '../libs/common/src/database/database-source';
+import { DeviceInfoMiddleware } from 'libs/common/src/middlewares/device.info.middleware';
+import { DonationCenterServiceModule } from '@app/donation-center-service';
 
 @Module({
   imports: [
     CqrsModule,
+    CommonModule,
     TypeOrmModule.forRoot(DatabaseSource),
+    CacheModule.register({ isGlobal: true }),
     HealthModule,
     TerminusModule,
     LoggerModule.forRoot(),
     AuthServiceModule,
+    AccountServiceModule,
+    DonorServiceModule,
+    DonationCenterServiceModule,
     ConfigModule.forRoot(),
     RouterModule.register([
       {
         path: 'v1/auth',
         module: AuthServiceModule,
       },
+      {
+        path: 'v1/account',
+        module: AccountServiceModule,
+      },
+      {
+        path: 'v1/donor',
+        module: DonorServiceModule,
+      },
+      {
+        path: 'v1/donation-center',
+        module: DonationCenterServiceModule,
+      },
     ]),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN_SEC },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: configService.get<string>('JWT_EXPIRES_IN') },
+      }),
+      inject: [ConfigService],
     }),
   ],
   controllers: [AppController],
   providers: [
     AppService,
-    JwtStrategy,    
+    JwtStrategy,
     {
       provide: 'Logger',
       useClass: AppLogger,
@@ -47,6 +74,7 @@ import { DatabaseSource } from '../libs/common/database/database-source';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
+    consumer.apply(DeviceInfoMiddleware).forRoutes('*');
     consumer.apply(SuccessResponseMiddleware).forRoutes('*');
   }
 }

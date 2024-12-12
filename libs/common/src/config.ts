@@ -24,7 +24,7 @@ const config = {
     passwordResetExpireInMs: 60 * 60 * 1000,
     activationExpireInMs: 24 * 60 * 60 * 1000,
     saltRounds: 10,
-    secret: process.env.JWT_AUTH_SECRET ?? 'secret',
+    secret: process.env.JWT_SECRET ?? 'secret',
   },
   static: {
     maxAge: isProd() ? '1d' : 0,

@@ -1,22 +1,5 @@
 {
   "compilerOptions": {
-    // "module": "commonjs",
-    // "declaration": true,
-    // "removeComments": true,
-    // "emitDecoratorMetadata": true,
-    // "experimentalDecorators": true,
-    // "allowSyntheticDefaultImports": true,
-    // "target": "ES2021",
-    // "sourceMap": true,
-    // "outDir": "./dist",
-    // "baseUrl": "./",
-    // "incremental": true,
-    // "skipLibCheck": true,
-    // "strictNullChecks": false,
-    // "noImplicitAny": false,
-    // "strictBindCallApply": false,
-    // "forceConsistentCasingInFileNames": false,
-    // "noFallthroughCasesInSwitch": false
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
@@ -33,6 +16,21 @@
     "paths": {
       "@app/auth-service": [
         "libs/auth-service/src"
+      ],
+      "@app/common": [
+        "libs/common/src"
+      ],
+      "@app/donation-center-service": [
+        "libs/donation-center-service/src"
+      ],
+      "@app/donor-service": [
+        "libs/donor-service/src"
+      ],
+      "@app/account-service": [
+        "libs/account-service/src"
+      ],
+      "@app/notification-service": [
+        "libs/notification-service/src"
       ],
     }
   }
