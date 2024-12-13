@@ -45,7 +45,7 @@ export class ResetPasswordOtpVerificationHandler
       this.logger.log(`[RESET-PASSWORD-OTP-VERIFICATION-HANDLER-SUCCESS]`);
 
       return {
-        accountId: account.id,
+        accountId: account.id.toString(),
         passwordResetToken: account.passwordResetToken,
       };
     } catch (error) {

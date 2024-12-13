@@ -217,10 +217,10 @@ export class SigninResponsePayload extends SignupVerificationResponsePayload {}
 
 export class ResetPasswordOTPVerificationResponsePayload {
   @ApiProperty({
-    example: 23,
+    example: '23',
     description: 'Account Id.',
   })
-  accountId: number;
+  accountId: string;
 
   @ApiProperty({
     example: 'Random UUID',
