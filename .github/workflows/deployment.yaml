@@ -54,7 +54,7 @@ jobs:
             git pull origin staging &&
             npm install &&
             npm run build
-            pm2 restart staging
+            pm2 restart staging-api
           '
 
   deploy-production:
