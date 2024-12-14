@@ -69,7 +69,7 @@ export class AuthController {
 
   @ApiTags('auth')
   @Post('signup-complete-verification')
-  @ApiOkResponse({ type: SignupResponsePayload })
+  @ApiOkResponse({ type: SignupVerificationResponsePayload })
   @ApiConflictResponse()
   async signupCompleteVerification(
     @Body() body: CompleteSignupVerificationDTO,
