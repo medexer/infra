@@ -62,7 +62,7 @@ export class SignInHandler
         this.logger.log(`[DONOR-ACCOUNT-LOGIN-HANDLER-SUCCESS]`);
         return {
           token: await this.authService.generateUserJWT(account),
-        };
+        } as SigninResponsePayload;
       } else {
         this.logger.log(`[DONOR-ACCOUNT-LOGIN-HANDLER-SUCCESS]`);
 

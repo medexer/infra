@@ -92,7 +92,7 @@ export class CreateAccountHandler
 
         return {
           signupVerificationHash: hash,
-        };
+        } as SignupResponsePayload;
       } else {
         const password = await authUtils.hashPassword(payload.password);
 
@@ -124,7 +124,7 @@ export class CreateAccountHandler
 
         return {
           signupVerificationHash: newAccount.signupVerificationHash,
-        };
+        } as SignupResponsePayload;
       }
     } catch (error) {
       this.logger.log(`[CREATE-ACCOUNT-HANDLER-ERROR] :: ${error}`);

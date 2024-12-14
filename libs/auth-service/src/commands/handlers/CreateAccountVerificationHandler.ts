@@ -59,7 +59,7 @@ export class CreateAccountVerificationHandler
 
       return {
         token: await this.authService.generateUserJWT(account),
-      };
+      } as SignupVerificationResponsePayload;
     } catch (error) {
       this.logger.log(
         `[CREATE-ACCOUNT-VERIFICATION-HANDLER-ERROR] :: ${error}`,
