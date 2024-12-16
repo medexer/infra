@@ -311,7 +311,7 @@ export class Account {
 
 export class AccountInfo {
   @ApiProperty({ example: '75' })
-  id: number;
+  id: string;
 
   @ApiProperty({ example: 'Ibrahim' })
   firstName: string;
