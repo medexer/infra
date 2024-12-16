@@ -22,6 +22,7 @@ import { Account, AccountInfo } from 'libs/common/src/models/account.model';
 import { SecureUser } from 'libs/common/src/decorator/user.decorator';
 import {
   UpdateAccountEmailDTO,
+  UpdateAccountNameDTO,
   UpdateAccountPasswordDTO,
   UpdateAccountPhoneDTO,
   UpdateFCMTokenDTO,
@@ -30,6 +31,7 @@ import {
 import {
   UpdateAccountEmailCommand,
   UpdateAccountFCMTokenCommand,
+  UpdateAccountNameCommand,
   UpdateAccountPasswordCommand,
   UpdateAccountPhoneCommand,
   VerifyNewAccountEmailCommand,
@@ -92,6 +94,24 @@ export class AccountController {
   }
 
   @ApiTags('manage-contact-info')
+  @Patch('update-name')
+  @ApiOkResponse()
+  @ApiInternalServerErrorResponse()
+  async updateAccountName(
+    @Req() req: Request,
+    @Body() body: UpdateAccountNameDTO,
+    @SecureUser() secureUser: SecureUserPayload,
+  ) {
+    return await this.command.execute(
+      new UpdateAccountNameCommand(
+        authUtils.getOriginHeader(req),
+        secureUser,
+        body,
+      ),
+    );
+  }
+
+  @ApiTags('manage-contact-info')
   @Post('update-email')
   @ApiOkResponse()
   @ApiInternalServerErrorResponse()
@@ -111,13 +131,13 @@ export class AccountController {
 
   @ApiTags('manage-contact-info')
   @Patch('verify-new-email')
-  @ApiOkResponse()
+  @ApiOkResponse({ type: AccountInfo })
   @ApiInternalServerErrorResponse()
   async verifyNewAccountEmail(
     @Req() req: Request,
     @Body() body: VerifyNewAccountEmailDTO,
     @SecureUser() secureUser: SecureUserPayload,
-  ) {
+  ): Promise<AccountInfo> {
     return await this.command.execute(
       new VerifyNewAccountEmailCommand(
         authUtils.getOriginHeader(req),
@@ -129,13 +149,13 @@ export class AccountController {
 
   @ApiTags('manage-contact-info')
   @Patch('update-phone')
-  @ApiOkResponse()
+  @ApiOkResponse({ type: AccountInfo })
   @ApiInternalServerErrorResponse()
   async updateAccountPhone(
     @Req() req: Request,
     @Body() body: UpdateAccountPhoneDTO,
     @SecureUser() secureUser: SecureUserPayload,
-  ) {
+  ): Promise<AccountInfo> {
     return await this.command.execute(
       new UpdateAccountPhoneCommand(
         authUtils.getOriginHeader(req),

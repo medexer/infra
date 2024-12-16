@@ -1,4 +1,4 @@
-import { UpdateAccountEmailDTO, UpdateAccountPasswordDTO, UpdateAccountPhoneDTO, UpdateFCMTokenDTO, VerifyNewAccountEmailDTO } from '../../interface';
+import { UpdateAccountEmailDTO, UpdateAccountNameDTO, UpdateAccountPasswordDTO, UpdateAccountPhoneDTO, UpdateFCMTokenDTO, VerifyNewAccountEmailDTO } from '../../interface';
 import { SecureUserPayload } from 'libs/common/src/interface';
 
 export class UpdateAccountFCMTokenCommand {
@@ -6,6 +6,14 @@ export class UpdateAccountFCMTokenCommand {
     public readonly origin: string,
     public readonly payload: UpdateFCMTokenDTO,
     public readonly secureUser: SecureUserPayload,
+  ) {}
+}
+
+export class UpdateAccountNameCommand {
+  constructor(
+    public readonly origin: string,
+    public readonly secureUser: SecureUserPayload,
+    public readonly payload: UpdateAccountNameDTO,
   ) {}
 }
 

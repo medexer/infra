@@ -1,16 +1,20 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateAccountPhoneCommand } from '../impl';
+import { UpdateAccountNameCommand } from '../impl';
 import authUtils from 'libs/common/src/security/auth.utils';
 import { Account, AccountInfo } from 'libs/common/src/models/account.model';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
-import { ForbiddenException, Inject, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Inject,
+  UnauthorizedException,
+} from '@nestjs/common';
 import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
 
-@CommandHandler(UpdateAccountPhoneCommand)
-export class UpdateAccountPhoneHandler
-  implements ICommandHandler<UpdateAccountPhoneCommand, AccountInfo>
+@CommandHandler(UpdateAccountNameCommand)
+export class UpdateAccountNameHandler
+  implements ICommandHandler<UpdateAccountNameCommand, AccountInfo>
 {
   constructor(
     @Inject('Logger') private readonly logger: AppLogger,
@@ -18,21 +22,11 @@ export class UpdateAccountPhoneHandler
     private readonly accountRepository: Repository<Account>,
   ) {}
 
-  async execute(command: UpdateAccountPhoneCommand) {
+  async execute(command: UpdateAccountNameCommand) {
     try {
-      this.logger.log(`[UPDATE-ACCOUNT-PHONE-HANDLER-PROCESSING]`);
+      this.logger.log(`[UPDATE-ACCOUNT-NAME-HANDLER-PROCESSING]`);
 
       const { payload, secureUser } = command;
-
-      const accountExists = await this.accountRepository.findOne({
-        where: {
-          phone: payload.newPhone,
-        },
-      });
-
-      if (accountExists) {
-        throw new ForbiddenException('Phone already exists.');
-      }
 
       const account = await this.accountRepository.findOne({
         where: {
@@ -40,22 +34,22 @@ export class UpdateAccountPhoneHandler
         },
       });
 
-      if(!authUtils.comparePassword(payload.password, account.password)){
-        throw new UnauthorizedException('Invalid password.');
+      if (!account) {
+        throw new UnauthorizedException('Account not found.');
       }
 
-
       Object.assign(account, {
-        phone: payload.newPhone,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
       });
 
       await this.accountRepository.save(account);
 
-      this.logger.log(`[UPDATE-ACCOUNT-PHONE-HANDLER-SUCCESS]`);
+      this.logger.log(`[UPDATE-ACCOUNT-NAME-HANDLER-SUCCESS]`);
 
       return modelsFormatter.FormatAccountInfo(account);
     } catch (error) {
-      this.logger.log(`[UPDATE-ACCOUNT-PHONE-HANDLER-ERROR] :: ${error}`);
+      this.logger.log(`[UPDATE-ACCOUNT-NAME-HANDLER-ERROR] :: ${error}`);
 
       throw error;
     }

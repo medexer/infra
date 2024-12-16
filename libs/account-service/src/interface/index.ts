@@ -17,6 +17,24 @@ export class UpdateFCMTokenDTO {
   fcmToken: string;
 }
 
+export class UpdateAccountNameDTO {
+  @ApiProperty({
+    example: 'John',
+    description: 'New account first name.',
+  })
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @ApiProperty({
+    example: 'Doe',
+    description: 'New account last name.',
+  })
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
+}
+
 export class UpdateAccountPasswordDTO {
   @ApiProperty({
     example: 'Password123',
