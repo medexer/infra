@@ -95,13 +95,13 @@ export class AccountController {
 
   @ApiTags('manage-contact-info')
   @Patch('update-name')
-  @ApiOkResponse()
+  @ApiOkResponse({ type: AccountInfo })
   @ApiInternalServerErrorResponse()
   async updateAccountName(
     @Req() req: Request,
     @Body() body: UpdateAccountNameDTO,
     @SecureUser() secureUser: SecureUserPayload,
-  ) {
+  ): Promise<AccountInfo> {
     return await this.command.execute(
       new UpdateAccountNameCommand(
         authUtils.getOriginHeader(req),
