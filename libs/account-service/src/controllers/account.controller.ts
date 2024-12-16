@@ -18,10 +18,22 @@ import { JwtAuthGuard } from 'libs/common/src/auth';
 import authUtils from 'libs/common/src/security/auth.utils';
 import { AccountService } from '../services/account.service';
 import { SecureUserPayload } from 'libs/common/src/interface';
-import { Account, DetailedAccountResponse } from 'libs/common/src/models/account.model';
+import { Account, AccountInfo } from 'libs/common/src/models/account.model';
 import { SecureUser } from 'libs/common/src/decorator/user.decorator';
-import { UpdateAccountEmailDTO, UpdateAccountPasswordDTO, UpdateAccountPhoneDTO, UpdateFCMTokenDTO, VerifyNewAccountEmailDTO } from '../interface';
-import { UpdateAccountEmailCommand, UpdateAccountFCMTokenCommand, UpdateAccountPasswordCommand, UpdateAccountPhoneCommand, VerifyNewAccountEmailCommand } from '../commands/impl';
+import {
+  UpdateAccountEmailDTO,
+  UpdateAccountPasswordDTO,
+  UpdateAccountPhoneDTO,
+  UpdateFCMTokenDTO,
+  VerifyNewAccountEmailDTO,
+} from '../interface';
+import {
+  UpdateAccountEmailCommand,
+  UpdateAccountFCMTokenCommand,
+  UpdateAccountPasswordCommand,
+  UpdateAccountPhoneCommand,
+  VerifyNewAccountEmailCommand,
+} from '../commands/impl';
 
 @Controller({ path: 'me' })
 @ApiBearerAuth()
@@ -34,12 +46,12 @@ export class AccountController {
 
   @ApiTags('me')
   @Get('detailed')
-  @ApiOkResponse({ type: DetailedAccountResponse })
+  @ApiOkResponse({ type: AccountInfo })
   @ApiInternalServerErrorResponse()
   async getDetailedAccountInfo(
     @Req() req: Request,
     @SecureUser() secureUser: SecureUserPayload,
-  ): Promise<DetailedAccountResponse> {
+  ): Promise<AccountInfo> {
     return await this.accountService.getDetailedProfile(secureUser);
   }
 

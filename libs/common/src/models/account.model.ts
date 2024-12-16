@@ -309,7 +309,7 @@ export class Account {
   updatedAt: Date;
 }
 
-export class DetailedAccountResponse {
+export class AccountInfo {
   @ApiProperty({ example: '75' })
   id: number;
 
