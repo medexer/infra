@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Type } from 'class-transformer';
 import { Account } from './account.model';
-import { AccountStatus } from '../constants/enums';
+import { AccountStatus, AccountType, BloodGroup, Genotype } from '../constants/enums';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 @Entity()

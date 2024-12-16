@@ -11,7 +11,7 @@ import {
   BloodGroup,
   Genotype,
 } from '../constants/enums';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 @Entity()
 export class Account {
@@ -307,4 +307,74 @@ export class Account {
     description: 'Created at e.g 2025-11-10_T_11:29:22',
   })
   updatedAt: Date;
+}
+
+export class DetailedAccountResponse {
+  @ApiProperty({ example: '75' })
+  id: number;
+
+  @ApiProperty({ example: 'Ibrahim' })
+  firstName: string;
+
+  @ApiProperty({ example: 'Gyang' })
+  lastName: string;
+
+  @ApiProperty({ example: '+2348054618649' })
+  phone: string;
+
+  @ApiProperty({ example: 'gibrahim@yopmail.com' })
+  email: string;
+
+  @ApiProperty({ example: '' })
+  state: string;
+
+  @ApiProperty({ example: '' })
+  stateArea: string;
+
+  @ApiProperty({ example: '' })
+  latitude: string;
+
+  @ApiProperty({ example: '' })
+  longitude: string;
+
+  @ApiProperty({
+    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+  })
+  profilePhoto: string;
+
+  @ApiProperty({ example: 'individual', enum: AccountType })
+  accountType: AccountType;
+
+  @ApiProperty({ example: 'active', enum: AccountStatus })
+  status: AccountStatus;
+
+  @ApiProperty({ example: '' })
+  fcmToken: string;
+
+  @ApiProperty({ example: 'MDX-DF1LUVRU' })
+  referralCode: string;
+
+  @ApiProperty({ example: '' })
+  referredBy: string;
+
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  lastLogin: Date;
+
+  @ApiProperty({ example: null })
+  lastDonationDate: Date | null;
+
+  @ApiProperty({ example: false })
+  inRecovery: boolean;
+
+  @ApiProperty({ example: 'AB-', enum: BloodGroup })
+  bloodGroup: BloodGroup;
+
+  @ApiProperty({ example: 'AA', enum: Genotype })
+  genotype: Genotype;
+
+  @ApiProperty({ example: false })
+  hasTattoos: boolean;
+
+  @ApiProperty({ example: false })
+  isComplianceUploaded: boolean;
 }

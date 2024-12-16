@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
+import { AccountStatus, AccountType, BloodGroup, Genotype } from 'libs/common/src/constants/enums';
 import {
   toLowerCaseTransformer,
   trimTransformer,

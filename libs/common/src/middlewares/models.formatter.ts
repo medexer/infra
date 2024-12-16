@@ -1,11 +1,11 @@
-import { Account } from '../models/account.model';
+import { Account, DetailedAccountResponse } from '../models/account.model';
 import {
   DonationCenter,
   DonationCenterCompliance,
   DonationCenterComplianceResponse,
 } from '../models/donation.center.model';
 
-export function FormatDetailedAccountResponse(account: Account) {
+export function FormatDetailedAccountResponse(account: Account): DetailedAccountResponse {
   delete account.password;
   delete account.newEmail;
   delete account.newPhone;
@@ -20,7 +20,7 @@ export function FormatDetailedAccountResponse(account: Account) {
   delete account.signupVerificationHash;
   delete account.passwordResetCodeExpires;
 
-  return account;
+  return account as DetailedAccountResponse;
 }
 
 export function FormatDetailedDonationCenterAccountResponse(

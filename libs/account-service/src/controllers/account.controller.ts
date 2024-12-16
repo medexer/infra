@@ -18,7 +18,7 @@ import { JwtAuthGuard } from 'libs/common/src/auth';
 import authUtils from 'libs/common/src/security/auth.utils';
 import { AccountService } from '../services/account.service';
 import { SecureUserPayload } from 'libs/common/src/interface';
-import { Account } from 'libs/common/src/models/account.model';
+import { Account, DetailedAccountResponse } from 'libs/common/src/models/account.model';
 import { SecureUser } from 'libs/common/src/decorator/user.decorator';
 import { UpdateAccountEmailDTO, UpdateAccountPasswordDTO, UpdateAccountPhoneDTO, UpdateFCMTokenDTO, VerifyNewAccountEmailDTO } from '../interface';
 import { UpdateAccountEmailCommand, UpdateAccountFCMTokenCommand, UpdateAccountPasswordCommand, UpdateAccountPhoneCommand, VerifyNewAccountEmailCommand } from '../commands/impl';
@@ -34,12 +34,12 @@ export class AccountController {
 
   @ApiTags('me')
   @Get('detailed')
-  @ApiOkResponse({ type: Account })
+  @ApiOkResponse({ type: DetailedAccountResponse })
   @ApiInternalServerErrorResponse()
   async getDetailedAccountInfo(
     @Req() req: Request,
     @SecureUser() secureUser: SecureUserPayload,
-  ) {
+  ): Promise<DetailedAccountResponse> {
     return await this.accountService.getDetailedProfile(secureUser);
   }
 

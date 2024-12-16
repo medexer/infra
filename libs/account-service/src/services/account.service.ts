@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CommandBus } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Inject, Injectable } from '@nestjs/common';
-import { Account } from 'libs/common/src/models/account.model';
+import { Account, DetailedAccountResponse } from 'libs/common/src/models/account.model';
 import { AppLogger } from '../../../common/src/logger/logger.service';
 import { SecureUserPayload } from 'libs/common/src/interface';
 import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
@@ -18,7 +18,9 @@ export class AccountService {
     private readonly accountRepository: Repository<Account>,
   ) {}
 
-  async getDetailedProfile(secureUser: SecureUserPayload): Promise<Account> {
+  async getDetailedProfile(
+    secureUser: SecureUserPayload,
+  ): Promise<DetailedAccountResponse> {
     try {
       this.logger.log('[GET-DETAILED-ACCOUNT-PROCESSING]');
 
