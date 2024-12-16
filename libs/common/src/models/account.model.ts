@@ -360,8 +360,8 @@ export class AccountInfo {
   @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
   lastLogin: Date;
 
-  @ApiProperty({ example: null })
-  lastDonationDate: Date | null;
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  lastDonationDate: string;
 
   @ApiProperty({ example: false })
   inRecovery: boolean;

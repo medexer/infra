@@ -1,9 +1,9 @@
-import { Account, AccountInfo } from '../models/account.model';
 import {
   DonationCenter,
   DonationCenterCompliance,
   DonationCenterComplianceResponse,
 } from '../models/donation.center.model';
+import { Account, AccountInfo } from '../models/account.model';
 
 export function FormatAccountInfo(account: Account): AccountInfo {
   delete account.password;
@@ -20,7 +20,12 @@ export function FormatAccountInfo(account: Account): AccountInfo {
   delete account.signupVerificationHash;
   delete account.passwordResetCodeExpires;
 
-  return account as AccountInfo;
+  return {
+    ...account,
+    lastDonationDate: !account.lastDonationDate
+      ? ''
+      : account.lastDonationDate.toISOString(),
+  } as AccountInfo;
 }
 
 export function FormatDetailedDonationCenterAccountResponse(
