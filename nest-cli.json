@@ -52,6 +52,15 @@
         "tsConfigPath": "libs/donor-service/tsconfig.lib.json"
       }
     },
+    "helper-service": {
+      "type": "library",
+      "root": "libs/helper-service",
+      "entryFile": "index",
+      "sourceRoot": "libs/helper-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/helper-service/tsconfig.lib.json"
+      }
+    },
     "notification-service": {
       "type": "library",
       "root": "libs/notification-service",

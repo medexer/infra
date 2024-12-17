@@ -8,7 +8,11 @@ import {
 } from 'typeorm';
 import { Account } from './account.model';
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { BloodGroup, DonorIdentificationType, Genotype } from '../constants/enums';
+import {
+  BloodGroup,
+  DonorIdentificationType,
+  Genotype,
+} from '../constants/enums';
 
 @Entity()
 export class DonorCompliance {
@@ -20,8 +24,8 @@ export class DonorCompliance {
   })
   id: number;
 
-  @OneToOne(() => Account)
-  @JoinColumn({name: 'account'})
+  @OneToOne(() => Account, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'account' })
   @ApiPropertyOptional({
     description: 'Donor account id e.g 18',
   })

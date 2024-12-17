@@ -37,3 +37,12 @@ export enum Genotype {
   AC = "AC",
   SC = "SC",
 }
+
+export enum OptimizedImageType {
+  thumbnail = 'thumbnail',
+  logo = 'logo',
+  productImage = 'product-image',
+  coverImage = 'cover-image',
+  medium = 'medium',
+  large = 'large',
+}

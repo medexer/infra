@@ -35,6 +35,16 @@ export class UpdateAccountNameDTO {
   lastName: string;
 }
 
+export class UpdateProfileImageDTO {
+  @ApiProperty({
+    example: 'https://example.com/image.jpg',
+    description: 'URL of the image to be uploaded.',
+  })
+  @IsString()
+  @IsNotEmpty()
+  imageUrl: string;
+}
+
 export class UpdateAccountPasswordDTO {
   @ApiProperty({
     example: 'Password123',
@@ -51,6 +61,16 @@ export class UpdateAccountPasswordDTO {
   @IsString()
   @IsNotEmpty()
   newPassword: string;
+}
+
+export class DeleteAccountDTO {
+  @ApiProperty({
+    example: 'Password123',
+    description: 'Current account password.',
+  })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 }
 
 export class UpdateAccountEmailDTO {

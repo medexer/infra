@@ -1,4 +1,13 @@
-import { UpdateAccountEmailDTO, UpdateAccountNameDTO, UpdateAccountPasswordDTO, UpdateAccountPhoneDTO, UpdateFCMTokenDTO, VerifyNewAccountEmailDTO } from '../../interface';
+import {
+  DeleteAccountDTO,
+  UpdateAccountEmailDTO,
+  UpdateAccountNameDTO,
+  UpdateAccountPasswordDTO,
+  UpdateAccountPhoneDTO,
+  UpdateFCMTokenDTO,
+  UpdateProfileImageDTO,
+  VerifyNewAccountEmailDTO,
+} from '../../interface';
 import { SecureUserPayload } from 'libs/common/src/interface';
 
 export class UpdateAccountFCMTokenCommand {
@@ -17,11 +26,27 @@ export class UpdateAccountNameCommand {
   ) {}
 }
 
+export class UpdateProfileImageCommand {
+  constructor(
+    public readonly origin: string,
+    public readonly secureUser: SecureUserPayload,
+    public readonly payload: UpdateProfileImageDTO,
+  ) {}
+}
+
 export class UpdateAccountPasswordCommand {
   constructor(
     public readonly origin: string,
     public readonly secureUser: SecureUserPayload,
     public readonly payload: UpdateAccountPasswordDTO,
+  ) {}
+}
+
+export class DeleteAccountCommand {
+  constructor(
+    public readonly origin: string,
+    public readonly secureUser: SecureUserPayload,
+    public readonly payload: DeleteAccountDTO,
   ) {}
 }
 

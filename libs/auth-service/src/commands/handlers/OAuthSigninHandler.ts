@@ -8,7 +8,7 @@ import { Account } from 'libs/common/src/models/account.model';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
 import { SigninResponsePayload } from 'libs/auth-service/src/interface';
 import { UserNotFoundException } from 'libs/common/src/constants/exceptions';
-import { AccountStatus } from 'libs/common/src/constants/enums';
+import { AccountStatus, AccountType } from 'libs/common/src/constants/enums';
 
 @CommandHandler(OAuthSignInCommand)
 export class OAuthSignInHandler
@@ -33,6 +33,12 @@ export class OAuthSignInHandler
 
       if (!account) {
         throw UserNotFoundException();
+      }
+
+      if (account.accountType !== AccountType.INDIVIDUAL) {
+        throw new UnauthorizedException(
+          'Account is not an individual account.',
+        );
       }
 
       if (account.status === AccountStatus.PENDING) {

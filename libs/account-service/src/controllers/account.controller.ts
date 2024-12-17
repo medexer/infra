@@ -6,6 +6,7 @@ import {
   Patch,
   UseGuards,
   Controller,
+  Delete,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -21,17 +22,21 @@ import { SecureUserPayload } from 'libs/common/src/interface';
 import { Account, AccountInfo } from 'libs/common/src/models/account.model';
 import { SecureUser } from 'libs/common/src/decorator/user.decorator';
 import {
+  DeleteAccountDTO,
   UpdateAccountEmailDTO,
   UpdateAccountNameDTO,
   UpdateAccountPasswordDTO,
   UpdateAccountPhoneDTO,
   UpdateFCMTokenDTO,
+  UpdateProfileImageDTO,
   VerifyNewAccountEmailDTO,
 } from '../interface';
 import {
+  DeleteAccountCommand,
   UpdateAccountEmailCommand,
   UpdateAccountFCMTokenCommand,
   UpdateAccountNameCommand,
+  UpdateProfileImageCommand,
   UpdateAccountPasswordCommand,
   UpdateAccountPhoneCommand,
   VerifyNewAccountEmailCommand,
@@ -76,6 +81,24 @@ export class AccountController {
   }
 
   @ApiTags('me')
+  @Patch('update-profile-image')
+  @ApiOkResponse({ type: AccountInfo })
+  @ApiInternalServerErrorResponse()
+  async updateProfileImage(
+    @Req() req: Request,
+    @Body() body: UpdateProfileImageDTO,
+    @SecureUser() secureUser: SecureUserPayload,
+  ): Promise<AccountInfo> {
+    return await this.command.execute(
+      new UpdateProfileImageCommand(
+        authUtils.getOriginHeader(req),
+        secureUser,
+        body,
+      ),
+    );
+  }
+
+  @ApiTags('me')
   @Patch('update-password')
   @ApiOkResponse()
   @ApiInternalServerErrorResponse()
@@ -86,6 +109,24 @@ export class AccountController {
   ) {
     return await this.command.execute(
       new UpdateAccountPasswordCommand(
+        authUtils.getOriginHeader(req),
+        secureUser,
+        body,
+      ),
+    );
+  }
+
+  @ApiTags('me')
+  @Delete('delete')
+  @ApiOkResponse()
+  @ApiInternalServerErrorResponse()
+  async deleteAccount(
+    @Req() req: Request,
+    @Body() body: DeleteAccountDTO,
+    @SecureUser() secureUser: SecureUserPayload,
+  ) {
+    return await this.command.execute(
+      new DeleteAccountCommand(
         authUtils.getOriginHeader(req),
         secureUser,
         body,

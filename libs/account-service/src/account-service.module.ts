@@ -5,22 +5,24 @@ import { DocumentBuilder } from '@nestjs/swagger';
 import { GetSystemJWTModule } from '../../common/src/config';
 import { Account } from 'libs/common/src/models/account.model';
 import { AccountService } from './services/account.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { setupSwaggerDocument } from '../../common/src/swagger';
 import { AppLogger } from '../../common/src/logger/logger.service';
 import { AccountServiceEventHandlers } from './events/handlers';
 import { AccountServiceCommandHandlers } from './commands/handlers';
 import { AccountController } from './controllers/account.controller';
+import { HelperServiceModule } from 'libs/helper-service/src/helper-service.module';
+import { ImageUploadController } from 'libs/helper-service/src/controllers/image-upload.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
 @Module({
   imports: [
     CqrsModule,
     ConfigModule,
+    HelperServiceModule,
     GetSystemJWTModule(),
     TypeOrmModule.forFeature([Account]),
   ],
-  controllers: [AccountController],
+  controllers: [AccountController, ImageUploadController],
   providers: [
     AccountService,
     {

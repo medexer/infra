@@ -6,7 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import authUtils from 'libs/common/src/security/auth.utils';
 import { Account } from 'libs/common/src/models/account.model';
 import { Inject, UnauthorizedException } from '@nestjs/common';
-import { AccountStatus } from 'libs/common/src/constants/enums';
+import { AccountStatus, AccountType } from 'libs/common/src/constants/enums';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { UserNotFoundException } from 'libs/common/src/constants/exceptions';
@@ -37,6 +37,12 @@ export class SignInHandler
 
       if (!account) {
         throw UserNotFoundException();
+      }
+
+      if (account.accountType !== AccountType.INDIVIDUAL) {
+        throw new UnauthorizedException(
+          'Account is not an individual account.',
+        );
       }
 
       if (account.status === AccountStatus.PENDING) {

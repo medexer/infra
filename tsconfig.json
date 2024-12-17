@@ -29,6 +29,9 @@
       "@app/account-service": [
         "libs/account-service/src"
       ],
+      "@app/helper-service": [
+        "libs/helper-service/src"
+      ],
       "@app/notification-service": [
         "libs/notification-service/src"
       ],
