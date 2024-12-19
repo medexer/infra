@@ -72,6 +72,7 @@ export class UploadDonorComplianceDTO {
   @IsNotEmpty()
   @ApiProperty({
     example: 'VOTERS_CARD',
+    enum: DonorIdentificationType,
     description: 'Donor identification document type',
   })
   @IsEnum(DonorIdentificationType)
