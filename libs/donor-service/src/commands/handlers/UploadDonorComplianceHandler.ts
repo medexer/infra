@@ -2,7 +2,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UploadDonorComplianceCommand } from '../impl';
 import authUtils from 'libs/common/src/security/auth.utils';
-import { Account } from 'libs/common/src/models/account.model';
+import { Account, AccountInfo } from 'libs/common/src/models/account.model';
 import { Inject, UnauthorizedException } from '@nestjs/common';
 import { AccountStatus } from 'libs/common/src/constants/enums';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
@@ -10,10 +10,11 @@ import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { UserNotFoundException } from 'libs/common/src/constants/exceptions';
 import { DonorCompliance } from 'libs/common/src/models/donor.compliance.model';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
+import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
 
 @CommandHandler(UploadDonorComplianceCommand)
 export class UploadDonorComplianceHandler
-  implements ICommandHandler<UploadDonorComplianceCommand>
+  implements ICommandHandler<UploadDonorComplianceCommand, AccountInfo>
 {
   constructor(
     private readonly eventBus: EventBus,
@@ -70,11 +71,14 @@ export class UploadDonorComplianceHandler
           : false,
       });
 
+
       await this.accountRepository.save(account);
 
       this.emailNotificationService.donorComplianceNotification(account);
 
       this.logger.log(`[UPLOAD-DONOR-COMPLIANCE-HANDLER-SUCCESS]`);
+
+      return modelsFormatter.FormatAccountInfo(account);
     } catch (error) {
       this.logger.log(`[UPLOAD-DONOR-COMPLIANCE-HANDLER-ERROR] :: ${error}`);
 

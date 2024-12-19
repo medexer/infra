@@ -4,7 +4,7 @@ import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { SecureUserPayload } from 'libs/common/src/interface';
 import { SecureUser } from 'libs/common/src/decorator/user.decorator';
 import {
-    ApiBearerAuth,
+  ApiBearerAuth,
   ApiConflictResponse,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
@@ -14,6 +14,7 @@ import { UploadDonorComplianceCommand } from '../commands/impl';
 import authUtils from 'libs/common/src/security/auth.utils';
 import { UploadDonorComplianceDTO } from '../interface';
 import { JwtAuthGuard } from 'libs/common/src/auth';
+import { AccountInfo } from 'libs/common/src/models/account.model';
 
 @Controller({ path: '' })
 @ApiBearerAuth()
@@ -26,13 +27,15 @@ export class DonorController {
 
   @ApiTags('compliance')
   @Post('upload-compliance')
-  @ApiOkResponse()
+  @ApiOkResponse({
+    type: AccountInfo,
+  })
   @ApiInternalServerErrorResponse()
   async uploadCompliance(
     @Req() req: Request,
     @Body() body: UploadDonorComplianceDTO,
     @SecureUser() secureUser: SecureUserPayload,
-  ) {
+  ): Promise<AccountInfo> {
     return await this.command.execute(
       new UploadDonorComplianceCommand(
         authUtils.getOriginHeader(req),
