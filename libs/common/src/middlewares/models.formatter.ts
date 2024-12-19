@@ -25,7 +25,7 @@ export function FormatAccountInfo(account: Account): AccountInfo {
     id: account.id.toString(),
     lastDonationDate: !account.lastDonationDate
       ? ''
-      : account.lastDonationDate.toISOString(),
+      : account.lastDonationDate.toString(),
   } as AccountInfo;
 }
 
