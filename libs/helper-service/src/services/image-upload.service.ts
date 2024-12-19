@@ -8,8 +8,9 @@ import { OptimizedImageType } from 'libs/common/src/constants/enums';
 
 @Injectable()
 export class ImageUploadService {
-  constructor(private s3Service: S3UploadService,
-    private readonly configService: ConfigService
+  constructor(
+    private s3Service: S3UploadService,
+    private readonly configService: ConfigService,
   ) {}
 
   async uploadImageToAws(
@@ -32,8 +33,8 @@ export class ImageUploadService {
           })
           .jpeg({ mozjpeg: true })
           .toBuffer();
- 
-       const versionKey = `versions/${sizeKey}/${uuid}.jpeg`;
+
+        const versionKey = `versions/${sizeKey}/${uuid}.jpeg`;
 
         const upload = await this.s3Service.uploadBufferToS3(
           resizedBuffer,
@@ -46,7 +47,32 @@ export class ImageUploadService {
           public_id: upload.Key,
         };
       }
-     
+
+      return uploadResult;
+    } catch (error) {
+      throw new BadGatewayException(`Error uploading image: ${error.message}`);
+    }
+  }
+
+  async uploadFileToAws(file: Express.Multer.File): Promise<FileUploadResult> {
+    try {
+      const uuid = randomUUID();
+
+      let uploadResult: FileUploadResult;
+
+      const versionKey = `versions/original/${uuid}.${file.mimetype.split('/')[1]}`;
+
+      const upload = await this.s3Service.uploadFileToS3(
+        file,
+        versionKey,
+        // file.mimetype,
+      );
+
+      uploadResult = {
+        url: `${this.configService.get<string>('AWS_CLOUDFRONT_API_ENDPOINT')}/${versionKey}`,
+        public_id: upload.Key,
+      };
+
       return uploadResult;
     } catch (error) {
       throw new BadGatewayException(`Error uploading image: ${error.message}`);

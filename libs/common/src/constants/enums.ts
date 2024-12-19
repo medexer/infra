@@ -15,6 +15,7 @@ export enum AccountStatus {
 }
 
 export enum DonorIdentificationType {
+  PASSPORT = 'passport',
   VOTER_CARD = 'voter_card',
   NATIONAL_IDENTITY_CARD = 'national_identity_card',
 }

@@ -18,9 +18,9 @@ export class S3UploadService {
     return `uploads/${randomUUID()}.${extension}`; // Generate a unique key with the extension
   }
 
-  public async uploadFileToS3(file: Express.Multer.File): Promise<any> {
+  public async uploadFileToS3(file: Express.Multer.File, key: string): Promise<any> {
     try {
-      const key = this.generateS3Key(file);
+      // const key = this.generateS3Key(file);
       const params: PutObjectCommandInput = {
         Bucket: this.configService.get<string>('AWS_BUCKET_NAME'),
         Key: key,

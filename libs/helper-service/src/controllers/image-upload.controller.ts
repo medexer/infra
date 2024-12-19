@@ -67,4 +67,39 @@ export class ImageUploadController {
   ) {
     return await this.imageUploadService.uploadImageToAws(file, type);
   }
+
+  /**
+   * Uploads an image to Cloudinary with optional transformations.
+   *
+   * @param file - The image file to be uploaded, provided by Multer.
+   * @param width - Optional width for image resizing.
+   * @param height - Optional height for image resizing.
+   * @returns The URL and public ID of the uploaded image.
+   */
+  @Post('file')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiOperation({ summary: 'Upload an file' })
+  @ApiResponse({
+    description: 'File uploaded successfully',
+    type: FileUploadResult,
+  })
+  @ApiConsumes('multipart/form-data') // Set content type as multipart/form-data
+  @ApiBody({
+    description: 'Upload an file',
+    required: true,
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  async uploadFile(
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return await this.imageUploadService.uploadFileToAws(file);
+  }
 }

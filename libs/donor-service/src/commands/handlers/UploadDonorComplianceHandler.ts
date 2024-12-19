@@ -8,8 +8,8 @@ import { AccountStatus } from 'libs/common/src/constants/enums';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { UserNotFoundException } from 'libs/common/src/constants/exceptions';
-import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 import { DonorCompliance } from 'libs/common/src/models/donor.compliance.model';
+import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 
 @CommandHandler(UploadDonorComplianceCommand)
 export class UploadDonorComplianceHandler
