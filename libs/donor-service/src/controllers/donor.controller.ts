@@ -49,6 +49,7 @@ export class DonorController {
   @ApiTags('feed')
   @Get('donation-centers')
   @ApiOkResponse({
+    isArray: true,
     type: DonationCenterInfo,
   })
   @ApiInternalServerErrorResponse()
