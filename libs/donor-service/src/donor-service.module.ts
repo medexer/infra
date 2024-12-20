@@ -2,6 +2,11 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DocumentBuilder } from '@nestjs/swagger';
+import {
+  DaysOfWork,
+  OpeningHours,
+  DonationCenter,
+} from 'libs/common/src/models/donation.center.model';
 import { DonorService } from './services/donor.service';
 import { GetSystemJWTModule } from 'libs/common/src/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -10,7 +15,6 @@ import { Account } from 'libs/common/src/models/account.model';
 import { DonorController } from './controllers/donor.controller';
 import { DonorServiceCommandHandlers } from './commands/handlers';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
-import { DonationCenter } from 'libs/common/src/models/donation.center.model';
 import { DonorCompliance } from 'libs/common/src/models/donor.compliance.model';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 
@@ -19,7 +23,13 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
     CqrsModule,
     ConfigModule,
     GetSystemJWTModule(),
-    TypeOrmModule.forFeature([Account, DonorCompliance, DonationCenter]),
+    TypeOrmModule.forFeature([
+      Account,
+      DonorCompliance,
+      DonationCenter,
+      DaysOfWork,
+      OpeningHours,
+    ]),
   ],
   providers: [
     DonorService,

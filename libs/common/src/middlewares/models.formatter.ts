@@ -1,4 +1,6 @@
 import {
+  DonationCentreDaysOfWork,
+  DaysOfWork,
   DonationCenter,
   DonationCenterCompliance,
   DonationCenterComplianceResponse,
@@ -37,7 +39,34 @@ export function FormatDetailedDonationCenterAccountResponse(
   delete donationCenter.createdAt;
   delete donationCenter.updatedAt;
 
-  return { ...donationCenter, id: donationCenter.id.toString() } as DonationCenterInfo;
+  return {
+    ...donationCenter,
+    id: donationCenter.id.toString(),
+  } as DonationCenterInfo;
+}
+
+export function FormatDonationCenterDaysOfWork(
+  daysOfWork: DaysOfWork,
+): DonationCentreDaysOfWork[] {
+  if (!daysOfWork) return [];
+
+  const days = [
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday',
+  ];
+
+  return days.map((day) => ({
+    day,
+    open: daysOfWork[day]?.open || '09:00',
+    close: daysOfWork[day]?.close || '17:00',
+    alwaysOpen: daysOfWork[day]?.alwaysOpen || false,
+    closed: daysOfWork[day]?.closed || false,
+  })) as DonationCentreDaysOfWork[];
 }
 
 export function FormatDonationCenterComplianceResponse(
@@ -55,6 +84,7 @@ export function FormatDonationCenterComplianceResponse(
 
 export default {
   FormatAccountInfo,
+  FormatDonationCenterDaysOfWork,
   FormatDonationCenterComplianceResponse,
   FormatDetailedDonationCenterAccountResponse,
 };

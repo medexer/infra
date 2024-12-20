@@ -10,7 +10,12 @@ import {
 } from 'typeorm';
 import { Type } from 'class-transformer';
 import { Account } from './account.model';
-import { AccountStatus, AccountType, BloodGroup, Genotype } from '../constants/enums';
+import {
+  AccountStatus,
+  AccountType,
+  BloodGroup,
+  Genotype,
+} from '../constants/enums';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 @Entity()
@@ -199,106 +204,6 @@ export class DonationCenter {
     description: 'Created at e.g 2025-11-10_T_11:29:22',
   })
   updatedAt: Date;
-}
-
-export class DonationCenterInfo {
-  @ApiPropertyOptional({ description: 'Account ID (Auto generated)' })
-  id: string;
-
-  @ApiPropertyOptional({
-    description: 'First name e.g Tunde.',
-  })
-  name: string;
-
-  @ApiPropertyOptional({
-    description: 'Phone number e.g +2348090292842.',
-  })
-  phone: string;
-
-  @ApiPropertyOptional({
-    description: 'Email address e.g tundeomotayo@gmail.com.',
-  })
-  email: string;
-
-  @ApiPropertyOptional({
-    description: 'Address e.g Gate 1 Laming Road Jos, Plateau State',
-  })
-  address: string;
-
-  @ApiPropertyOptional({
-    description: 'Building number e.g 123',
-  })
-  buildingNumber: string;
-
-  @ApiPropertyOptional({
-    description: 'Nearest landmark e.g Gate 1 Laming Road Jos, Plateau State',
-  })
-  nearestLandMark: string;
-
-  @ApiPropertyOptional({
-    description: 'State e.g Plateau',
-  })
-  state: string;
-
-  @ApiPropertyOptional({
-    description: 'State area e.g Jos North',
-  })
-  stateArea: string;
-
-  @ApiPropertyOptional({
-    description: 'Latitude e.g 9.2928839',
-  })
-  latitude: string;
-
-  @ApiPropertyOptional({
-    description: 'Longitude e.g 9.481991',
-  })
-  longitude: string;
-
-  @ApiPropertyOptional({
-    description: 'Logo e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
-  })
-  logo: string;
-
-  @ApiPropertyOptional({
-    description:
-      'Cover photo e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
-  })
-  coverPhoto: string;
-
-  @ApiPropertyOptional({
-    description: 'Short description of the donation center.',
-    example: 'Teaching Hospital of the University of Jos.',
-  })
-  shortDescription: string;
-
-  @ApiPropertyOptional({
-    description: 'Detailed description of the donation center.',
-    example:
-      'Providing vast healthcare services to people with resident doctors.',
-  })
-  longDescription: string;
-
-  @ApiPropertyOptional({
-    description: 'Account status e.g PENDING',
-  })
-  status: AccountStatus;
-
-  @ApiPropertyOptional({
-    description: 'In compliance uploaded e.g false',
-  })
-  isComplianceUploaded: boolean;
-
-  @ApiPropertyOptional({
-    description: 'In compliance approved e.g false',
-  })
-  isComplianceApproved: boolean;
-
-  @ApiPropertyOptional({
-    description:
-      'Flag to check if donation center credentials requires verification',
-  })
-  verificationDeclineReason: string;
 }
 
 @Entity()
@@ -528,4 +433,121 @@ export class DonationCenterComplianceResponse {
 
   @ApiPropertyOptional({ description: 'Proof of address document URL' })
   proofOfAddress: string;
+}
+
+export class DonationCentreDaysOfWork {
+  @ApiPropertyOptional()
+  day: string;
+
+  @ApiPropertyOptional()
+  open: string;
+
+  @ApiPropertyOptional()
+  close: string;
+
+  @ApiPropertyOptional()
+  alwaysOpen: boolean;
+
+  @ApiPropertyOptional()
+  closed: boolean;
+}
+
+export class DonationCenterInfo {
+  @ApiPropertyOptional({ description: 'Account ID (Auto generated)' })
+  id: string;
+
+  @ApiPropertyOptional({
+    description: 'First name e.g Tunde.',
+  })
+  name: string;
+
+  @ApiPropertyOptional({
+    description: 'Phone number e.g +2348090292842.',
+  })
+  phone: string;
+
+  @ApiPropertyOptional({
+    description: 'Email address e.g tundeomotayo@gmail.com.',
+  })
+  email: string;
+
+  @ApiPropertyOptional({
+    description: 'Address e.g Gate 1 Laming Road Jos, Plateau State',
+  })
+  address: string;
+
+  @ApiPropertyOptional({
+    description: 'Building number e.g 123',
+  })
+  buildingNumber: string;
+
+  @ApiPropertyOptional({
+    description: 'Nearest landmark e.g Gate 1 Laming Road Jos, Plateau State',
+  })
+  nearestLandMark: string;
+
+  @ApiPropertyOptional({
+    description: 'State e.g Plateau',
+  })
+  state: string;
+
+  @ApiPropertyOptional({
+    description: 'State area e.g Jos North',
+  })
+  stateArea: string;
+
+  @ApiPropertyOptional({
+    description: 'Latitude e.g 9.2928839',
+  })
+  latitude: string;
+
+  @ApiPropertyOptional({
+    description: 'Longitude e.g 9.481991',
+  })
+  longitude: string;
+
+  @ApiPropertyOptional({
+    description: 'Logo e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+  })
+  logo: string;
+
+  @ApiPropertyOptional({
+    description:
+      'Cover photo e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+  })
+  coverPhoto: string;
+
+  @ApiPropertyOptional({
+    description: 'Short description of the donation center.',
+    example: 'Teaching Hospital of the University of Jos.',
+  })
+  shortDescription: string;
+
+  @ApiPropertyOptional({
+    description: 'Detailed description of the donation center.',
+    example:
+      'Providing vast healthcare services to people with resident doctors.',
+  })
+  longDescription: string;
+
+  @ApiPropertyOptional({
+    description: 'Account status e.g PENDING',
+  })
+  status: AccountStatus;
+
+  @ApiPropertyOptional({
+    description: 'In compliance uploaded e.g false',
+  })
+  isComplianceUploaded: boolean;
+
+  @ApiPropertyOptional({
+    description: 'In compliance approved e.g false',
+  })
+  isComplianceApproved: boolean;
+
+  @ApiPropertyOptional({
+    description:
+      'Flag to check if donation center credentials requires verification',
+  })
+  verificationDeclineReason: string;
 }
