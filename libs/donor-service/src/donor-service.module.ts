@@ -10,6 +10,7 @@ import { Account } from 'libs/common/src/models/account.model';
 import { DonorController } from './controllers/donor.controller';
 import { DonorServiceCommandHandlers } from './commands/handlers';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
+import { DonationCenter } from 'libs/common/src/models/donation.center.model';
 import { DonorCompliance } from 'libs/common/src/models/donor.compliance.model';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 
@@ -18,7 +19,7 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
     CqrsModule,
     ConfigModule,
     GetSystemJWTModule(),
-    TypeOrmModule.forFeature([Account, DonorCompliance]),
+    TypeOrmModule.forFeature([Account, DonorCompliance, DonationCenter]),
   ],
   providers: [
     DonorService,

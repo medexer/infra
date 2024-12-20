@@ -98,29 +98,37 @@ export class DonationCenterComplianceAddressDTO {
   @IsNotEmpty()
   state: string;
 
-  @ApiProperty({
-    example: 'Jos North',
-    description: 'State area of the donation center.',
-  })
-  @IsString()
-  @IsNotEmpty()
-  stateArea: string;
+  // @ApiProperty({
+  //   example: 'Jos North',
+  //   description: 'State area of the donation center.',
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // stateArea: string;
 
   @ApiProperty({
-    example: '9.2928839',
-    description: 'Latitude of the donation center.',
+    example: 'ChIJbRW9oF90UxAR1RgPAqUhpDg',
+    description: 'Place ID of the donation center.',
   })
   @IsString()
   @IsNotEmpty()
-  latitude: string;
+  placeId: string;
 
-  @ApiProperty({
-    example: '7.4238839',
-    description: 'Longitude of the donation center.',
-  })
-  @IsString()
-  @IsNotEmpty()
-  longitude: string;
+  // @ApiProperty({
+  //   example: '9.2928839',
+  //   description: 'Latitude of the donation center.',
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // latitude: string;
+
+  // @ApiProperty({
+  //   example: '7.4238839',
+  //   description: 'Longitude of the donation center.',
+  // })
+  // @IsString()
+  // @IsNotEmpty()
+  // longitude: string;
 
   @ApiProperty({
     example: 'Gate 1 Lamingo Road Jos, Plateau State',

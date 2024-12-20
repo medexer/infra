@@ -12,6 +12,7 @@ import { DonationCenterServiceCommandHandlers } from './commands/handlers';
 import { DonationCenterController } from './controllers/donation.center.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
+import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models
   ],
   providers: [
     DonationCenterService,
+    GoogleLocationService,
     {
       provide: 'Logger',
       useClass: AppLogger,
@@ -33,7 +35,7 @@ import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models
     EmailNotificationService,
     ...DonationCenterServiceCommandHandlers,
   ],
-  exports: [DonationCenterService],
+  exports: [DonationCenterService, ],
   controllers: [DonationCenterController],
 })
 export class DonationCenterServiceModule {

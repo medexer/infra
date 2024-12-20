@@ -8,6 +8,7 @@ import { UploadDonationCenterComplianceAddressCommand } from '../impl';
 import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
 import { UserNotFoundException } from 'libs/common/src/constants/exceptions';
 import { DonationCenter, DonationCenterCompliance, DonationCenterComplianceResponse } from 'libs/common/src/models/donation.center.model';
+import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
 
 @CommandHandler(UploadDonationCenterComplianceAddressCommand)
 export class UploadDonationCenterComplianceAddressHandler
@@ -19,6 +20,7 @@ export class UploadDonationCenterComplianceAddressHandler
 {
   constructor(
     @Inject('Logger') private readonly logger: AppLogger,
+    private readonly googleLocationService: GoogleLocationService,
     @InjectRepository(Account)
     private readonly accountRepository: Repository<Account>,
     @InjectRepository(DonationCenter)
@@ -50,14 +52,18 @@ export class UploadDonationCenterComplianceAddressHandler
         where: { donationCenter: { id: donationCenter.id } },
       });
 
+      const placeDetails = await this.googleLocationService.getPlaceDetails(payload.placeId);
+
+      console.log("[PLACE-DETAILS] : ", placeDetails);
+
       Object.assign(donationCenter, {
         state: payload.state,
         address: payload.address,
-        latitude: payload.latitude,
-        stateArea: payload.stateArea,
-        longitude: payload.longitude,
+        // stateArea: payload.stateArea,
         buildingNumber: payload.buildingNumber,
         nearestLandmark: payload.nearestLandMark,
+        latitude: placeDetails.geometry.location.lat,
+        longitude: placeDetails.geometry.location.lng,
       });
 
       await this.donationCenterRepository.save(donationCenter);

@@ -2,6 +2,7 @@ import {
   DonationCenter,
   DonationCenterCompliance,
   DonationCenterComplianceResponse,
+  DonationCenterInfo,
 } from '../models/donation.center.model';
 import { Account, AccountInfo } from '../models/account.model';
 
@@ -31,12 +32,12 @@ export function FormatAccountInfo(account: Account): AccountInfo {
 
 export function FormatDetailedDonationCenterAccountResponse(
   donationCenter: DonationCenter,
-) {
+): DonationCenterInfo {
   delete donationCenter.account;
   delete donationCenter.createdAt;
   delete donationCenter.updatedAt;
 
-  return donationCenter;
+  return { ...donationCenter, id: donationCenter.id.toString() } as DonationCenterInfo;
 }
 
 export function FormatDonationCenterComplianceResponse(

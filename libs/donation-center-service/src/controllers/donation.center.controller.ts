@@ -70,13 +70,15 @@ export class DonationCenterController {
 
   @ApiTags('compliance')
   @Patch('compliance/address')
-  @ApiOkResponse()
+  @ApiOkResponse({
+    type: DonationCenterComplianceResponse,
+  })
   @ApiInternalServerErrorResponse()
   async uploadComplianceAddress(
     @Req() req: Request,
     @Body() body: DonationCenterComplianceAddressDTO,
     @SecureUser() secureUser: SecureUserPayload,
-  ) {
+  ): Promise<DonationCenterComplianceResponse> {
     return await this.command.execute(
       new UploadDonationCenterComplianceAddressCommand(
         authUtils.getOriginHeader(req),
