@@ -7,6 +7,8 @@ import {
   DonationCenterInfo,
 } from '../models/donation.center.model';
 import { Account, AccountInfo } from '../models/account.model';
+import { AppointmentInfo } from '../models/appointment.model';
+import { Appointment } from '../models/appointment.model';
 
 export function FormatAccountInfo(account: Account): AccountInfo {
   delete account.password;
@@ -39,9 +41,34 @@ export function FormatDetailedDonationCenterAccountResponse(
   delete donationCenter.createdAt;
   delete donationCenter.updatedAt;
 
+  const totalRatings =
+    Number(donationCenter.ratingOne || 0) +
+    Number(donationCenter.ratingTwo || 0) +
+    Number(donationCenter.ratingThree || 0) +
+    Number(donationCenter.ratingFour || 0) +
+    Number(donationCenter.ratingFive || 0);
+
+  const weightedSum =
+    Number(donationCenter.ratingOne || 0) * 1 +
+    Number(donationCenter.ratingTwo || 0) * 2 +
+    Number(donationCenter.ratingThree || 0) * 3 +
+    Number(donationCenter.ratingFour || 0) * 4 +
+    Number(donationCenter.ratingFive || 0) * 5;
+
+  const averageRating = totalRatings
+    ? Math.min(5, Math.max(0, weightedSum / totalRatings))
+    : 0;
+
+  delete donationCenter.ratingOne;
+  delete donationCenter.ratingTwo;
+  delete donationCenter.ratingThree;
+  delete donationCenter.ratingFour;
+  delete donationCenter.ratingFive;
+
   return {
     ...donationCenter,
     id: donationCenter.id.toString(),
+    averageRating: Number(averageRating.toFixed(1)).toString(),
   } as DonationCenterInfo;
 }
 
@@ -82,8 +109,33 @@ export function FormatDonationCenterComplianceResponse(
   return { ...donationCenter, ...compliance };
 }
 
+export function FormatDonorAppointment(
+  appointment: Appointment,
+): AppointmentInfo {
+  const donationCenter = appointment.donation_center;
+
+  return {
+    id: appointment.id.toString(),
+    date: appointment.date,
+    time: appointment.time,
+    status: appointment.status,
+    centerName: donationCenter.name,
+    centerPhone: donationCenter.phone,
+    centerEmail: donationCenter.email,
+    centerLogo: donationCenter.logo,
+    createdAt: appointment.createdAt,
+    updatedAt: appointment.updatedAt,
+    centerAddress: donationCenter.address,
+    centerLatitude: donationCenter.latitude,
+    centerLongitude: donationCenter.longitude,
+    appointmentId: appointment.appointmentId,
+    verificationCode: appointment.verificationCode,
+  } as AppointmentInfo;
+}
+
 export default {
   FormatAccountInfo,
+  FormatDonorAppointment,
   FormatDonationCenterDaysOfWork,
   FormatDonationCenterComplianceResponse,
   FormatDetailedDonationCenterAccountResponse,

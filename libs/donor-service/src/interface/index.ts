@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsDateString,
   IsOptional,
+  IsNumber,
 } from 'class-validator';
 import {
   Genotype,
@@ -12,7 +13,6 @@ import {
   DonorIdentificationType,
 } from 'libs/common/src/constants/enums';
 import { ApiProperty, PickType } from '@nestjs/swagger';
-import { DonorCompliance } from 'libs/common/src/models/donor.compliance.model';
 
 export class UploadDonorComplianceDTO {
   @ApiProperty({
@@ -77,4 +77,30 @@ export class UploadDonorComplianceDTO {
   })
   @IsEnum(DonorIdentificationType)
   identificationType: DonorIdentificationType;
+}
+
+export class CreateAppointmentDTO {
+  @ApiProperty({
+    example: '10:00 AM',
+    description: 'Appointment time e.g 10:00 AM.',
+  })
+  @IsNotEmpty()
+  @IsString()
+  time: string;
+
+  @ApiProperty({
+    example: '2024-01-01',
+    description: 'Appointment date e.g 2024-01-01.',
+  })
+  @IsNotEmpty()
+  @IsDateString()
+  date: Date;
+
+  @ApiProperty({
+    example: '14',
+    description: 'Appointment donation center id e.g 14.',
+  })
+  @IsOptional()
+  @IsNumber()
+  donationCenter?: number;
 }

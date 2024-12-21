@@ -14,6 +14,7 @@ import { donor_compliance_email_html_content } from '../templates/emails/donor_c
 import { donor_update_account_email_html_content } from '../templates/emails/donor_update_account_email_template';
 import { DonationCenter } from 'libs/common/src/models/donation.center.model';
 import { welcome_donation_center_email_html_content } from '../templates/emails/welcome_donation_center_email_template';
+import { new_appointment_email_html_content } from '../templates/emails/new_appointment_email_template';
 
 @Injectable()
 export class EmailNotificationService {
@@ -79,6 +80,19 @@ export class EmailNotificationService {
     return this.sendEmail({
       html: htmlContent,
       sub: 'KYC Compliance',
+      to_email: account.email,
+    });
+  }
+ 
+  async newAppointmentNotification(account: Account, centerName: string) {
+    const htmlContent = await new_appointment_email_html_content(
+      account.firstName,
+      centerName,
+    );
+
+    return this.sendEmail({
+      html: htmlContent,
+      sub: 'New Appointment',
       to_email: account.email,
     });
   }

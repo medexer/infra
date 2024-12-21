@@ -8,6 +8,16 @@ import {
 export const EmailAlreadyUsedException = () =>
   new ConflictException('Email or Phone number is already in use.');
 
+export const AppointmentAlreadyExistsException = (donationCenter: string) =>
+  new ConflictException(
+    `You already have a pending appointment with ${donationCenter}. Please wait for your appointment to be completed or cancel it before creating a new one.`,
+  );
+
+export const UnauthorizedDonorException = () =>
+  new ForbiddenException(
+    'Sorry, you are not eligible to donate blood at the moment. We will notify you when you are eligible again.',
+  );
+
 export const UserNotFoundException = () =>
   new NotFoundException('Requested user does not exist.');
 

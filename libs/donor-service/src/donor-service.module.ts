@@ -15,6 +15,7 @@ import { Account } from 'libs/common/src/models/account.model';
 import { DonorController } from './controllers/donor.controller';
 import { DonorServiceCommandHandlers } from './commands/handlers';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
+import { Appointment } from 'libs/common/src/models/appointment.model';
 import { DonorCompliance } from 'libs/common/src/models/donor.compliance.model';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 
@@ -29,6 +30,7 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
       DonationCenter,
       DaysOfWork,
       OpeningHours,
+      Appointment,
     ]),
   ],
   providers: [

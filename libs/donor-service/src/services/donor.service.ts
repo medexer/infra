@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, Not } from 'typeorm';
 import { CommandBus } from '@nestjs/cqrs';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,9 +10,15 @@ import {
   DonationCentreDaysOfWork,
   DaysOfWork,
   DonationCenter,
+  DonationCenterInfo,
+  DonationCenterAvailability,
 } from 'libs/common/src/models/donation.center.model';
-import { DonationCenterInfo } from 'libs/common/src/models/donation.center.model';
-
+import {
+  Appointment,
+  AppointmentInfo,
+} from 'libs/common/src/models/appointment.model';
+import { SecureUserPayload } from 'libs/common/src/interface';
+import { AppointmentStatus } from 'libs/common/src/constants/enums';
 @Injectable()
 export class DonorService {
   constructor(
@@ -24,6 +30,8 @@ export class DonorService {
     private readonly donationCenterRepository: Repository<DonationCenter>,
     @InjectRepository(DaysOfWork)
     private readonly daysOfWorkRepository: Repository<DaysOfWork>,
+    @InjectRepository(Appointment)
+    private readonly appointmentRepository: Repository<Appointment>,
   ) {}
 
   async getDonationCenters(): Promise<DonationCenterInfo[]> {
@@ -97,6 +105,201 @@ export class DonorService {
       this.logger.error(
         `[FETCH-DONATION-CENTER-DAYS-OF-WORK-SUCCESS] :: ${error}`,
       );
+
+      throw error;
+    }
+  }
+
+  async getDonationCenterAppointmentAvailability(
+    donationCenterId: number,
+  ): Promise<DonationCenterAvailability[]> {
+    try {
+      this.logger.log(`[FETCH-DONATION-CENTER-AVAILABILITY-PROCESSING]`);
+
+      const daysOfWork = await this.daysOfWorkRepository.findOne({
+        where: {
+          donation_center: { id: donationCenterId },
+        },
+        relations: [
+          'donation_center',
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+          'sunday',
+        ],
+      });
+
+      // Get next 7 days starting from today
+      const availability: DonationCenterAvailability[] = [];
+      const today = new Date();
+
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+
+        const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+        interface DaySchedule {
+          isOpen: boolean;
+          openTime?: string;
+          closeTime?: string;
+        }
+
+        const dayMapping: { [key: number]: DaySchedule } = {
+          0: {
+            isOpen: daysOfWork.sunday?.closed ? false : true,
+            openTime: daysOfWork.sunday?.open,
+            closeTime: daysOfWork.sunday?.close,
+          },
+          1: {
+            isOpen: daysOfWork.monday?.closed ? false : true,
+            openTime: daysOfWork.monday?.open,
+            closeTime: daysOfWork.monday?.close,
+          },
+          2: {
+            isOpen: daysOfWork.tuesday?.closed ? false : true,
+            openTime: daysOfWork.tuesday?.open,
+            closeTime: daysOfWork.tuesday?.close,
+          },
+          3: {
+            isOpen: daysOfWork.wednesday?.closed ? false : true,
+            openTime: daysOfWork.wednesday?.open,
+            closeTime: daysOfWork.wednesday?.close,
+          },
+          4: {
+            isOpen: daysOfWork.thursday?.closed ? false : true,
+            openTime: daysOfWork.thursday?.open,
+            closeTime: daysOfWork.thursday?.close,
+          },
+          5: {
+            isOpen: daysOfWork.friday?.closed ? false : true,
+            openTime: daysOfWork.friday?.open,
+            closeTime: daysOfWork.friday?.close,
+          },
+          6: {
+            isOpen: daysOfWork.saturday?.closed ? false : true,
+            openTime: daysOfWork.saturday?.open,
+            closeTime: daysOfWork.saturday?.close,
+          },
+        };
+
+        console.log(dayMapping);
+
+        const daySchedule: DaySchedule | undefined = dayMapping[dayOfWeek];
+
+        console.log(daySchedule);
+
+        const timeSlots = daySchedule?.isOpen
+          ? this.generateTimeSlots(daySchedule, date)
+          : [];
+
+        if (timeSlots.length > 0) {
+          availability.push({
+            date: date,
+            isOpen: daySchedule?.isOpen || false,
+            availableTimeSlots: timeSlots,
+          });
+        }
+      }
+
+      this.logger.log(`[FETCH-DONATION-CENTER-AVAILABILITY-SUCCESS]`);
+      return availability;
+    } catch (error) {
+      this.logger.error(
+        `[FETCH-DONATION-CENTER-AVAILABILITY-FAILED] :: ${error}`,
+      );
+      throw error;
+    }
+  }
+
+  private generateTimeSlots(daySchedule: any, date: Date): string[] {
+    const timeSlots: string[] = [];
+    if (!daySchedule.openTime || !daySchedule.closeTime) return timeSlots;
+
+    const [openHour, openMinute] = daySchedule.openTime.split(':');
+    const [closeHour, closeMinute] = daySchedule.closeTime.split(':');
+
+    let currentTime = new Date(date);
+    currentTime.setHours(parseInt(openHour), parseInt(openMinute), 0);
+
+    const closeTime = new Date(date);
+    closeTime.setHours(parseInt(closeHour), parseInt(closeMinute), 0);
+
+    const now = new Date();
+
+    // If date is today, start from next available slot after current time + 1 hour
+    if (date.toDateString() === now.toDateString()) {
+      currentTime = new Date(now);
+      currentTime.setHours(currentTime.getHours() + 1); // Add 1 hour to current time
+      // Round up to next 30 minute slot
+      currentTime.setMinutes(Math.ceil(currentTime.getMinutes() / 30) * 30);
+    }
+
+    // Generate 30-minute slots
+    while (currentTime < closeTime) {
+      timeSlots.push(
+        currentTime.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true,
+        }),
+      );
+      currentTime.setMinutes(currentTime.getMinutes() + 30);
+    }
+
+    return timeSlots;
+  }
+
+  async getPendingDonorAppointments(
+    secureUser: SecureUserPayload,
+  ): Promise<AppointmentInfo[]> {
+    try {
+      this.logger.error(`[GET-PENDING-DONOR-APPOINTMENTS-PROCESSING]`);
+
+      const appointments = await this.appointmentRepository.find({
+        where: {
+          donor: { id: secureUser.id },
+          status: AppointmentStatus.PENDING,
+        },
+        relations: ['donor', 'donation_center'],
+      });
+
+      this.logger.error(`[GET-PENDING-DONOR-APPOINTMENTS-SUCCESS]`);
+
+      return appointments.map((appointment) =>
+        modelsFormatter.FormatDonorAppointment(appointment),
+      );
+    } catch (error) {
+      this.logger.error(`[GET-PENDING-DONOR-APPOINTMENTS-FAILED] :: ${error}`);
+
+      throw error;
+    }
+  }
+
+  async getCompletedDonorAppointments(
+    secureUser: SecureUserPayload,
+  ): Promise<AppointmentInfo[]> {
+    try {
+      this.logger.error(`[GET-COMPLETED-DONOR-APPOINTMENTS-PROCESSING]`);
+
+      const appointments = await this.appointmentRepository.find({
+        where: {
+          donor: { id: secureUser.id },
+          status: Not(AppointmentStatus.PENDING),
+        },
+        relations: ['donor', 'donation_center'],
+      });
+
+      this.logger.error(`[GET-COMPLETED-DONOR-APPOINTMENTS-SUCCESS]`);
+
+      return appointments.map((appointment) =>
+        modelsFormatter.FormatDonorAppointment(appointment),
+      );
+    } catch (error) {
+      this.logger.error(`[GET-COMPLETED-DONOR-APPOINTMENTS-FAILED] :: ${error}`);
 
       throw error;
     }

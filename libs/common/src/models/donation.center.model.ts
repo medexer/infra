@@ -186,12 +186,42 @@ export class DonationCenter {
       'Flag to check if donation center credentials requires verification',
   })
   verificationDeclineReason: string;
-
+  
   @OneToOne(() => Account, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'account' })
   account: Account;
+  
+  @Column({ default: '0', nullable: true })
+  @ApiPropertyOptional({
+    description: 'Rating one e.g 4',
+  })
+  ratingOne: string;
+
+  @Column({ default: '0', nullable: true })
+  @ApiPropertyOptional({
+    description: 'Rating two e.g 56',
+  })
+  ratingTwo: string;
+
+  @Column({ default: '0', nullable: true })
+  @ApiPropertyOptional({
+    description: 'Rating three e.g 78',
+  })
+  ratingThree: string;
+
+  @Column({ default: '0', nullable: true })
+  @ApiPropertyOptional({
+    description: 'Rating four e.g 90',
+  })
+  ratingFour: string;
+
+  @Column({ default: '0', nullable: true })
+  @ApiPropertyOptional({
+    description: 'Rating five e.g 100',
+  })
+  ratingFive: string;
 
   @CreateDateColumn({ nullable: true })
   @ApiPropertyOptional({
@@ -550,4 +580,22 @@ export class DonationCenterInfo {
       'Flag to check if donation center credentials requires verification',
   })
   verificationDeclineReason: string;
+
+  @ApiPropertyOptional({
+    description: 'Average rating e.g 4.5',
+  })
+  averageRating: string;
+}
+
+export class DonationCenterAvailability {
+  @ApiPropertyOptional({ description: 'Date for availability' })
+  date: Date;
+
+  @ApiPropertyOptional({
+    description: 'Whether the center is open on this date',
+  })
+  isOpen: boolean;
+
+  @ApiPropertyOptional({ description: 'Available time slots for appointments' })
+  availableTimeSlots: string[];
 }

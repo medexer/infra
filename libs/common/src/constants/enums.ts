@@ -47,3 +47,13 @@ export enum OptimizedImageType {
   medium = 'medium',
   large = 'large',
 }
+
+export enum AppointmentStatus {
+  PENDING = 'pending',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
+  MISSED = 'missed',
+  NO_SHOW = 'no_show',
+  REJECTED = 'rejected',
+  EXPIRED = 'expired',
+}

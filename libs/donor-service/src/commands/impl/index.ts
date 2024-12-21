@@ -1,4 +1,4 @@
-import { UploadDonorComplianceDTO } from '../../interface';
+import { CreateAppointmentDTO, UploadDonorComplianceDTO } from '../../interface';
 import { SecureUserPayload } from 'libs/common/src/interface';
 
 export class UploadDonorComplianceCommand {
@@ -6,5 +6,13 @@ export class UploadDonorComplianceCommand {
     public readonly origin: string,
     public readonly secureUser: SecureUserPayload,
     public readonly payload: UploadDonorComplianceDTO,
+  ) {}
+}
+
+export class CreateAppointmentCommand {
+  constructor(
+    public readonly origin: string,
+    public readonly secureUser: SecureUserPayload,
+    public readonly payload: CreateAppointmentDTO,
   ) {}
 }
