@@ -127,6 +127,9 @@ export class AppointmentInfo {
   @ApiProperty({ example: 'Donation Center Name' })
   centerName: string;
 
+  @ApiProperty({ example: 'Donation Center Cover Photo' })
+  centerCoverPhoto: string;
+
   @ApiProperty({ example: 'Donation center address' })
   centerAddress: string;
 

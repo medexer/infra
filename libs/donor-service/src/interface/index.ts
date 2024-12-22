@@ -12,7 +12,7 @@ import {
   BloodGroup,
   DonorIdentificationType,
 } from 'libs/common/src/constants/enums';
-import { ApiProperty, PickType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger';
 
 export class UploadDonorComplianceDTO {
   @ApiProperty({

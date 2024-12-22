@@ -129,6 +129,7 @@ export function FormatDonorAppointment(
     centerLatitude: donationCenter.latitude,
     centerLongitude: donationCenter.longitude,
     appointmentId: appointment.appointmentId,
+    centerCoverPhoto: donationCenter.coverPhoto,
     verificationCode: appointment.verificationCode,
   } as AppointmentInfo;
 }
