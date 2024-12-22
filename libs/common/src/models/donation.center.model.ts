@@ -186,13 +186,13 @@ export class DonationCenter {
       'Flag to check if donation center credentials requires verification',
   })
   verificationDeclineReason: string;
-  
+
   @OneToOne(() => Account, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'account' })
   account: Account;
-  
+
   @Column({ default: '0', nullable: true })
   @ApiPropertyOptional({
     description: 'Rating one e.g 4',
@@ -598,4 +598,10 @@ export class DonationCenterAvailability {
 
   @ApiPropertyOptional({ description: 'Available time slots for appointments' })
   availableTimeSlots: string[];
+}
+
+export interface DaySchedule {
+  isOpen: boolean;
+  openTime?: string;
+  closeTime?: string;
 }

@@ -12,6 +12,7 @@ import {
   DonationCenter,
   DonationCenterInfo,
   DonationCenterAvailability,
+  DaySchedule,
 } from 'libs/common/src/models/donation.center.model';
 import {
   Appointment,
@@ -142,12 +143,6 @@ export class DonorService {
 
         const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
 
-        interface DaySchedule {
-          isOpen: boolean;
-          openTime?: string;
-          closeTime?: string;
-        }
-
         const dayMapping: { [key: number]: DaySchedule } = {
           0: {
             isOpen: daysOfWork.sunday?.closed ? false : true,
@@ -186,7 +181,7 @@ export class DonorService {
           },
         };
 
-        console.log(dayMapping);
+        // console.log(dayMapping);
 
         const daySchedule: DaySchedule | undefined = dayMapping[dayOfWeek];
 
@@ -215,13 +210,14 @@ export class DonorService {
     }
   }
 
-  private generateTimeSlots(daySchedule: any, date: Date): string[] {
+  private generateTimeSlots(daySchedule: DaySchedule, date: Date): string[] {
     const timeSlots: string[] = [];
     if (!daySchedule.openTime || !daySchedule.closeTime) return timeSlots;
 
     const [openHour, openMinute] = daySchedule.openTime.split(':');
     const [closeHour, closeMinute] = daySchedule.closeTime.split(':');
 
+    // Create opening time
     let currentTime = new Date(date);
     currentTime.setHours(parseInt(openHour), parseInt(openMinute), 0);
 
@@ -232,13 +228,18 @@ export class DonorService {
 
     // If date is today, start from next available slot after current time + 1 hour
     if (date.toDateString() === now.toDateString()) {
-      currentTime = new Date(now);
-      currentTime.setHours(currentTime.getHours() + 1); // Add 1 hour to current time
+      const adjustedTime = new Date(now);
+      adjustedTime.setHours(adjustedTime.getHours() + 1);
       // Round up to next 30 minute slot
-      currentTime.setMinutes(Math.ceil(currentTime.getMinutes() / 30) * 30);
+      adjustedTime.setMinutes(Math.ceil(adjustedTime.getMinutes() / 30) * 30);
+
+      // Only use adjusted time if it's after opening time
+      if (adjustedTime > currentTime) {
+        currentTime = adjustedTime;
+      }
     }
 
-    // Generate 30-minute slots
+    // Generate 30-minute slots only within opening hours
     while (currentTime < closeTime) {
       timeSlots.push(
         currentTime.toLocaleTimeString('en-US', {
@@ -299,7 +300,9 @@ export class DonorService {
         modelsFormatter.FormatDonorAppointment(appointment),
       );
     } catch (error) {
-      this.logger.error(`[GET-COMPLETED-DONOR-APPOINTMENTS-FAILED] :: ${error}`);
+      this.logger.error(
+        `[GET-COMPLETED-DONOR-APPOINTMENTS-FAILED] :: ${error}`,
+      );
 
       throw error;
     }
