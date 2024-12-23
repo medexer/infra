@@ -28,6 +28,7 @@ import { JwtAuthGuard } from 'libs/common/src/auth';
 import { AccountInfo } from 'libs/common/src/models/account.model';
 import { DonationCenterAvailability, DonationCenterInfo, DonationCentreDaysOfWork } from 'libs/common/src/models/donation.center.model';
 import { Appointment, AppointmentInfo } from 'libs/common/src/models/appointment.model';
+import { MedicalHistoryInfo } from 'libs/common/src/models/medical.history.model';
 
 @Controller({ path: '' })
 @ApiBearerAuth()

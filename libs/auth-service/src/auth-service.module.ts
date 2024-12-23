@@ -20,6 +20,7 @@ import { AuthServiceCommandHandlers } from './commands/handlers';
 import { AppLogger } from '../../common/src/logger/logger.service';
 import { AuthHelperController } from './controllers/auth.helper.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
+import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
       provide: 'Logger',
       useClass: AppLogger,
     },
+    EmailSenderService,
     EmailNotificationService,
     ...AuthServiceEventHandlers,
     ...AuthServiceCommandHandlers,

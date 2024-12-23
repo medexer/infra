@@ -41,6 +41,8 @@ import {
   UpdateAccountPhoneCommand,
   VerifyNewAccountEmailCommand,
 } from '../commands/impl';
+import { MedicalHistoryInfo } from 'libs/common/src/models/medical.history.model';
+import { NotificationInfo } from 'libs/common/src/models/notification.model';
 
 @Controller({ path: 'me' })
 @ApiBearerAuth()
@@ -204,5 +206,33 @@ export class AccountController {
         body,
       ),
     );
+  }
+
+  @ApiTags('medical-history')
+  @Get('medical-history')
+  @ApiOkResponse({
+    isArray: true,
+    type: MedicalHistoryInfo,
+  })
+  @ApiInternalServerErrorResponse()
+  async getMedicalHistory(
+    @Req() req: Request,
+    @SecureUser() secureUser: SecureUserPayload,
+  ): Promise<MedicalHistoryInfo[]> {
+    return await this.accountService.getMedicalHistory(secureUser);
+  }
+
+  @ApiTags('notifications')
+  @Get('notifications')
+  @ApiOkResponse({
+    isArray: true,
+    type: NotificationInfo,
+  })
+  @ApiInternalServerErrorResponse()
+  async getNotifications(
+    @Req() req: Request,
+    @SecureUser() secureUser: SecureUserPayload,
+  ): Promise<NotificationInfo[]> {
+    return await this.accountService.getNotifications(secureUser);
   }
 }

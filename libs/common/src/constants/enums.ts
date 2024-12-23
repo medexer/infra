@@ -57,3 +57,10 @@ export enum AppointmentStatus {
   REJECTED = 'rejected',
   EXPIRED = 'expired',
 }
+
+export enum NotificationType {
+  DEFAULT = 'default',
+  SUPPORT_INQUIRY = 'support_inquiry',
+  APPOINTMENT_REMINDER = 'appointment_reminder',
+  APPOINTMENT_CONFIRMATION = 'appointment_confirmation',
+}

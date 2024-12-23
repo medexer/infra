@@ -11,18 +11,22 @@ import { AppLogger } from '../../common/src/logger/logger.service';
 import { AccountServiceEventHandlers } from './events/handlers';
 import { AccountServiceCommandHandlers } from './commands/handlers';
 import { AccountController } from './controllers/account.controller';
+import { Notification } from 'libs/common/src/models/notification.model';
+import { MedicalHistory } from 'libs/common/src/models/medical.history.model';
 import { HelperServiceModule } from 'libs/helper-service/src/helper-service.module';
+import { SupportController } from 'libs/notification-service/src/controllers/support.controller';
 import { ImageUploadController } from 'libs/helper-service/src/controllers/image-upload.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
+
 @Module({
   imports: [
     CqrsModule,
     ConfigModule,
     HelperServiceModule,
     GetSystemJWTModule(),
-    TypeOrmModule.forFeature([Account]),
+    TypeOrmModule.forFeature([Account, MedicalHistory, Notification]),
   ],
-  controllers: [AccountController, ImageUploadController],
+  controllers: [AccountController, ImageUploadController, SupportController,],
   providers: [
     AccountService,
     {

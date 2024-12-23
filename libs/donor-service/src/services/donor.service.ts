@@ -1,25 +1,25 @@
 import { Repository, Not } from 'typeorm';
 import { CommandBus } from '@nestjs/cqrs';
-import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Inject, Injectable } from '@nestjs/common';
-import { Account } from 'libs/common/src/models/account.model';
-import { AppLogger } from '../../../common/src/logger/logger.service';
-import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
 import {
-  DonationCentreDaysOfWork,
   DaysOfWork,
+  DaySchedule,
   DonationCenter,
   DonationCenterInfo,
+  DonationCentreDaysOfWork,
   DonationCenterAvailability,
-  DaySchedule,
 } from 'libs/common/src/models/donation.center.model';
 import {
   Appointment,
   AppointmentInfo,
 } from 'libs/common/src/models/appointment.model';
 import { SecureUserPayload } from 'libs/common/src/interface';
+import { Account } from 'libs/common/src/models/account.model';
 import { AppointmentStatus } from 'libs/common/src/constants/enums';
+import { AppLogger } from '../../../common/src/logger/logger.service';
+import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
+
 @Injectable()
 export class DonorService {
   constructor(
@@ -201,6 +201,7 @@ export class DonorService {
       }
 
       this.logger.log(`[FETCH-DONATION-CENTER-AVAILABILITY-SUCCESS]`);
+      
       return availability;
     } catch (error) {
       this.logger.error(
@@ -258,7 +259,7 @@ export class DonorService {
     secureUser: SecureUserPayload,
   ): Promise<AppointmentInfo[]> {
     try {
-      this.logger.error(`[GET-PENDING-DONOR-APPOINTMENTS-PROCESSING]`);
+      this.logger.log(`[GET-PENDING-DONOR-APPOINTMENTS-PROCESSING]`);
 
       const appointments = await this.appointmentRepository.find({
         where: {
@@ -268,7 +269,7 @@ export class DonorService {
         relations: ['donor', 'donation_center'],
       });
 
-      this.logger.error(`[GET-PENDING-DONOR-APPOINTMENTS-SUCCESS]`);
+      this.logger.log(`[GET-PENDING-DONOR-APPOINTMENTS-SUCCESS]`);
 
       return appointments.map((appointment) =>
         modelsFormatter.FormatDonorAppointment(appointment),
@@ -284,7 +285,7 @@ export class DonorService {
     secureUser: SecureUserPayload,
   ): Promise<AppointmentInfo[]> {
     try {
-      this.logger.error(`[GET-COMPLETED-DONOR-APPOINTMENTS-PROCESSING]`);
+      this.logger.log(`[GET-COMPLETED-DONOR-APPOINTMENTS-PROCESSING]`);
 
       const appointments = await this.appointmentRepository.find({
         where: {
@@ -294,7 +295,7 @@ export class DonorService {
         relations: ['donor', 'donation_center'],
       });
 
-      this.logger.error(`[GET-COMPLETED-DONOR-APPOINTMENTS-SUCCESS]`);
+      this.logger.log(`[GET-COMPLETED-DONOR-APPOINTMENTS-SUCCESS]`);
 
       return appointments.map((appointment) =>
         modelsFormatter.FormatDonorAppointment(appointment),

@@ -18,6 +18,8 @@ import { AppLogger } from 'libs/common/src/logger/logger.service';
 import { Appointment } from 'libs/common/src/models/appointment.model';
 import { DonorCompliance } from 'libs/common/src/models/donor.compliance.model';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
+import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
+import { DonorCronService } from './jobs/donor.cron.service';
 
 @Module({
   imports: [
@@ -39,6 +41,8 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
       provide: 'Logger',
       useClass: AppLogger,
     },
+    DonorCronService,
+    EmailSenderService,
     EmailNotificationService,
     ...DonorServiceCommandHandlers,
   ],

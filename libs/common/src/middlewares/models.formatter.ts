@@ -9,6 +9,12 @@ import {
 import { Account, AccountInfo } from '../models/account.model';
 import { AppointmentInfo } from '../models/appointment.model';
 import { Appointment } from '../models/appointment.model';
+import {
+  MedicalHistory,
+  MedicalHistoryInfo,
+} from '../models/medical.history.model';
+import { Notification } from '../models/notification.model';
+import { NotificationInfo } from '../models/notification.model';
 
 export function FormatAccountInfo(account: Account): AccountInfo {
   delete account.password;
@@ -134,8 +140,49 @@ export function FormatDonorAppointment(
   } as AppointmentInfo;
 }
 
+export function FormatMedicalHistoryInfo(
+  medicalHistory: MedicalHistory,
+): MedicalHistoryInfo {
+  const donationCenter = medicalHistory.appointment.donation_center;
+
+  return {
+    hiv1: medicalHistory.hiv1,
+    hiv2: medicalHistory.hiv2,
+    centerName: donationCenter.name,
+    id: medicalHistory.id.toString(),
+    genotype: medicalHistory.genotype,
+    syphilis: medicalHistory.syphilis,
+    centerPhone: donationCenter.phone,
+    centerEmail: donationCenter.email,
+    createdAt: medicalHistory.createdAt,
+    bloodGroup: medicalHistory.bloodGroup,
+    hepatitisB: medicalHistory.hepatitisB,
+    hepatitisC: medicalHistory.hepatitisC,
+    centerAddress: donationCenter.address,
+    centerLatitude: donationCenter.latitude,
+    centerLongitude: donationCenter.longitude,
+    centerCoverPhoto: donationCenter.coverPhoto,
+    appointmentId: medicalHistory.appointment.id.toString(),
+  } as MedicalHistoryInfo;
+}
+
+export function FormatNotificationInfo(
+  notification: Notification,
+): NotificationInfo {
+  return {
+    id: notification.id.toString(),
+    subject: notification.subject,
+    message: notification.message,
+    type: notification.type,
+    isRead: notification.isRead,
+    appointment: notification.appointment?.id.toString(),
+  } as NotificationInfo;
+}
+
 export default {
   FormatAccountInfo,
+  FormatNotificationInfo,
+  FormatMedicalHistoryInfo,
   FormatDonorAppointment,
   FormatDonationCenterDaysOfWork,
   FormatDonationCenterComplianceResponse,

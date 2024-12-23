@@ -20,6 +20,7 @@ import { AppLogger } from '../libs/common/src/logger/logger.service';
 import { DatabaseSource } from '../libs/common/src/database/database-source';
 import { DeviceInfoMiddleware } from 'libs/common/src/middlewares/device.info.middleware';
 import { DonationCenterServiceModule } from '@app/donation-center-service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { DonationCenterServiceModule } from '@app/donation-center-service';
     CommonModule,
     TypeOrmModule.forRoot(DatabaseSource),
     CacheModule.register({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     HealthModule,
     TerminusModule,
     LoggerModule.forRoot(),

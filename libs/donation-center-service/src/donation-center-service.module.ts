@@ -13,7 +13,7 @@ import { DonationCenterController } from './controllers/donation.center.controll
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
 import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
-
+import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
 @Module({
   imports: [
     CqrsModule,
@@ -32,6 +32,7 @@ import { GoogleLocationService } from 'libs/helper-service/src/services/google-l
       provide: 'Logger',
       useClass: AppLogger,
     },
+    EmailSenderService,
     EmailNotificationService,
     ...DonationCenterServiceCommandHandlers,
   ],
