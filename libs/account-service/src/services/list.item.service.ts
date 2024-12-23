@@ -68,6 +68,7 @@ export class ListItemService {
       const newItem = await this.listItemRepository.save({
         account,
         itemType: payload.itemType,
+        entityType: payload.entityType,
         itemId: payload.itemId.toString(),
       });
 

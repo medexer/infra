@@ -1,7 +1,7 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsEmail, IsEnum, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
-import { AccountStatus, AccountType, BloodGroup, Genotype, ListItemType } from 'libs/common/src/constants/enums';
+import { AccountStatus, AccountType, BloodGroup, Genotype, ListEntityType, ListItemType } from 'libs/common/src/constants/enums';
 import {
   toLowerCaseTransformer,
   trimTransformer,
@@ -125,9 +125,17 @@ export class AddListItemDTO {
 
   @ApiProperty({
     enum: ListItemType,
-    default: ListItemType.DONATION_CENTER,
+    default: ListItemType.FAVORITE,
     description: 'Type of the list item.',
   })
   @IsEnum(ListItemType)
   itemType: ListItemType;
+
+  @ApiProperty({
+    enum: ListEntityType,
+    default: ListEntityType.DONATION_CENTER,
+    description: 'Type of the list entity.',
+  })
+  @IsEnum(ListEntityType)
+  entityType: ListEntityType;
 }

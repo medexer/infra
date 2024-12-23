@@ -66,6 +66,14 @@ export enum NotificationType {
 }
 
 export enum ListItemType {
-  DONATION_CENTER = 'DONATION_CENTER',
-  CAMPAIGN = 'CAMPAIGN',
+  FAVORITE = 'favorite',
+  LIKE = 'like',
+  VIEWED = 'viewed',
+  WISHLIST = 'wishlist',
+  SEARCH_HISTORY_ENTRY = 'search-history-entry',
+}
+
+export enum ListEntityType {
+  DONATION_CENTER = 'donation-center',
+  CAMPAIGN = 'campaign',
 }

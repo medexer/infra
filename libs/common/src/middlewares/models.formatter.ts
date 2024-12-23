@@ -187,6 +187,7 @@ export function FormatListItemInfo(listItem: ListItem): ListItemInfo {
     itemId: listItem.itemId,
     id: listItem.id.toString(),
     itemType: listItem.itemType,
+    entityType: listItem.entityType,
   } as ListItemInfo;
 }
 

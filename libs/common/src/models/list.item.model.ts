@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Account } from './account.model';
-import { ListItemType } from '../constants/enums';
+import { ListEntityType, ListItemType } from '../constants/enums';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 @Entity('list_items')
@@ -31,6 +31,17 @@ export class ListItem {
     description: 'Type of the list item.',
   })
   itemType: ListItemType;
+
+  @Column({
+    type: 'enum',
+    nullable: true,
+    enum: ListEntityType,
+  })
+  @ApiProperty({
+    enum: ListEntityType,
+    description: 'Type of the list entity.',
+  })
+  entityType: ListEntityType;
 
   @Column({ nullable: true, default: '' })
   @ApiProperty({
@@ -75,4 +86,11 @@ export class ListItemInfo {
     description: 'ID of the item.',
   })
   itemId: string;
+
+  @ApiProperty({
+    type: 'enum',
+    enum: ListEntityType,
+    description: 'Type of the list entity.',
+  })
+  entityType: ListEntityType;
 }
