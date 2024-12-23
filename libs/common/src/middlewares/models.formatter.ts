@@ -15,6 +15,7 @@ import {
 } from '../models/medical.history.model';
 import { Notification } from '../models/notification.model';
 import { NotificationInfo } from '../models/notification.model';
+import { ListItem, ListItemInfo } from '../models/list.item.model';
 
 export function FormatAccountInfo(account: Account): AccountInfo {
   delete account.password;
@@ -179,11 +180,22 @@ export function FormatNotificationInfo(
   } as NotificationInfo;
 }
 
+export function FormatListItemInfo(listItem: ListItem): ListItemInfo {
+  delete listItem.account;
+
+  return {
+    itemId: listItem.itemId,
+    id: listItem.id.toString(),
+    itemType: listItem.itemType,
+  } as ListItemInfo;
+}
+
 export default {
   FormatAccountInfo,
+  FormatListItemInfo,
   FormatNotificationInfo,
-  FormatMedicalHistoryInfo,
   FormatDonorAppointment,
+  FormatMedicalHistoryInfo,
   FormatDonationCenterDaysOfWork,
   FormatDonationCenterComplianceResponse,
   FormatDetailedDonationCenterAccountResponse,

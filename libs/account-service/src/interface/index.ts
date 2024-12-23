@@ -1,11 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
-import { AccountStatus, AccountType, BloodGroup, Genotype } from 'libs/common/src/constants/enums';
+import { IsEmail, IsEnum, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
+import { AccountStatus, AccountType, BloodGroup, Genotype, ListItemType } from 'libs/common/src/constants/enums';
 import {
   toLowerCaseTransformer,
   trimTransformer,
 } from 'libs/common/src/helpers/local-class-validator';
+import { ListItem } from 'libs/common/src/models/list.item.model';
 
 export class UpdateFCMTokenDTO {
   @ApiProperty({
@@ -111,4 +112,22 @@ export class UpdateAccountPhoneDTO {
   @IsString()
   @IsNotEmpty()
   password: string;
+}
+
+export class AddListItemDTO {
+  @ApiProperty({
+    example: '123456',
+    description: 'ID of the item.',
+  })
+  @IsString()
+  @IsNotEmpty()
+  itemId: string;
+
+  @ApiProperty({
+    enum: ListItemType,
+    default: ListItemType.DONATION_CENTER,
+    description: 'Type of the list item.',
+  })
+  @IsEnum(ListItemType)
+  itemType: ListItemType;
 }

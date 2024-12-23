@@ -21,22 +21,22 @@ export enum DonorIdentificationType {
 }
 
 export enum BloodGroup {
-  APositive = "A+",
-  ANegative = "A-",
-  BPositive = "B+",
-  BNegative = "B-",
-  ABPositive = "AB+",
-  ABNegative = "AB-",
-  OPositive = "O+",
-  ONegative = "O-",
+  APositive = 'A+',
+  ANegative = 'A-',
+  BPositive = 'B+',
+  BNegative = 'B-',
+  ABPositive = 'AB+',
+  ABNegative = 'AB-',
+  OPositive = 'O+',
+  ONegative = 'O-',
 }
 
 export enum Genotype {
-  AA = "AA",
-  AS = "AS",
-  SS = "SS",
-  AC = "AC",
-  SC = "SC",
+  AA = 'AA',
+  AS = 'AS',
+  SS = 'SS',
+  AC = 'AC',
+  SC = 'SC',
 }
 
 export enum OptimizedImageType {
@@ -63,4 +63,9 @@ export enum NotificationType {
   SUPPORT_INQUIRY = 'support_inquiry',
   APPOINTMENT_REMINDER = 'appointment_reminder',
   APPOINTMENT_CONFIRMATION = 'appointment_confirmation',
+}
+
+export enum ListItemType {
+  DONATION_CENTER = 'DONATION_CENTER',
+  CAMPAIGN = 'CAMPAIGN',
 }
