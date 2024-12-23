@@ -32,6 +32,10 @@ export class ListItemController {
 
   @Get()
   @ApiOperation({ summary: 'Get all list items for the current user' })
+  @ApiOkResponse({
+    isArray: true,
+    type: ListItemInfo,
+  })
   async getUserList(
     @Req() req: any,
     @SecureUser() secureUser: SecureUserPayload,
