@@ -73,6 +73,20 @@ export class DonorController {
     return await this.donorService.getDonationCenters();
   }
 
+  @ApiTags('feed')
+  @Get('donation-center/:id')
+  @ApiOkResponse({
+    type: DonationCenterInfo,
+  })
+  @ApiInternalServerErrorResponse()
+  async getDonationCenter(
+    @Req() req: Request,
+    @Param('id') donationCenterId: number,
+    @SecureUser() secureUser: SecureUserPayload,
+  ): Promise<DonationCenterInfo> {
+    return await this.donorService.getDonationCenter(donationCenterId);
+  }
+
   @ApiTags('donation-center')
   @Get('donation-center/:id/days-of-work')
   @ApiOkResponse({

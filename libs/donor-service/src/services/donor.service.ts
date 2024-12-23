@@ -35,6 +35,28 @@ export class DonorService {
     private readonly appointmentRepository: Repository<Appointment>,
   ) {}
 
+  async getDonationCenter(
+    donationCenterId: number,
+  ): Promise<DonationCenterInfo> {
+    try {
+      this.logger.log('[FETCH-DONATION-CENTER-PROCESSING]');
+
+      const donationCenter = await this.donationCenterRepository.findOne({
+        where: { id: donationCenterId, isComplianceUploaded: true },
+      });
+
+      this.logger.log('[FETCH-DONATION-CENTER-SUCCESS]');
+
+      return modelsFormatter.FormatDetailedDonationCenterAccountResponse(
+        donationCenter,
+      );
+    } catch (error) {
+      this.logger.error(`[FETCH-DONATION-CENTER-FAILED] :: ${error}`);
+
+      throw error;
+    }
+  }
+
   async getDonationCenters(): Promise<DonationCenterInfo[]> {
     try {
       this.logger.log('[FETCH-DONATION-CENTERS-PROCESSING]');
@@ -201,7 +223,7 @@ export class DonorService {
       }
 
       this.logger.log(`[FETCH-DONATION-CENTER-AVAILABILITY-SUCCESS]`);
-      
+
       return availability;
     } catch (error) {
       this.logger.error(
