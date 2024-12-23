@@ -15,7 +15,7 @@ export class SupportController {
   @Post('contact-us')
   @ApiOkResponse()
   @ApiInternalServerErrorResponse()
-  async getDetailedAccountInfo(
+  async contactUs(
     @Req() req: Request,
     @Body() body: ContactUsDTO,
   ) {
