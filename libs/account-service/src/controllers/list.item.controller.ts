@@ -59,7 +59,10 @@ export class ListItemController {
   @Delete(':itemId')
   @ApiOperation({ summary: "Remove an item from a user's list" })
   @ApiParam({ name: 'itemId', description: 'ID of the list item to remove' })
-  async removeItemFromList(@Param('itemId') itemId: number): Promise<void> {
+  async removeItemFromList(
+    @Param('itemId') itemId: number,
+    @SecureUser() secureUser: SecureUserPayload,
+  ): Promise<void> {
     return this.listItemService.removeItemFromList(itemId);
   }
 }
