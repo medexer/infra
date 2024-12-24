@@ -2,9 +2,9 @@ name: Deploy to Medexer Server
 
 on:
   push:
-    branches: [staging, production]
+    branches: [staging, master]
   pull_request:
-    branches: [staging, production]
+    branches: [staging, master]
 
 jobs:
   build:
