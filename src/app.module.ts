@@ -6,21 +6,22 @@ import { RouterModule } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { TerminusModule } from '@nestjs/terminus';
+import { ScheduleModule } from '@nestjs/schedule';
 import { CacheModule } from '@nestjs/cache-manager';
 import { JwtStrategy } from '../libs/common/src/auth';
 import { AuthServiceModule } from '@app/auth-service';
 import { HealthModule } from './health/health.module';
 import { DonorServiceModule } from '@app/donor-service';
+import { AdminServiceModule } from '@app/admin-service';
 import { AccountServiceModule } from '@app/account-service';
 import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { CommonModule } from 'libs/common/src/common.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SuccessResponseMiddleware } from './success.middleware';
 import { AppLogger } from '../libs/common/src/logger/logger.service';
+import { DonationCenterServiceModule } from '@app/donation-center-service';
 import { DatabaseSource } from '../libs/common/src/database/database-source';
 import { DeviceInfoMiddleware } from 'libs/common/src/middlewares/device.info.middleware';
-import { DonationCenterServiceModule } from '@app/donation-center-service';
-import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     ScheduleModule.forRoot(),
     HealthModule,
     TerminusModule,
+    AdminServiceModule,
     LoggerModule.forRoot(),
     AuthServiceModule,
     AccountServiceModule,
@@ -41,6 +43,10 @@ import { ScheduleModule } from '@nestjs/schedule';
       {
         path: 'v1/auth',
         module: AuthServiceModule,
+      },
+      {
+        path: 'v1/admin',
+        module: AdminServiceModule,
       },
       {
         path: 'v1/account',

@@ -141,7 +141,7 @@ export class DonationCenterComplianceAddressDTO {
 
 export class DonationCenterComplianceCredentialsDTO {
   @ApiProperty({
-    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    example: 'https://d30n3oi2bakvug.cloudfront.net/versions/original/d785858c-e783-4465-b9b4-a12e8a9e8f5a.jpeg',
     description: 'CAC Certificate of the donation center.',
   })
   @IsString()
@@ -149,7 +149,7 @@ export class DonationCenterComplianceCredentialsDTO {
   cacCertificate: string;
 
   @ApiProperty({
-    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    example: 'https://d30n3oi2bakvug.cloudfront.net/versions/original/d75c1ac3-7df9-408a-a1fd-69a3de0e9acb.png',
     description: 'Proof of address of the donation center.',
   })
   @IsString()

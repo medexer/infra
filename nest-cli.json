@@ -7,6 +7,15 @@
     "webpack": false
   },
   "projects": {
+    "admin-service": {
+      "type": "library",
+      "root": "libs/admin-service",
+      "entryFile": "index",
+      "sourceRoot": "libs/admin-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/admin-service/tsconfig.lib.json"
+      }
+    },
     "auth-service": {
       "type": "library",
       "root": "libs/auth-service",

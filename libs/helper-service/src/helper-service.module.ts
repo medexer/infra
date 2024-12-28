@@ -6,15 +6,23 @@ import { ImageUploadService } from './services/image-upload.service';
 import { EmailSenderService } from './services/email-sender.service';
 import { GoogleLocationService } from './services/google-location.service';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
+import { SeederService } from './services/seeder.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Account } from 'libs/common/src/models/account.model';
+import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [
+    ConfigModule,
+    TypeOrmModule.forFeature([Account, DonationCenter, DonationCenterCompliance]),
+  ],
   exports: [
     ImageUploadService,
     S3UploadService,
     GoogleLocationService,
     EmailSenderService,
     SupportService,
+    SeederService,
   ],
   providers: [
     {
@@ -26,6 +34,7 @@ import { AppLogger } from 'libs/common/src/logger/logger.service';
     GoogleLocationService,
     EmailSenderService,
     SupportService,
+    SeederService,
   ],
 })
 export class HelperServiceModule {}

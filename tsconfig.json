@@ -14,6 +14,9 @@
     "incremental": true,
     "skipLibCheck": true,
     "paths": {
+      "@app/admin-service": [
+        "libs/admin-service/src"
+      ],
       "@app/auth-service": [
         "libs/auth-service/src"
       ],
