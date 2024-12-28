@@ -3,7 +3,7 @@ import {
   DaysOfWork,
   DonationCenter,
   DonationCenterCompliance,
-  DonationCenterComplianceResponse,
+  DonationCenterComplianceInfo,
   DonationCenterInfo,
 } from '../models/donation.center.model';
 import { Account, AccountInfo } from '../models/account.model';
@@ -103,10 +103,10 @@ export function FormatDonationCenterDaysOfWork(
   })) as DonationCentreDaysOfWork[];
 }
 
-export function FormatDonationCenterComplianceResponse(
+export function FormatDonationCenterComplianceInfo(
   donationCenter: DonationCenter,
   compliance: DonationCenterCompliance,
-): DonationCenterComplianceResponse {
+): DonationCenterComplianceInfo {
   delete donationCenter.account;
   delete donationCenter.createdAt;
   delete donationCenter.updatedAt;
@@ -198,6 +198,6 @@ export default {
   FormatDonorAppointment,
   FormatMedicalHistoryInfo,
   FormatDonationCenterDaysOfWork,
-  FormatDonationCenterComplianceResponse,
+  FormatDonationCenterComplianceInfo,
   FormatDetailedDonationCenterAccountResponse,
 };

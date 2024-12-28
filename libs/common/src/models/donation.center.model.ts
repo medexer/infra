@@ -392,7 +392,7 @@ export class DonationCenterConfig {
   donation_center: DonationCenter;
 }
 
-export class DonationCenterComplianceResponse {
+export class DonationCenterComplianceInfo {
   @ApiPropertyOptional({ description: 'Account ID (Auto generated)' })
   id: number;
 
