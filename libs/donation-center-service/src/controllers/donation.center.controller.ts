@@ -20,8 +20,19 @@ import authUtils from 'libs/common/src/security/auth.utils';
 import { SecureUserPayload } from 'libs/common/src/interface';
 import { SecureUser } from 'libs/common/src/decorator/user.decorator';
 import { DonationCenterService } from '../services/donation.center.service';
-import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
-import { DonationCenterComplianceResponse } from 'libs/common/src/models/donation.center.model';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  DonationCenterComplianceResponse,
+  DonationCenterInfo,
+} from 'libs/common/src/models/donation.center.model';
 
 @Controller({ path: '' })
 @ApiBearerAuth()
@@ -31,6 +42,19 @@ export class DonationCenterController {
     public command: CommandBus,
     public readonly donationCenterService: DonationCenterService,
   ) {}
+
+  @ApiTags('donation-center')
+  @Get('profile')
+  @ApiOkResponse({ type: DonationCenterInfo })
+  @ApiInternalServerErrorResponse()
+  async getDonationCenterProfile(
+    @Req() req: Request,
+    @SecureUser() secureUser: SecureUserPayload,
+  ) {
+    return await this.donationCenterService.getDonationCenterProfile(
+      secureUser,
+    );
+  }
 
   @ApiTags('compliance')
   @Patch('compliance')

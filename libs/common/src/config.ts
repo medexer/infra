@@ -11,6 +11,7 @@ const config = {
   isProd,
   isTest,
   port: process.env.PORT,
+  enableCors: true,
   cors: {
     origin: '*',
     methods: 'POST,GET,PUT,OPTIONS,DELETE,PATCH',
@@ -53,7 +54,7 @@ export function GetSystemJWTModule() {
 }
 
 export const configureApp = (app: any) => {
-  if (config.cors) {
+  if (config.enableCors) {
     app.enableCors(config.cors);
   }
   app.use(helmet());
