@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   DonationCenter,
   DonationCenterCompliance,
-  DonationCenterComplianceResponse,
+  DonationCenterComplianceInfo,
 } from 'libs/common/src/models/donation.center.model';
 import { Account } from 'libs/common/src/models/account.model';
 import { Inject } from '@nestjs/common';
@@ -18,7 +18,7 @@ export class UploadDonationCenterComplianceCredentialsHandler
   implements
     ICommandHandler<
       UploadDonationCenterComplianceCredentialsCommand,
-      DonationCenterComplianceResponse
+      DonationCenterComplianceInfo
     >
 {
   constructor(
@@ -73,7 +73,7 @@ export class UploadDonationCenterComplianceCredentialsHandler
         `[UPLOAD-DONATION-CENTER-COMPLIANCE-CREDENTIALS-HANDLER-SUCCESS]`,
       );
 
-      return modelsFormatter.FormatDonationCenterComplianceResponse(
+      return modelsFormatter.FormatDonationCenterComplianceInfo(
         await this.donationCenterRepository.findOne({
           where: { account: { id: account.id } },
           relations: ['account'],

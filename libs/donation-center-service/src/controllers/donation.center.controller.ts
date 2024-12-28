@@ -30,7 +30,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
-  DonationCenterComplianceResponse,
+  DonationCenterComplianceInfo,
   DonationCenterInfo,
 } from 'libs/common/src/models/donation.center.model';
 
@@ -58,7 +58,7 @@ export class DonationCenterController {
 
   @ApiTags('compliance')
   @Patch('compliance')
-  @ApiOkResponse({ type: DonationCenterComplianceResponse })
+  @ApiOkResponse({ type: DonationCenterComplianceInfo })
   @ApiInternalServerErrorResponse()
   async uploadComplianceCredentials(
     @Req() req: Request,
@@ -76,7 +76,7 @@ export class DonationCenterController {
 
   @ApiTags('compliance')
   @Patch('compliance/details')
-  @ApiOkResponse({ type: DonationCenterComplianceResponse })
+  @ApiOkResponse({ type: DonationCenterComplianceInfo })
   @ApiInternalServerErrorResponse()
   async uploadComplianceDetails(
     @Req() req: Request,
@@ -95,14 +95,14 @@ export class DonationCenterController {
   @ApiTags('compliance')
   @Patch('compliance/address')
   @ApiOkResponse({
-    type: DonationCenterComplianceResponse,
+    type: DonationCenterComplianceInfo,
   })
   @ApiInternalServerErrorResponse()
   async uploadComplianceAddress(
     @Req() req: Request,
     @Body() body: DonationCenterComplianceAddressDTO,
     @SecureUser() secureUser: SecureUserPayload,
-  ): Promise<DonationCenterComplianceResponse> {
+  ): Promise<DonationCenterComplianceInfo> {
     return await this.command.execute(
       new UploadDonationCenterComplianceAddressCommand(
         authUtils.getOriginHeader(req),
