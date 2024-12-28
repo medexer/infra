@@ -110,6 +110,11 @@ export function FormatDonationCenterComplianceInfo(
   delete donationCenter.account;
   delete donationCenter.createdAt;
   delete donationCenter.updatedAt;
+  delete donationCenter.ratingOne;
+  delete donationCenter.ratingTwo;
+  delete donationCenter.ratingThree;
+  delete donationCenter.ratingFour;
+  delete donationCenter.ratingFive;
 
   delete compliance.donationCenter;
 
