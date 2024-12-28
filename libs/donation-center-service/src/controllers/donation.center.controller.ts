@@ -50,7 +50,7 @@ export class DonationCenterController {
   async getDonationCenterProfile(
     @Req() req: Request,
     @SecureUser() secureUser: SecureUserPayload,
-  ) {
+  ): Promise<DonationCenterInfo> {
     return await this.donationCenterService.getDonationCenterProfile(
       secureUser,
     );
