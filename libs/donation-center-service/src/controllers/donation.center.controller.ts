@@ -57,6 +57,17 @@ export class DonationCenterController {
   }
 
   @ApiTags('compliance')
+  @Get('compliance')
+  @ApiOkResponse({ type: DonationCenterComplianceInfo })
+  @ApiInternalServerErrorResponse()
+  async getComplianceInfo(
+    @Req() req: Request,
+    @SecureUser() secureUser: SecureUserPayload,
+  ) {
+    return await this.donationCenterService.getComplianceInfo(secureUser);
+  }
+
+  @ApiTags('compliance')
   @Patch('compliance')
   @ApiOkResponse({ type: DonationCenterComplianceInfo })
   @ApiInternalServerErrorResponse()
