@@ -19,7 +19,7 @@ export class AddressHelperController {
   @ApiQuery({ name: 'searchQuery', type: String })
   @ApiOkResponse({ isArray: true, type: GooglePlacePrediction })
   @ApiInternalServerErrorResponse()
-  async initializeDonationCenters(
+  async getGooglePlaceAutocomplete(
     @Req() req: Request,
     @Query('searchQuery') searchQuery: string,
   ): Promise<GooglePlacePrediction[]> {
