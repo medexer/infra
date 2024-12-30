@@ -23,3 +23,24 @@ export interface GooglePlaceDetails {
     types: string[];
   }>;
 }
+
+
+export class GooglePlacePrediction {
+  @ApiProperty({
+    example: 'Lagos, Nigeria',
+    description: 'The description of the place',
+  })
+  description: string;
+  
+  @ApiProperty({
+    example: 'ChIJN1t_tDbYwoAR4upGmw5lURo',
+    description: 'The place id',
+  })
+  place_id: string;
+  
+  @ApiProperty({
+    example: 'ChIJN1t_tDbYwoAR4upGmw5lURo',
+    description: 'The reference of the place',
+  })
+  reference: string;
+}

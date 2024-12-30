@@ -1,7 +1,10 @@
+import {
+  GooglePlaceDetails,
+  GooglePlacePrediction,
+} from '../interface';
+import axios from 'axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
-import { GooglePlaceDetails } from '../interface';
 
 @Injectable()
 export class GoogleLocationService {
@@ -12,14 +15,16 @@ export class GoogleLocationService {
   }
 
   async getPlaceDetails(placeId: string): Promise<GooglePlaceDetails> {
-    try {  
+    try {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${this.apiKey}`,
       );
 
       return response.data.result as GooglePlaceDetails;
     } catch (error) {
-      throw new Error(`Failed to fetch place details from Google Maps API : ${error}`);
+      throw new Error(
+        `Failed to fetch place details from Google Maps API : ${error}`,
+      );
     }
   }
 
@@ -28,7 +33,7 @@ export class GoogleLocationService {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
           query,
-        )}&key=${this.apiKey}`,
+        )}&key=${this.apiKey}&components=country:ng&limit=5`,
       );
 
       return response.data.results;
@@ -37,15 +42,21 @@ export class GoogleLocationService {
     }
   }
 
-  async getPlaceAutocomplete(input: string) {
+  async getPlaceAutocomplete(input: string): Promise<GooglePlacePrediction[]> {
     try {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(
           input,
-        )}&key=${this.apiKey}`,
+        )}&key=${this.apiKey}&components=country:ng&limit=5`,
       );
+      
+      const predictions: GooglePlacePrediction[] = response.data.predictions.map(prediction => ({
+        description: prediction.description,
+        place_id: prediction.place_id,
+        reference: prediction.reference
+      }));
 
-      return response.data.predictions;
+      return predictions;
     } catch (error) {
       throw new Error('Failed to get place autocomplete from Google Maps API');
     }
