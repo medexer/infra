@@ -14,6 +14,8 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
 import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
 import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
 import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
+import { AddressHelperController } from 'libs/helper-service/src/controllers/address.helper.controller';
+
 @Module({
   imports: [
     CqrsModule,
@@ -37,7 +39,7 @@ import { EmailSenderService } from 'libs/helper-service/src/services/email-sende
     ...DonationCenterServiceCommandHandlers,
   ],
   exports: [DonationCenterService, ],
-  controllers: [DonationCenterController],
+  controllers: [DonationCenterController, AddressHelperController],
 })
 export class DonationCenterServiceModule {
   constructor(private configService: ConfigService) {
