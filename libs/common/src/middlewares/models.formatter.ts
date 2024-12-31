@@ -7,7 +7,10 @@ import {
   DonationCenterInfo,
 } from '../models/donation.center.model';
 import { Account, AccountInfo } from '../models/account.model';
-import { AppointmentInfo } from '../models/appointment.model';
+import {
+  AppointmentInfo,
+  DonationCenterAppointmentInfo,
+} from '../models/appointment.model';
 import { Appointment } from '../models/appointment.model';
 import {
   MedicalHistory,
@@ -146,6 +149,29 @@ export function FormatDonorAppointment(
   } as AppointmentInfo;
 }
 
+export function FormatDonationCenterAppointment(
+  appointment: Appointment,
+): DonationCenterAppointmentInfo {
+  return {
+    id: appointment.id.toString(),
+    date: appointment.date,
+    time: appointment.time,
+    status: appointment.status,
+    donorName: appointment.donor.firstName.concat(
+      ' ',
+      appointment.donor.lastName,
+    ),
+    donorPhone: appointment.donor.phone,
+    donorEmail: appointment.donor.email,
+    donorLogo: appointment.donor.profilePhoto,
+    donorProfilePhoto: appointment.donor.profilePhoto,
+    createdAt: appointment.createdAt,
+    updatedAt: appointment.updatedAt,
+    appointmentId: appointment.appointmentId,
+    verificationCode: appointment.verificationCode,
+  } as DonationCenterAppointmentInfo;
+}
+
 export function FormatMedicalHistoryInfo(
   medicalHistory: MedicalHistory,
 ): MedicalHistoryInfo {
@@ -203,6 +229,7 @@ export default {
   FormatDonorAppointment,
   FormatMedicalHistoryInfo,
   FormatDonationCenterDaysOfWork,
+  FormatDonationCenterAppointment,
   FormatDonationCenterComplianceInfo,
   FormatDetailedDonationCenterAccountResponse,
 };

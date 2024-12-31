@@ -151,3 +151,41 @@ export class AppointmentInfo {
   @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
   updatedAt: Date;
 }
+
+export class DonationCenterAppointmentInfo {
+  @ApiProperty({ example: '75' })
+  id: string;
+
+  @ApiProperty({ example: '123456' })
+  appointmentId: string;
+
+  @ApiProperty({ example: '10:00 AM' })
+  time: string;
+
+  @ApiProperty({ example: '2024-01-01' })
+  date: Date;
+
+  @ApiProperty({ example: 'pending', enum: AppointmentStatus })
+  status: AppointmentStatus;
+
+  @ApiProperty({ example: '123456' })
+  verificationCode: string;
+
+  @ApiProperty({ example: 'Donor Name' })
+  donorName: string;
+
+  @ApiProperty({ example: 'Donor Cover Photo' })
+  donorProfilePhoto: string;
+
+  @ApiProperty({ example: 'Donor phone number' })
+  donorPhone: string;
+
+  @ApiProperty({ example: 'Donor email' })
+  donorEmail: string;
+
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  createdAt: Date;
+
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  updatedAt: Date;
+}
