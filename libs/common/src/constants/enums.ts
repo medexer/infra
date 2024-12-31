@@ -50,6 +50,8 @@ export enum OptimizedImageType {
 
 export enum AppointmentStatus {
   PENDING = 'pending',
+  ACCEPTED = 'accepted',
+  PROCESSING = 'processing',
   COMPLETED = 'completed',
   CANCELLED = 'cancelled',
   MISSED = 'missed',
