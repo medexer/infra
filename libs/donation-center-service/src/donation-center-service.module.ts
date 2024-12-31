@@ -7,14 +7,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { setupSwaggerDocument } from 'libs/common/src/swagger';
 import { Account } from 'libs/common/src/models/account.model';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
+import { Appointment } from 'libs/common/src/models/appointment.model';
 import { DonationCenterService } from './services/donation.center.service';
 import { DonationCenterServiceCommandHandlers } from './commands/handlers';
 import { DonationCenterController } from './controllers/donation.center.controller';
-import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
-import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
-import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
 import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
+import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
+import { DonationCenterAppointmentService } from './services/donation.center.appointment.service';
 import { AddressHelperController } from 'libs/helper-service/src/controllers/address.helper.controller';
+import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
+import { DonationCenterAppointmentController } from './controllers/donation.center..appointment.controller';
+import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 
 @Module({
   imports: [
@@ -23,6 +26,7 @@ import { AddressHelperController } from 'libs/helper-service/src/controllers/add
     GetSystemJWTModule(),
     TypeOrmModule.forFeature([
       Account,
+      Appointment,
       DonationCenter,
       DonationCenterCompliance,
     ]),
@@ -30,6 +34,7 @@ import { AddressHelperController } from 'libs/helper-service/src/controllers/add
   providers: [
     DonationCenterService,
     GoogleLocationService,
+    DonationCenterAppointmentService,
     {
       provide: 'Logger',
       useClass: AppLogger,
@@ -39,7 +44,7 @@ import { AddressHelperController } from 'libs/helper-service/src/controllers/add
     ...DonationCenterServiceCommandHandlers,
   ],
   exports: [DonationCenterService, ],
-  controllers: [DonationCenterController, AddressHelperController],
+  controllers: [DonationCenterController, DonationCenterAppointmentController, AddressHelperController],
 })
 export class DonationCenterServiceModule {
   constructor(private configService: ConfigService) {
