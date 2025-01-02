@@ -80,6 +80,46 @@ export class Appointment {
   })
   cancellationReason: string;
 
+  @Column({
+    default: null,
+    nullable: true,
+    type: 'timestamp',
+  })
+  @ApiPropertyOptional({
+    description: 'Appointment accepted date e.g 2024-01-01.',
+  })
+  acceptedAt: Date;
+
+  @Column({
+    default: null,
+    nullable: true,
+    type: 'timestamp',
+  })
+  @ApiPropertyOptional({
+    description: 'Appointment processing date e.g 2024-01-01.',
+  })
+  processingAt: Date;
+
+  @Column({
+    default: null,
+    nullable: true,
+    type: 'timestamp',
+  })
+  @ApiPropertyOptional({
+    description: 'Appointment test results uploaded date e.g 2024-01-01.',
+  })
+  testResultsUploadedAt: Date;
+
+  @Column({
+    default: null,
+    nullable: true,
+    type: 'timestamp',
+  })
+  @ApiPropertyOptional({
+    description: 'Appointment completed date e.g 2024-01-01.',
+  })
+  completedAt: Date;
+
   @ManyToOne(() => DonationCenter, {
     onDelete: 'CASCADE',
   })
@@ -182,6 +222,18 @@ export class DonationCenterAppointmentInfo {
 
   @ApiProperty({ example: 'Donor email' })
   donorEmail: string;
+
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  acceptedAt: Date | '';
+
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  processingAt: Date | '';
+
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  testResultsUploadedAt: Date | '';
+
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  completedAt: Date | '';
 
   @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
   createdAt: Date;

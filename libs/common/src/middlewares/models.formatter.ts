@@ -169,6 +169,10 @@ export function FormatDonationCenterAppointment(
     updatedAt: appointment.updatedAt,
     appointmentId: appointment.appointmentId,
     verificationCode: appointment.verificationCode,
+    acceptedAt: appointment.acceptedAt || '',
+    processingAt: appointment.processingAt || '',
+    testResultsUploadedAt: appointment.testResultsUploadedAt || '',
+    completedAt: appointment.completedAt || '',
   } as DonationCenterAppointmentInfo;
 }
 
