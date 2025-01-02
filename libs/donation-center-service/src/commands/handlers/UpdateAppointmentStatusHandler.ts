@@ -47,25 +47,24 @@ export class UpdateAppointmentStatusHandler
           AppointmentStatus.ACCEPTED,
           AppointmentStatus.REJECTED,
           AppointmentStatus.PROCESSING,
-        ].includes(appointment.status)
+        ].includes(payload.status)
       ) {
         throw new BadRequestException('Invalid appointment status');
       }
 
-      Object.assign(appointment, {
-        status: payload.status,
-      });
-
       if (payload.status === AppointmentStatus.REJECTED) {
         Object.assign(appointment, {
+          status: payload.status,
           rejectedAt: new Date(),
         });
       } else if (payload.status === AppointmentStatus.ACCEPTED) {
         Object.assign(appointment, {
+          status: payload.status,
           acceptedAt: new Date(),
         });
       } else if (payload.status === AppointmentStatus.PROCESSING) {
         Object.assign(appointment, {
+          status: payload.status,
           processingAt: new Date(),
         });
       }
@@ -76,7 +75,10 @@ export class UpdateAppointmentStatusHandler
       this.logger.log(`[UPDATE-APPOINTMENT-STATUS-HANDLER-SUCCESS]`);
 
       this.eventBus.publish(
-        new UpdateAppointmentStatusEvent(updatedAppointment, updatedAppointment.status),
+        new UpdateAppointmentStatusEvent(
+          updatedAppointment,
+          updatedAppointment.status,
+        ),
       );
 
       return modelsFormatter.FormatDonationCenterAppointment(
