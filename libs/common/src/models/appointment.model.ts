@@ -86,6 +86,16 @@ export class Appointment {
     type: 'timestamp',
   })
   @ApiPropertyOptional({
+    description: 'Appointment rejected date e.g 2024-01-01.',
+  })
+  rejectedAt: Date;
+
+  @Column({
+    default: null,
+    nullable: true,
+    type: 'timestamp',
+  })
+  @ApiPropertyOptional({
     description: 'Appointment cancelled date e.g 2024-01-01.',
   })
   cancelledAt: Date;
@@ -232,6 +242,12 @@ export class DonationCenterAppointmentInfo {
 
   @ApiProperty({ example: 'Donor email' })
   donorEmail: string;
+
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  rejectedAt: Date | '';
+
+  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  cancelledAt: Date | '';
 
   @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
   acceptedAt: Date | '';

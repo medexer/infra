@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateAppointmentCommand } from '../impl';
 import authUtils from 'libs/common/src/security/auth.utils';
@@ -62,7 +62,7 @@ export class CreateAppointmentHandler
       const appointment = await this.appointmentRepository.findOne({
         where: {
           donor: { id: account.id },
-          status: AppointmentStatus.PENDING,
+          status: In([AppointmentStatus.PENDING, AppointmentStatus.ACCEPTED, AppointmentStatus.PROCESSING]),
         },
         relations: ['donor', 'donation_center'],
       });

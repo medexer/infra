@@ -173,6 +173,8 @@ export function FormatDonationCenterAppointment(
     processingAt: appointment.processingAt || '',
     testResultsUploadedAt: appointment.testResultsUploadedAt || '',
     completedAt: appointment.completedAt || '',
+    cancelledAt: appointment.cancelledAt || '',
+    rejectedAt: appointment.rejectedAt || '',
   } as DonationCenterAppointmentInfo;
 }
 

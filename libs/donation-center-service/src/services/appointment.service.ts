@@ -91,10 +91,4 @@ export class AppointmentService {
       throw error;
     }
   }
-
-  async updateAppointmentStatus(
-    secureUser: SecureUserPayload,
-    appointmentId: string,
-    status: AppointmentStatus,
-  ) {}
 }

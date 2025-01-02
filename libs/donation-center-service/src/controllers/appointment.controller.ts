@@ -1,4 +1,4 @@
-import { Body, Get, Req, UseGuards, Controller, Patch, Query } from '@nestjs/common';
+import { Body, Get, Req, UseGuards, Controller, Patch, Query, Post } from '@nestjs/common';
 import {
   ApiTags,
   ApiBearerAuth,
@@ -13,8 +13,8 @@ import { SecureUser } from 'libs/common/src/decorator/user.decorator';
 import { DonationCenterAppointmentInfo } from 'libs/common/src/models/appointment.model';
 import { AppointmentStatus } from 'libs/common/src/constants/enums';
 import { AppointmentService } from '../services/appointment.service';
-import { UpdateAppointmentStatusDTO } from '../interface';
-import { UpdateAppointmentStatusCommand } from '../commands/impl';
+import { UpdateAppointmentStatusDTO, UploadTestResultsDTO } from '../interface';
+import { UpdateAppointmentStatusCommand, UploadTestResultsCommand } from '../commands/impl';
 import authUtils from 'libs/common/src/security/auth.utils';
 
 @Controller({ path: 'appointments' })
@@ -72,6 +72,32 @@ export class AppointmentController {
       return await this.command.execute(
         new UpdateAppointmentStatusCommand(
           authUtils.getOriginHeader(req),
+          secureUser,
+          body,
+        ),
+      );
+  }
+
+  @ApiTags('appointment')
+  @Post('upload-test-results')
+  @ApiOkResponse({
+    type: DonationCenterAppointmentInfo,
+  })
+  @ApiQuery({
+    name: 'appointmentId',
+    description: 'Appointment ID',
+  })
+  @ApiInternalServerErrorResponse()
+  async uploadTestResults(
+    @Req() req: Request,
+    @SecureUser() secureUser: SecureUserPayload,
+    @Query('appointmentId') appointmentId: number,
+    @Body() body: UploadTestResultsDTO,
+  ): Promise<DonationCenterAppointmentInfo[]> {
+      return await this.command.execute(
+        new UploadTestResultsCommand(
+          authUtils.getOriginHeader(req),
+          appointmentId,
           secureUser,
           body,
         ),

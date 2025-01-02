@@ -2,25 +2,27 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DocumentBuilder } from '@nestjs/swagger';
+import {
+  DonationCenter,
+  DonationCenterCompliance,
+} from 'libs/common/src/models/donation.center.model';
 import { GetSystemJWTModule } from 'libs/common/src/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { setupSwaggerDocument } from 'libs/common/src/swagger';
 import { Account } from 'libs/common/src/models/account.model';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
+import { AppointmentService } from './services/appointment.service';
 import { Appointment } from 'libs/common/src/models/appointment.model';
 import { DonationCenterService } from './services/donation.center.service';
 import { DonationCenterServiceCommandHandlers } from './commands/handlers';
+import { AppointmentController } from './controllers/appointment.controller';
+import { MedicalHistory } from 'libs/common/src/models/medical.history.model';
 import { DonationCenterController } from './controllers/donation.center.controller';
 import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
 import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
-import { AppointmentService } from './services/appointment.service';
 import { AddressHelperController } from 'libs/helper-service/src/controllers/address.helper.controller';
-import {
-  DonationCenter,
-  DonationCenterCompliance,
-} from 'libs/common/src/models/donation.center.model';
-import { AppointmentController } from './controllers/appointment.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
+import { DonationCenterServiceEventHandlers } from './events/handlers';
 
 @Module({
   imports: [
@@ -31,6 +33,7 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
       Account,
       Appointment,
       DonationCenter,
+      MedicalHistory,
       DonationCenterCompliance,
     ]),
   ],
@@ -44,6 +47,7 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
     },
     EmailSenderService,
     EmailNotificationService,
+    ...DonationCenterServiceEventHandlers,
     ...DonationCenterServiceCommandHandlers,
   ],
   exports: [DonationCenterService],

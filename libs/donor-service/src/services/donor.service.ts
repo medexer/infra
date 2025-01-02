@@ -1,4 +1,4 @@
-import { Repository, Not } from 'typeorm';
+import { Repository, Not, In } from 'typeorm';
 import { CommandBus } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Inject, Injectable } from '@nestjs/common';
@@ -286,7 +286,11 @@ export class DonorService {
       const appointments = await this.appointmentRepository.find({
         where: {
           donor: { id: secureUser.id },
-          status: AppointmentStatus.PENDING,
+          status: In([
+            AppointmentStatus.PENDING,
+            AppointmentStatus.ACCEPTED,
+            AppointmentStatus.PROCESSING,
+          ]),
         },
         relations: ['donor', 'donation_center'],
       });
@@ -312,7 +316,13 @@ export class DonorService {
       const appointments = await this.appointmentRepository.find({
         where: {
           donor: { id: secureUser.id },
-          status: Not(AppointmentStatus.PENDING),
+          status: Not(
+            In([
+              AppointmentStatus.PENDING,
+              AppointmentStatus.ACCEPTED,
+              AppointmentStatus.PROCESSING,
+            ]),
+          ),
         },
         relations: ['donor', 'donation_center'],
       });
