@@ -5,17 +5,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Account } from 'libs/common/src/models/account.model';
 import { AppLogger } from '../../../common/src/logger/logger.service';
-import {
-  DonationCenter,
-} from 'libs/common/src/models/donation.center.model';
+import { DonationCenter } from 'libs/common/src/models/donation.center.model';
 import { SecureUserPayload } from 'libs/common/src/interface';
 import { Appointment } from 'libs/common/src/models/appointment.model';
 import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
-import { AccountType, AppointmentStatus } from 'libs/common/src/constants/enums';
+import {
+  AccountType,
+  AppointmentStatus,
+} from 'libs/common/src/constants/enums';
 import { DonationCenterAppointmentInfo } from 'libs/common/src/models/appointment.model';
 
 @Injectable()
-export class DonationCenterAppointmentService {
+export class AppointmentService {
   constructor(
     public commandBus: CommandBus,
     @Inject('Logger') private readonly logger: AppLogger,
@@ -27,7 +28,7 @@ export class DonationCenterAppointmentService {
     private readonly appointmentRepository: Repository<Appointment>,
   ) {}
 
-  async getPendingDonationCenterAppointments(
+  async getPendingAppointments(
     secureUser: SecureUserPayload,
   ): Promise<DonationCenterAppointmentInfo[]> {
     try {
@@ -51,22 +52,28 @@ export class DonationCenterAppointmentService {
         modelsFormatter.FormatDonationCenterAppointment(appointment),
       );
     } catch (error) {
-      this.logger.error(`[GET-PENDING-DONATION-CENTER-APPOINTMENTS-FAILED] :: ${error}`);
+      this.logger.error(
+        `[GET-PENDING-DONATION-CENTER-APPOINTMENTS-FAILED] :: ${error}`,
+      );
 
       throw error;
     }
   }
 
-  async getCompletedDonationCenterAppointments(
+  async getCompletedAppointments(
     secureUser: SecureUserPayload,
   ): Promise<DonationCenterAppointmentInfo[]> {
     try {
-      this.logger.log(`[GET-COMPLETED-DONATION-CENTER-APPOINTMENTS-PROCESSING]`);
+      this.logger.log(
+        `[GET-COMPLETED-DONATION-CENTER-APPOINTMENTS-PROCESSING]`,
+      );
 
       const appointments = await this.appointmentRepository.find({
         where: {
           donation_center: { account: { id: secureUser.id } },
-          status: Not(In([AppointmentStatus.PENDING, AppointmentStatus.ACCEPTED])),
+          status: Not(
+            In([AppointmentStatus.PENDING, AppointmentStatus.ACCEPTED]),
+          ),
         },
         relations: ['donor', 'donation_center', 'donation_center.account'],
       });
@@ -84,4 +91,10 @@ export class DonationCenterAppointmentService {
       throw error;
     }
   }
+
+  async updateAppointmentStatus(
+    secureUser: SecureUserPayload,
+    appointmentId: string,
+    status: AppointmentStatus,
+  ) {}
 }

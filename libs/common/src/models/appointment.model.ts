@@ -86,6 +86,16 @@ export class Appointment {
     type: 'timestamp',
   })
   @ApiPropertyOptional({
+    description: 'Appointment cancelled date e.g 2024-01-01.',
+  })
+  cancelledAt: Date;
+
+  @Column({
+    default: null,
+    nullable: true,
+    type: 'timestamp',
+  })
+  @ApiPropertyOptional({
     description: 'Appointment accepted date e.g 2024-01-01.',
   })
   acceptedAt: Date;

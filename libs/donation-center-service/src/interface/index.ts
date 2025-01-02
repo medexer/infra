@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsEmail,
   IsPhoneNumber,
+  IsNumberString,
 } from 'class-validator';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
@@ -14,6 +15,7 @@ import {
   toLowerCaseTransformer,
   trimTransformer,
 } from 'libs/common/src/helpers/local-class-validator';
+import { AppointmentStatus } from 'libs/common/src/constants/enums';
 
 export class DonationCenterComplianceDetailsDTO {
   @ApiProperty({
@@ -157,3 +159,23 @@ export class DonationCenterComplianceCredentialsDTO {
   proofOfAddress: string;
 
 }
+
+export class UpdateAppointmentStatusDTO {
+  @ApiProperty({
+    example: 'ACCEPTED',
+    enum: AppointmentStatus,
+    description: 'Status of the appointment.',
+  })
+  @IsEnum(AppointmentStatus)
+  @IsNotEmpty()
+  status: AppointmentStatus;
+
+  @ApiProperty({
+    example: '31',
+    description: 'ID of the appointment.',
+  })
+  @IsNumberString()
+  @IsNotEmpty()
+  appointmentId: number;
+}
+
