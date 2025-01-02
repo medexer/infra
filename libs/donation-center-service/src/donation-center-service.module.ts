@@ -13,10 +13,13 @@ import { DonationCenterServiceCommandHandlers } from './commands/handlers';
 import { DonationCenterController } from './controllers/donation.center.controller';
 import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
 import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
-import { DonationCenterAppointmentService } from './services/donation.center.appointment.service';
+import { AppointmentService } from './services/appointment.service';
 import { AddressHelperController } from 'libs/helper-service/src/controllers/address.helper.controller';
-import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
-import { DonationCenterAppointmentController } from './controllers/donation.center..appointment.controller';
+import {
+  DonationCenter,
+  DonationCenterCompliance,
+} from 'libs/common/src/models/donation.center.model';
+import { AppointmentController } from './controllers/appointment.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 
 @Module({
@@ -34,7 +37,7 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
   providers: [
     DonationCenterService,
     GoogleLocationService,
-    DonationCenterAppointmentService,
+    AppointmentService,
     {
       provide: 'Logger',
       useClass: AppLogger,
@@ -43,8 +46,12 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
     EmailNotificationService,
     ...DonationCenterServiceCommandHandlers,
   ],
-  exports: [DonationCenterService, ],
-  controllers: [DonationCenterController, DonationCenterAppointmentController, AddressHelperController],
+  exports: [DonationCenterService],
+  controllers: [
+    DonationCenterController,
+    AppointmentController,
+    AddressHelperController,
+  ],
 })
 export class DonationCenterServiceModule {
   constructor(private configService: ConfigService) {
