@@ -174,9 +174,9 @@ export class UpdateAppointmentStatusDTO {
     example: '31',
     description: 'ID of the appointment.',
   })
-  @IsNumberString()
+  @IsString()
   @IsNotEmpty()
-  appointmentId: number;
+  appointmentId: string;
 }
 
 export class UploadTestResultsDTO {
