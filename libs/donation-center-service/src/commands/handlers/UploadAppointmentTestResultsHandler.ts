@@ -1,9 +1,11 @@
 import { Repository } from 'typeorm';
+import { EventBus } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UploadTestResultsCommand } from '../impl';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
 import { AppointmentStatus } from 'libs/common/src/constants/enums';
+import { UploadAppointmentTestResultEvent } from '../../events/impl';
 import { Appointment } from 'libs/common/src/models/appointment.model';
 import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
 import { ConflictException, Inject, NotFoundException } from '@nestjs/common';
@@ -19,6 +21,7 @@ export class UploadAppointmentTestResultsHandler
     >
 {
   constructor(
+    private readonly eventBus: EventBus,
     @Inject('Logger') private readonly logger: AppLogger,
     @InjectRepository(Appointment)
     private readonly appointmentRepository: Repository<Appointment>,
@@ -77,6 +80,10 @@ export class UploadAppointmentTestResultsHandler
 
       const updatedAppointment =
         await this.appointmentRepository.save(appointment);
+
+      this.eventBus.publish(
+        new UploadAppointmentTestResultEvent(updatedAppointment),
+      );
 
       this.logger.log(`[UPLOAD-APPOINTMENT-TEST-RESULTS-HANDLER-SUCCESS]`);
 
