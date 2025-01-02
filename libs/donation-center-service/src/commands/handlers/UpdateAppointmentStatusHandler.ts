@@ -1,13 +1,14 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateAppointmentStatusCommand } from '../impl';
-import { Inject, NotFoundException } from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
+import { AppointmentStatus } from 'libs/common/src/constants/enums';
 import { Appointment } from 'libs/common/src/models/appointment.model';
 import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
+import { Inject, NotFoundException, BadRequestException } from '@nestjs/common';
 import { DonationCenterAppointmentInfo } from 'libs/common/src/models/appointment.model';
-import { AppointmentStatus } from 'libs/common/src/constants/enums';
+import { UpdateAppointmentStatusEvent } from '../../events/impl';
 
 @CommandHandler(UpdateAppointmentStatusCommand)
 export class UpdateAppointmentStatusHandler
@@ -18,6 +19,7 @@ export class UpdateAppointmentStatusHandler
     >
 {
   constructor(
+    private readonly eventBus: EventBus,
     @Inject('Logger') private readonly logger: AppLogger,
     @InjectRepository(Appointment)
     private readonly appointmentRepository: Repository<Appointment>,
@@ -40,13 +42,27 @@ export class UpdateAppointmentStatusHandler
         throw new NotFoundException('Appointment not found');
       }
 
+      if (
+        ![
+          AppointmentStatus.ACCEPTED,
+          AppointmentStatus.REJECTED,
+          AppointmentStatus.PROCESSING,
+        ].includes(appointment.status)
+      ) {
+        throw new BadRequestException('Invalid appointment status');
+      }
+
       Object.assign(appointment, {
         status: payload.status,
       });
 
-      if(payload.status === AppointmentStatus.ACCEPTED) {
+      if (payload.status === AppointmentStatus.REJECTED) {
         Object.assign(appointment, {
-            acceptedAt: new Date(),
+          rejectedAt: new Date(),
+        });
+      } else if (payload.status === AppointmentStatus.ACCEPTED) {
+        Object.assign(appointment, {
+          acceptedAt: new Date(),
         });
       } else if (payload.status === AppointmentStatus.PROCESSING) {
         Object.assign(appointment, {
@@ -58,6 +74,10 @@ export class UpdateAppointmentStatusHandler
         await this.appointmentRepository.save(appointment);
 
       this.logger.log(`[UPDATE-APPOINTMENT-STATUS-HANDLER-SUCCESS]`);
+
+      this.eventBus.publish(
+        new UpdateAppointmentStatusEvent(updatedAppointment, updatedAppointment.status),
+      );
 
       return modelsFormatter.FormatDonationCenterAppointment(
         updatedAppointment,

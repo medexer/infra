@@ -15,7 +15,7 @@ import {
   toLowerCaseTransformer,
   trimTransformer,
 } from 'libs/common/src/helpers/local-class-validator';
-import { AppointmentStatus } from 'libs/common/src/constants/enums';
+import { AppointmentStatus, BloodGroup, Genotype } from 'libs/common/src/constants/enums';
 
 export class DonationCenterComplianceDetailsDTO {
   @ApiProperty({
@@ -162,7 +162,7 @@ export class DonationCenterComplianceCredentialsDTO {
 
 export class UpdateAppointmentStatusDTO {
   @ApiProperty({
-    example: 'ACCEPTED',
+    example: 'accepted',
     enum: AppointmentStatus,
     description: 'Status of the appointment.',
   })
@@ -179,3 +179,62 @@ export class UpdateAppointmentStatusDTO {
   appointmentId: number;
 }
 
+export class UploadTestResultsDTO {
+  @ApiProperty({
+    example: 'AA',
+    description: 'Genotype',
+    enum: Genotype,
+  })
+  @IsEnum(Genotype)
+  @IsNotEmpty()
+  genotype: Genotype;
+
+  @ApiProperty({
+    example: 'O+',
+    description: 'Blood group',
+    enum: BloodGroup,
+  })
+  @IsEnum(BloodGroup)
+  @IsNotEmpty()
+  bloodGroup: BloodGroup;
+
+  @ApiProperty({
+    example: true,
+    description: 'HIV1 status',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  hiv1: boolean;
+
+  @ApiProperty({
+    example: false,
+    description: 'HIV2 status',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  hiv2: boolean;
+
+  @ApiProperty({
+    example: false,
+    description: 'Hepatitis B status',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  hepatitisB: boolean;
+
+  @ApiProperty({
+    example: false,
+    description: 'Hepatitis C status',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  hepatitisC: boolean;
+
+  @ApiProperty({
+    example: false,
+    description: 'Syphilis status',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  syphilis: boolean;
+}

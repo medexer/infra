@@ -3,6 +3,7 @@ import {
   DonationCenterComplianceDetailsDTO,
   DonationCenterComplianceCredentialsDTO,
   UpdateAppointmentStatusDTO,
+  UploadTestResultsDTO,
 } from '../../interface';
 import { SecureUserPayload } from 'libs/common/src/interface';
 
@@ -35,5 +36,14 @@ export class UpdateAppointmentStatusCommand {
     public readonly origin: string,
     public readonly secureUser: SecureUserPayload,
     public readonly payload: UpdateAppointmentStatusDTO,
+  ) {}
+}
+
+export class UploadTestResultsCommand {
+  constructor(
+    public readonly origin: string,
+    public readonly appointmentId: number,
+    public readonly secureUser: SecureUserPayload,
+    public readonly payload: UploadTestResultsDTO,
   ) {}
 }
