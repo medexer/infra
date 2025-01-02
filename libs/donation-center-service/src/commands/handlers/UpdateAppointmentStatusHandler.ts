@@ -33,7 +33,7 @@ export class UpdateAppointmentStatusHandler
 
       const appointment = await this.appointmentRepository.findOne({
         where: {
-          id: payload.appointmentId,
+          id: parseInt(payload.appointmentId),
         },
         relations: ['donor', 'donation_center', 'donation_center.account'],
       });
