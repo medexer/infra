@@ -11,7 +11,9 @@ import {
 import { CreateDonationCenterAccountEvent } from '../impl';
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
+import { BloodInventory } from 'libs/common/src/models/blood.inventory.model';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
+import { BloodGroup } from 'libs/common/src/constants/enums';
 
 @EventsHandler(CreateDonationCenterAccountEvent)
 export class CreateDonationCenterAccountEventHandler
@@ -24,6 +26,8 @@ export class CreateDonationCenterAccountEventHandler
     private readonly daysOfWorkRepository: Repository<DaysOfWork>,
     @InjectRepository(OpeningHours)
     private readonly openingHoursRepository: Repository<OpeningHours>,
+    @InjectRepository(BloodInventory)
+    private readonly bloodInventoryRepository: Repository<BloodInventory>,
     @InjectRepository(DonationCenter)
     private readonly donationCenterRepository: Repository<DonationCenter>,
     @InjectRepository(DonationCenterConfig)
@@ -47,6 +51,10 @@ export class CreateDonationCenterAccountEventHandler
         closed: false,
         donation_center: donationCenter,
       };
+
+      await this.donationCenterComplianceRepository.save({
+        donationCenter: donationCenter,
+      });
 
       const monday = await this.openingHoursRepository.save({
         ...defaultOpeningHours,
@@ -81,14 +89,38 @@ export class CreateDonationCenterAccountEventHandler
         donation_center: donationCenter,
       });
 
-      await this.donationCenterComplianceRepository.save({
-        donationCenter: donationCenter,
-      });
-
       await this.donationCenterConfigRepository.save({
         daysOfWork,
         donation_center: donationCenter,
       });
+
+      await Promise.all(
+        Object.values(BloodGroup).map(
+          async (bloodGroup) =>
+            await this.bloodInventoryRepository.save({
+              bloodGroup,
+              units: '0',
+              price: '0',
+              description:
+                bloodGroup === BloodGroup.APositive
+                  ? 'Has A antigen and Rh factor'
+                  : bloodGroup === BloodGroup.ANegative
+                    ? 'Has A antigen, no Rh factor'
+                    : bloodGroup === BloodGroup.BPositive
+                      ? 'Has B antigen and Rh factor'
+                      : bloodGroup === BloodGroup.BNegative
+                        ? 'Has B antigen, no Rh factor'
+                        : bloodGroup === BloodGroup.ABPositive
+                          ? 'Has both A and B antigens and Rh factor'
+                          : bloodGroup === BloodGroup.ABNegative
+                            ? 'Has both A and B antigens, no Rh factor'
+                            : bloodGroup === BloodGroup.OPositive
+                              ? 'No A or B antigens, has Rh factor'
+                              : 'No A or B antigens, no Rh factor',
+              donationCenter: donationCenter,
+            }),
+        ),
+      );
 
       this.emailNotificationService.newDonationCenterAccountNotification(
         account,

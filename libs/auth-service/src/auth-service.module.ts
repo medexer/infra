@@ -19,8 +19,9 @@ import { setupSwaggerDocument } from '../../common/src/swagger';
 import { AuthServiceCommandHandlers } from './commands/handlers';
 import { AppLogger } from '../../common/src/logger/logger.service';
 import { AuthHelperController } from './controllers/auth.helper.controller';
-import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
+import { BloodInventory } from 'libs/common/src/models/blood.inventory.model';
 import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
+import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { EmailSenderService } from 'libs/helper-service/src/services/email-sende
       DaysOfWork,
       OpeningHours,
       DonationCenter,
+      BloodInventory,
       DonationCenterConfig,
       DonationCenterCompliance,
     ]),
