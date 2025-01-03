@@ -28,7 +28,7 @@ export class BloodInventoryController {
     type: BloodInventoryInfo,
   })
   @ApiInternalServerErrorResponse()
-  async getPendingAppointments(
+  async getBloodInventory(
     @Req() req: Request,
     @SecureUser() secureUser: SecureUserPayload,
   ): Promise<BloodInventoryInfo[]> {
