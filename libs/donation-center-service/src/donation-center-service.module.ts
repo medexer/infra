@@ -13,16 +13,19 @@ import { Account } from 'libs/common/src/models/account.model';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
 import { AppointmentService } from './services/appointment.service';
 import { Appointment } from 'libs/common/src/models/appointment.model';
+import { DonationCenterServiceEventHandlers } from './events/handlers';
 import { DonationCenterService } from './services/donation.center.service';
 import { DonationCenterServiceCommandHandlers } from './commands/handlers';
+import { BloodInventoryService } from './services/blood.inventory.service';
 import { AppointmentController } from './controllers/appointment.controller';
+import { BloodInventory } from 'libs/common/src/models/blood.inventory.model';
 import { MedicalHistory } from 'libs/common/src/models/medical.history.model';
 import { DonationCenterController } from './controllers/donation.center.controller';
+import { BloodInventoryController } from './controllers/blood.inventory.controller';
 import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
 import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
 import { AddressHelperController } from 'libs/helper-service/src/controllers/address.helper.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
-import { DonationCenterServiceEventHandlers } from './events/handlers';
 
 @Module({
   imports: [
@@ -34,6 +37,7 @@ import { DonationCenterServiceEventHandlers } from './events/handlers';
       Appointment,
       DonationCenter,
       MedicalHistory,
+      BloodInventory,
       DonationCenterCompliance,
     ]),
   ],
@@ -46,15 +50,17 @@ import { DonationCenterServiceEventHandlers } from './events/handlers';
       useClass: AppLogger,
     },
     EmailSenderService,
+    BloodInventoryService,
     EmailNotificationService,
     ...DonationCenterServiceEventHandlers,
     ...DonationCenterServiceCommandHandlers,
   ],
   exports: [DonationCenterService],
   controllers: [
-    DonationCenterController,
     AppointmentController,
     AddressHelperController,
+    DonationCenterController,
+    BloodInventoryController,
   ],
 })
 export class DonationCenterServiceModule {

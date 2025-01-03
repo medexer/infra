@@ -1,21 +1,18 @@
 import {
   Column,
   Entity,
+  OneToOne,
+  ManyToOne,
+  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-  ManyToOne,
 } from 'typeorm';
-import { Type } from 'class-transformer';
-import { Account } from './account.model';
 import {
   AccountStatus,
-  AccountType,
-  BloodGroup,
-  Genotype,
 } from '../constants/enums';
+import { Type } from 'class-transformer';
+import { Account } from './account.model';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 @Entity()

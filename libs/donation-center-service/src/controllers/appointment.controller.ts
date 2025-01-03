@@ -23,7 +23,7 @@ import authUtils from 'libs/common/src/security/auth.utils';
 export class AppointmentController {
   constructor(
     public command: CommandBus,
-    public readonly AppointmentService: AppointmentService,
+    public readonly appointmentService: AppointmentService,
   ) {}
 
   @ApiTags('appointments')
@@ -37,7 +37,7 @@ export class AppointmentController {
     @Req() req: Request,
     @SecureUser() secureUser: SecureUserPayload,
   ): Promise<DonationCenterAppointmentInfo[]> {
-    return await this.AppointmentService.getPendingAppointments(
+    return await this.appointmentService.getPendingAppointments(
       secureUser,
     );
   }
@@ -53,7 +53,7 @@ export class AppointmentController {
     @Req() req: Request,
     @SecureUser() secureUser: SecureUserPayload,
   ): Promise<DonationCenterAppointmentInfo[]> {
-    return await this.AppointmentService.getCompletedAppointments(
+    return await this.appointmentService.getCompletedAppointments(
       secureUser,
     );
   }

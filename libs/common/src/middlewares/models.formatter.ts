@@ -19,6 +19,7 @@ import {
 import { Notification } from '../models/notification.model';
 import { NotificationInfo } from '../models/notification.model';
 import { ListItem, ListItemInfo } from '../models/list.item.model';
+import { BloodInventory, BloodInventoryInfo } from '../models/blood.inventory.model';
 
 export function FormatAccountInfo(account: Account): AccountInfo {
   delete account.password;
@@ -228,12 +229,26 @@ export function FormatListItemInfo(listItem: ListItem): ListItemInfo {
   } as ListItemInfo;
 }
 
+export function FormatBloodInventoryInfo(
+  bloodInventory: BloodInventory,
+): BloodInventoryInfo {
+  return {
+    id: bloodInventory.id.toString(),
+    bloodGroup: bloodInventory.bloodGroup,
+    description: bloodInventory.description,
+    units: bloodInventory.units,
+    price: bloodInventory.price,
+    createdAt: bloodInventory.createdAt,
+  } as BloodInventoryInfo;
+}
+
 export default {
   FormatAccountInfo,
   FormatListItemInfo,
   FormatNotificationInfo,
   FormatDonorAppointment,
   FormatMedicalHistoryInfo,
+  FormatBloodInventoryInfo,
   FormatDonationCenterDaysOfWork,
   FormatDonationCenterAppointment,
   FormatDonationCenterComplianceInfo,
