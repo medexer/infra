@@ -1,9 +1,11 @@
 import {
+  UploadTestResultsDTO,
+  UpdateAppointmentStatusDTO,
+  AddDispenseBloodInventoryItemDTO,
   DonationCenterComplianceAddressDTO,
   DonationCenterComplianceDetailsDTO,
   DonationCenterComplianceCredentialsDTO,
-  UpdateAppointmentStatusDTO,
-  UploadTestResultsDTO,
+  UpdateBloodInventoryItemPriceDTO,
 } from '../../interface';
 import { SecureUserPayload } from 'libs/common/src/interface';
 
@@ -45,5 +47,21 @@ export class UploadTestResultsCommand {
     public readonly appointmentId: number,
     public readonly secureUser: SecureUserPayload,
     public readonly payload: UploadTestResultsDTO,
+  ) {}
+}
+
+export class AddDispenseBloodInventoryItemCommand {
+  constructor(
+    public readonly origin: string,
+    public readonly secureUser: SecureUserPayload,
+    public readonly payload: AddDispenseBloodInventoryItemDTO,
+  ) {}
+}
+
+export class UpdateBloodInventoryItemPriceCommand {
+  constructor(
+    public readonly origin: string,
+    public readonly secureUser: SecureUserPayload,
+    public readonly payload: UpdateBloodInventoryItemPriceDTO,
   ) {}
 }
