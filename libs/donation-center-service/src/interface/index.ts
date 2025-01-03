@@ -8,6 +8,7 @@ import {
   IsEmail,
   IsPhoneNumber,
   IsNumberString,
+  IsNumber,
 } from 'class-validator';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
@@ -15,7 +16,11 @@ import {
   toLowerCaseTransformer,
   trimTransformer,
 } from 'libs/common/src/helpers/local-class-validator';
-import { AppointmentStatus, BloodGroup, Genotype } from 'libs/common/src/constants/enums';
+import {
+  AppointmentStatus,
+  BloodGroup,
+  Genotype,
+} from 'libs/common/src/constants/enums';
 
 export class DonationCenterComplianceDetailsDTO {
   @ApiProperty({
@@ -143,7 +148,8 @@ export class DonationCenterComplianceAddressDTO {
 
 export class DonationCenterComplianceCredentialsDTO {
   @ApiProperty({
-    example: 'https://d30n3oi2bakvug.cloudfront.net/versions/original/d785858c-e783-4465-b9b4-a12e8a9e8f5a.jpeg',
+    example:
+      'https://d30n3oi2bakvug.cloudfront.net/versions/original/d785858c-e783-4465-b9b4-a12e8a9e8f5a.jpeg',
     description: 'CAC Certificate of the donation center.',
   })
   @IsString()
@@ -151,13 +157,13 @@ export class DonationCenterComplianceCredentialsDTO {
   cacCertificate: string;
 
   @ApiProperty({
-    example: 'https://d30n3oi2bakvug.cloudfront.net/versions/original/d75c1ac3-7df9-408a-a1fd-69a3de0e9acb.png',
+    example:
+      'https://d30n3oi2bakvug.cloudfront.net/versions/original/d75c1ac3-7df9-408a-a1fd-69a3de0e9acb.png',
     description: 'Proof of address of the donation center.',
   })
   @IsString()
   @IsNotEmpty()
   proofOfAddress: string;
-
 }
 
 export class UpdateAppointmentStatusDTO {
@@ -237,4 +243,64 @@ export class UploadTestResultsDTO {
   @IsBoolean()
   @IsNotEmpty()
   syphilis: boolean;
+}
+
+export class AddDispenseBloodInventoryItemDTO {
+  @ApiProperty({
+    example: 'true',
+    description: 'Whether to add or dispense inventory item',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  isAddInventory: boolean;
+
+  @ApiProperty({
+    example: '1',
+    description: 'Quantity of the inventory item',
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  quantity: number;
+
+  @ApiProperty({
+    example: '1',
+    description: 'Inventory item ID',
+  })
+  @IsString()
+  @IsNotEmpty()
+  inventoryItemId: string;
+
+  @ApiProperty({
+    example: '1',
+    description: 'Donation center ID',
+  })
+  @IsString()
+  @IsNotEmpty()
+  donationCenterId: string;
+}
+
+export class UpdateBloodInventoryItemPriceDTO {
+  @ApiProperty({
+    example: '100',
+    description: 'New price of the inventory item',
+  })
+  @IsString()
+  @IsNotEmpty()
+  price: string;
+
+  @ApiProperty({
+    example: '1',
+    description: 'Inventory item ID',
+  })
+  @IsString()
+  @IsNotEmpty()
+  inventoryItemId: string;
+
+  @ApiProperty({
+    example: '1',
+    description: 'Donation center ID',
+  })
+  @IsString()
+  @IsNotEmpty()
+  donationCenterId: string;
 }
