@@ -347,16 +347,7 @@ export class UpdateDonationCenterWorkingHoursConfigDTO {
     isArray: true,
     type: [DonationCentreDaysOfWork],
     description: 'Opening hours for each day',
-    example: [
-      {
-        id: '1',
-        day: 'monday',
-        open: '09:00',
-        close: '17:00',
-        alwaysOpen: false,
-        closed: false
-      }
-    ]
+    example: [DonationCentreDaysOfWork],
   })
   @IsArray()
   daysOfWork: DonationCentreDaysOfWork[];
