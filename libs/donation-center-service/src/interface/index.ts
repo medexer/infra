@@ -344,8 +344,8 @@ export class UpdateDonationCenterOperationsConfigDTO {
 
 export class UpdateDonationCenterWorkingHoursConfigDTO {
   @ApiProperty({
-    isArray: true,
-    type: [DonationCentreDaysOfWork],
+    // isArray: true,
+    type: 'array',
     description: 'Opening hours for each day',
     example: [DonationCentreDaysOfWork],
   })
