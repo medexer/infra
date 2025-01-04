@@ -1,6 +1,6 @@
-import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { CommandBus } from '@nestjs/cqrs';
+import { Not, In, Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Inject, Injectable } from '@nestjs/common';
@@ -50,6 +50,7 @@ export class AuthService {
   ): Promise<AvailabilityCheckResponsePayload> {
     const isAvailable = await this.accountRepository.findOneBy({
       email: email,
+      signupVerificationHash: Not(In(['', null, undefined])),
     });
 
     return {
@@ -62,6 +63,7 @@ export class AuthService {
   ): Promise<AvailabilityCheckResponsePayload> {
     const isAvailable = await this.accountRepository.findOneBy({
       phone: phone,
+      signupVerificationHash: Not(In(['', null, undefined])),
     });
 
     return {

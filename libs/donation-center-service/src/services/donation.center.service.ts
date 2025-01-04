@@ -10,6 +10,7 @@ import {
   DonationCenterCompliance,
   DonationCenterComplianceInfo,
   DonationCenterInfo,
+  DonationCentreDaysOfWork,
 } from 'libs/common/src/models/donation.center.model';
 import { AccountType } from 'libs/common/src/constants/enums';
 import modelsFormatter from 'libs/common/src/middlewares/models.formatter';

@@ -8,11 +8,9 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import {
-  AccountStatus,
-} from '../constants/enums';
 import { Type } from 'class-transformer';
 import { Account } from './account.model';
+import { AccountStatus } from '../constants/enums';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 @Entity()
@@ -279,13 +277,13 @@ export class OpeningHours {
   close: string;
 
   @ApiPropertyOptional({
-    description: 'Indicates if the outlet is always open',
+    description: 'Indicates if the donation center is always open',
   })
   @Column({ default: false })
   alwaysOpen: boolean;
 
   @ApiPropertyOptional({
-    description: 'Indicates if the outlet is always closed',
+    description: 'Indicates if the donation center is always closed',
   })
   @Column({ default: false })
   closed: boolean;
@@ -363,24 +361,40 @@ export class DonationCenterConfig {
 
   @ApiPropertyOptional({ description: 'Reason for temporary closure' })
   @Column({ nullable: true })
-  closureReason?: string;
+  closureReason: string;
 
   @ApiPropertyOptional({
     description: 'Indicates if the donation center is currently closed',
   })
   @Column({ default: false })
-  isClosed?: boolean;
+  isClosed: boolean;
 
   @ApiPropertyOptional({
     description:
       'Indicates whether a newly placed appointment requires action accept/decline to continue',
   })
   @Column({ default: false })
-  newAppointmentRequiresAction?: boolean;
+  newAppointmentRequiresAction: boolean;
 
-  @ApiPropertyOptional({})
+  @ApiPropertyOptional({
+    description: 'Indicates if the donation center is accepting appointments',
+  })
   @Column({ default: true })
-  acceptingAppointments?: boolean;
+  isAcceptingAppointments: boolean;
+
+  @ApiPropertyOptional({
+    description:
+      'Indicates if the donation center appointment notifications are enabled',
+  })
+  @Column({ default: true })
+  isAppointmentNotificationsEnabled: boolean;
+
+  @ApiPropertyOptional({
+    description:
+      'Indicates the maximum number of appointments the donation center can accept per day',
+  })
+  @Column({ type: 'int', default: 10, nullable: true })
+  maxAppointmentsPerDay: number;
 
   @OneToOne(() => DonationCenter, {
     onDelete: 'CASCADE',
@@ -463,6 +477,9 @@ export class DonationCenterComplianceInfo {
 }
 
 export class DonationCentreDaysOfWork {
+  @ApiPropertyOptional()
+  id: string;
+
   @ApiPropertyOptional()
   day: string;
 
@@ -601,4 +618,44 @@ export interface DaySchedule {
   isOpen: boolean;
   openTime?: string;
   closeTime?: string;
+}
+
+export class DonationCenterOperationsInfo {
+  @ApiPropertyOptional({
+    isArray: true,
+    description: 'Days of work',
+    type: DonationCentreDaysOfWork,
+  })
+  daysOfWork: DonationCentreDaysOfWork[];
+
+  @ApiPropertyOptional({ description: 'Closure reason' })
+  closureReason: string;
+
+  @ApiPropertyOptional({
+    description: 'Indicates if the donation center is closed',
+  })
+  isClosed: boolean;
+
+  @ApiPropertyOptional({
+    description:
+      'Indicates if a new appointment requires action accept/decline to continue',
+  })
+  newAppointmentRequiresAction: boolean;
+
+  @ApiPropertyOptional({
+    description: 'Indicates if the donation center is accepting appointments',
+  })
+  isAcceptingAppointments: boolean;
+
+  @ApiPropertyOptional({
+    description:
+      'Indicates if the donation center appointment notifications are enabled',
+  })
+  isAppointmentNotificationsEnabled: boolean;
+
+  @ApiPropertyOptional({
+    description:
+      'Indicates the maximum number of appointments the donation center can accept per day',
+  })
+  maxAppointmentsPerDay: number;
 }

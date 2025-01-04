@@ -5,6 +5,8 @@ import {
   DonationCenterCompliance,
   DonationCenterComplianceInfo,
   DonationCenterInfo,
+  DonationCenterOperationsInfo,
+  DonationCenterConfig,
 } from '../models/donation.center.model';
 import { Account, AccountInfo } from '../models/account.model';
 import {
@@ -100,6 +102,7 @@ export function FormatDonationCenterDaysOfWork(
 
   return days.map((day) => ({
     day,
+    id: daysOfWork[day]?.id.toString(),
     open: daysOfWork[day]?.open || '09:00',
     close: daysOfWork[day]?.close || '17:00',
     alwaysOpen: daysOfWork[day]?.alwaysOpen || false,
@@ -123,6 +126,21 @@ export function FormatDonationCenterComplianceInfo(
   delete compliance.donationCenter;
 
   return { ...donationCenter, ...compliance };
+}
+
+export function FormatDonationCenterOperationsInfo(
+  // daysOfWork: DaysOfWork,
+  config: DonationCenterConfig,
+): DonationCenterOperationsInfo {
+  return {
+    isClosed: config.isClosed,
+    closureReason: config.closureReason ?? '',
+    maxAppointmentsPerDay: config.maxAppointmentsPerDay,
+    isAcceptingAppointments: config.isAcceptingAppointments,
+    daysOfWork: FormatDonationCenterDaysOfWork(config.daysOfWork),
+    newAppointmentRequiresAction: config.newAppointmentRequiresAction,
+    isAppointmentNotificationsEnabled: config.isAppointmentNotificationsEnabled,
+  };
 }
 
 export function FormatDonorAppointment(
@@ -251,6 +269,7 @@ export default {
   FormatBloodInventoryInfo,
   FormatDonationCenterDaysOfWork,
   FormatDonationCenterAppointment,
+  FormatDonationCenterOperationsInfo,
   FormatDonationCenterComplianceInfo,
   FormatDetailedDonationCenterAccountResponse,
 };
