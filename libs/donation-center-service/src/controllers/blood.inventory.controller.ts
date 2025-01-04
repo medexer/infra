@@ -8,12 +8,16 @@ import {
 import { CommandBus } from '@nestjs/cqrs';
 import { JwtAuthGuard } from 'libs/common/src/auth';
 import { SecureUserPayload } from 'libs/common/src/interface';
-import { Get, Req, UseGuards, Controller, Patch, Query } from '@nestjs/common';
+import { Get, Req, UseGuards, Controller, Patch, Query, Body } from '@nestjs/common';
 import { SecureUser } from 'libs/common/src/decorator/user.decorator';
 import { BloodInventoryService } from '../services/blood.inventory.service';
 import { BloodInventoryInfo } from 'libs/common/src/models/blood.inventory.model';
 import authUtils from 'libs/common/src/security/auth.utils';
-import { AddDispenseBloodInventoryItemCommand, UpdateBloodInventoryItemPriceCommand } from '../commands/impl';
+import {
+  AddDispenseBloodInventoryItemCommand,
+  UpdateBloodInventoryItemPriceCommand,
+} from '../commands/impl';
+import { AddDispenseBloodInventoryItemDTO, UpdateBloodInventoryItemPriceDTO } from '../interface';
 
 @ApiTags('blood-inventory')
 @Controller({ path: 'blood-inventory' })
@@ -42,37 +46,17 @@ export class BloodInventoryController {
   @ApiOkResponse({
     type: BloodInventoryInfo,
   })
-  @ApiQuery({
-    name: 'isAddInventory',
-    description: 'Whether to add or dispense inventory item',
-  })
-  @ApiQuery({
-    name: 'quantity',
-    description: 'Quantity of the inventory item',
-  })
-  @ApiQuery({
-    name: 'inventoryItemId',
-    description: 'Inventory item ID',
-  })
-  @ApiQuery({
-    name: 'donationCenterId',
-    description: 'Donation center ID',
-  })
-
   @ApiInternalServerErrorResponse()
   async addBloodInventoryItem(
     @Req() req: Request,
-    @Query('quantity') quantity: number,
-    @Query('isAddInventory') isAddInventory: boolean,
-    @Query('inventoryItemId') inventoryItemId: string,
-    @Query('donationCenterId') donationCenterId: string,
+    @Body() payload: AddDispenseBloodInventoryItemDTO,
     @SecureUser() secureUser: SecureUserPayload,
   ): Promise<BloodInventoryInfo> {
     return await this.command.execute(
       new AddDispenseBloodInventoryItemCommand(
         authUtils.getOriginHeader(req),
         secureUser,
-        { quantity, inventoryItemId, donationCenterId, isAddInventory },
+        payload,
       ),
     );
   }
@@ -81,34 +65,18 @@ export class BloodInventoryController {
   @ApiOkResponse({
     type: BloodInventoryInfo,
   })
-  @ApiQuery({
-    name: 'price',
-    description: 'New price of the inventory item',
-  })
-  @ApiQuery({
-    name: 'inventoryItemId',
-    description: 'Inventory item ID',
-  })
-  @ApiQuery({
-    name: 'donationCenterId',
-    description: 'Donation center ID',
-  })
-
   @ApiInternalServerErrorResponse()
   async updateBloodInventoryItemPrice(
     @Req() req: Request,
-    @Query('price') price: string,
-    @Query('inventoryItemId') inventoryItemId: string,
-    @Query('donationCenterId') donationCenterId: string,
     @SecureUser() secureUser: SecureUserPayload,
+    @Body() payload: UpdateBloodInventoryItemPriceDTO,
   ): Promise<BloodInventoryInfo> {
     return await this.command.execute(
       new UpdateBloodInventoryItemPriceCommand(
         authUtils.getOriginHeader(req),
         secureUser,
-        { price, inventoryItemId, donationCenterId },
+        payload,
       ),
     );
   }
-
 }
