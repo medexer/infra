@@ -63,6 +63,9 @@ export const configureApp = (app: any) => {
     new ValidationPipe({
       whitelist: true,
       transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
     }),
   );
   app.useLogger(app.get(Logger));

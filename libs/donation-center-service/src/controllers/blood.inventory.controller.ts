@@ -69,7 +69,7 @@ export class BloodInventoryController {
   async updateBloodInventoryItemPrice(
     @Req() req: Request,
     @SecureUser() secureUser: SecureUserPayload,
-    @Body() payload: UpdateBloodInventoryItemPriceDTO,
+    @Body() payload: UpdateBloodInventoryItemPriceDTO,    
   ): Promise<BloodInventoryInfo> {
     return await this.command.execute(
       new UpdateBloodInventoryItemPriceCommand(

@@ -9,9 +9,11 @@ import {
   IsPhoneNumber,
   IsNumberString,
   IsNumber,
+  ValidateNested,
+  IsArray,
 } from 'class-validator';
-import { ApiProperty, PickType } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
 import {
   toLowerCaseTransformer,
   trimTransformer,
@@ -21,6 +23,7 @@ import {
   BloodGroup,
   Genotype,
 } from 'libs/common/src/constants/enums';
+import { DonationCentreDaysOfWork } from 'libs/common/src/models/donation.center.model';
 
 export class DonationCenterComplianceDetailsDTO {
   @ApiProperty({
@@ -303,4 +306,58 @@ export class UpdateBloodInventoryItemPriceDTO {
   @IsString()
   @IsNotEmpty()
   donationCenterId: string;
+}
+
+export class UpdateDonationCenterOperationsConfigDTO {
+  @ApiProperty({
+    example: 'true',
+    description: 'Whether the donation center is accepting appointments',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  isAcceptingAppointments: boolean;
+
+  @ApiProperty({
+    example: 'true',
+    description: 'Whether the donation center is accepting appointments',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  isAppointmentNotificationsEnabled: boolean;
+
+  @ApiProperty({
+    example: 'true',
+    description: 'Whether the donation center is accepting appointments',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  newAppointmentRequiresAction: boolean;
+
+  @ApiProperty({
+    example: '10',
+    description: 'Maximum number of appointments per day',
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  maxAppointmentPerDay: number;
+}
+
+export class UpdateDonationCenterWorkingHoursConfigDTO {
+  @ApiProperty({
+    isArray: true,
+    type: [DonationCentreDaysOfWork],
+    description: 'Opening hours for each day',
+    example: [
+      {
+        id: '1',
+        day: 'monday',
+        open: '09:00',
+        close: '17:00',
+        alwaysOpen: false,
+        closed: false
+      }
+    ]
+  })
+  @IsArray()
+  daysOfWork: DonationCentreDaysOfWork[];
 }
