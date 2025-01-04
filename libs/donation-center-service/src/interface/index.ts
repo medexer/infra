@@ -339,7 +339,7 @@ export class UpdateDonationCenterOperationsConfigDTO {
   })
   @IsNumber()
   @IsNotEmpty()
-  maxAppointmentPerDay: number;
+  maxAppointmentsPerDay: number;
 }
 
 export class UpdateDonationCenterWorkingHoursConfigDTO {
