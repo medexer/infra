@@ -32,6 +32,7 @@ import {
 } from '../commands/impl';
 import authUtils from 'libs/common/src/security/auth.utils';
 
+@ApiTags('operations')
 @Controller({ path: 'operations' })
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -41,7 +42,6 @@ export class OperationsController {
     public readonly operationsService: OperationsService,
   ) {}
 
-  @ApiTags('operations')
   @Get('')
   @ApiOkResponse({
     type: DonationCenterOperationsInfo,
@@ -61,7 +61,6 @@ export class OperationsController {
     );
   }
 
-  @ApiTags('operations')
   @Patch('update-config')
   @ApiOkResponse({
     type: DonationCenterOperationsInfo,
@@ -86,7 +85,6 @@ export class OperationsController {
     );
   }
 
-  @ApiTags('operations')
   @Patch('working-hours')
   @ApiOkResponse({
     type: DonationCenterOperationsInfo,
