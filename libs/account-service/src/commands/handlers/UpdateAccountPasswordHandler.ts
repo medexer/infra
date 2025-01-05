@@ -40,8 +40,10 @@ export class UpdateAccountPasswordHandler
         throw new UnauthorizedException('Incorrect password.');
       }
 
+      const newPassword = await authUtils.hashPassword(payload.newPassword);
+
       Object.assign(account, {
-        password: authUtils.hashPassword(payload.newPassword),
+        password: newPassword,
       });
 
       await this.accountRepository.save(account);
