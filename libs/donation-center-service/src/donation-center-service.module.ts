@@ -31,6 +31,7 @@ import { EmailSenderService } from 'libs/helper-service/src/services/email-sende
 import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
 import { AddressHelperController } from 'libs/helper-service/src/controllers/address.helper.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
+import { ProfileController } from './controllers/profile.controller';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { EmailNotificationService } from 'libs/notification-service/src/services
   ],
   exports: [DonationCenterService],
   controllers: [
+    ProfileController,
     OperationsController,
     AppointmentController,
     AddressHelperController,

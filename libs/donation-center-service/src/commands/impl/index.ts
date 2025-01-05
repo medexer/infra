@@ -8,6 +8,8 @@ import {
   UpdateBloodInventoryItemPriceDTO,
   UpdateDonationCenterOperationsConfigDTO,
   UpdateDonationCenterWorkingHoursConfigDTO,
+  UpdateDonationCenterAccountProfileDTO,
+  UpdateDonationCenterProfileDTO,
 } from '../../interface';
 import { SecureUserPayload } from 'libs/common/src/interface';
 
@@ -81,5 +83,21 @@ export class UpdateDonationCenterDaysOfWorkCommand {
     public readonly origin: string,
     public readonly donationCenterId: number,
     public readonly payload: UpdateDonationCenterWorkingHoursConfigDTO,
+  ) {}
+}
+
+export class UpdateDonationCenterAccountProfileCommand {
+  constructor(
+    public readonly origin: string,
+    public readonly secureUser: SecureUserPayload,
+    public readonly payload: UpdateDonationCenterAccountProfileDTO,
+  ) {}
+}
+
+export class UpdateDonationCenterProfileCommand {
+  constructor(
+    public readonly origin: string,
+    public readonly secureUser: SecureUserPayload,
+    public readonly payload: UpdateDonationCenterProfileDTO,
   ) {}
 }

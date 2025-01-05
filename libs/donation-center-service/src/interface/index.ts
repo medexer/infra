@@ -15,6 +15,7 @@ import {
 import { ApiProperty, ApiPropertyOptional, PickType } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {
+  capitalizeTransformer,
   toLowerCaseTransformer,
   trimTransformer,
 } from 'libs/common/src/helpers/local-class-validator';
@@ -108,14 +109,6 @@ export class DonationCenterComplianceAddressDTO {
   @IsNotEmpty()
   state: string;
 
-  // @ApiProperty({
-  //   example: 'Jos North',
-  //   description: 'State area of the donation center.',
-  // })
-  // @IsString()
-  // @IsNotEmpty()
-  // stateArea: string;
-
   @ApiProperty({
     example: 'ChIJbRW9oF90UxAR1RgPAqUhpDg',
     description: 'Place ID of the donation center.',
@@ -123,22 +116,6 @@ export class DonationCenterComplianceAddressDTO {
   @IsString()
   @IsNotEmpty()
   placeId: string;
-
-  // @ApiProperty({
-  //   example: '9.2928839',
-  //   description: 'Latitude of the donation center.',
-  // })
-  // @IsString()
-  // @IsNotEmpty()
-  // latitude: string;
-
-  // @ApiProperty({
-  //   example: '7.4238839',
-  //   description: 'Longitude of the donation center.',
-  // })
-  // @IsString()
-  // @IsNotEmpty()
-  // longitude: string;
 
   @ApiProperty({
     example: 'Gate 1 Lamingo Road Jos, Plateau State',
@@ -344,13 +321,92 @@ export class UpdateDonationCenterOperationsConfigDTO {
 
 export class UpdateDonationCenterWorkingHoursConfigDTO {
   @ApiProperty({
-    // isArray: true,
-    // type: 'array',
-    description: 'Opening hours for each day',
-    // example: [DonationCentreDaysOfWork],
     isArray: true,
     type: () => DonationCentreDaysOfWork,
+    description: 'Opening hours for each day',
   })
   @IsArray()
   daysOfWork: DonationCentreDaysOfWork[];
+}
+
+export class UpdateDonationCenterAccountProfileDTO {
+  @ApiProperty({
+    example: 'John',
+    description: 'First name of the donation center administrator',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => capitalizeTransformer(value))
+  firstName: string;
+
+  @ApiProperty({
+    example: 'Doe',
+    description: 'Last name of the donation center administrator',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => capitalizeTransformer(value))
+  lastName: string;
+
+  @ApiProperty({
+    example: 'admin@juth.com',
+    description: 'Email of the donation center administrator',
+  })
+  @IsEmail({}, { message: 'Invalid email format' })
+  @IsNotEmpty()
+  @Transform(({ value }) => trimTransformer(toLowerCaseTransformer(value)))
+  email: string;
+
+  @ApiProperty({
+    example: '+2348123456789',
+    description: 'Phone number of the donation center administrator',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => trimTransformer(value))
+  phone: string;
+
+  @ApiProperty({
+    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    description: 'Profile photo of the donation center administrator',
+  })
+  @IsString()
+  @IsNotEmpty()
+  profilePhoto: string;
+}
+
+export class UpdateDonationCenterProfileDTO {
+  @ApiProperty({
+    example: 'Jos University Teaching Hospital',
+    description: 'Name of the donation center',
+  })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @ApiProperty({
+    example: 'admin@juth.com',
+    description: 'Email of the donation center',
+  })
+  @IsEmail({}, { message: 'Invalid email format' })
+  @IsNotEmpty()
+  @Transform(({ value }) => trimTransformer(toLowerCaseTransformer(value)))
+  email: string;
+
+  @ApiProperty({
+    example: '+2348123456789',
+    description: 'Phone number of the donation center',
+  })
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => trimTransformer(value))
+  phone: string;
+
+  @ApiProperty({
+    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    description: 'Cover photo of the donation center',
+  })
+  @IsString()
+  @IsNotEmpty()
+  coverPhoto: string;
 }
