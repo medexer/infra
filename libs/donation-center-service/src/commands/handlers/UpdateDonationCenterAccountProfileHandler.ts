@@ -48,6 +48,17 @@ export class UpdateDonationCenterAccountProfileHandler
         throw new BadRequestException('Email already exists');
       }
 
+      const phoneExists = await this.accountRepository.exists({
+        where: {
+          phone: payload.phone,
+          id: Not(secureUser.id),
+        },
+      });
+
+      if (phoneExists) {
+        throw new BadRequestException('Phone number already exists');
+      }
+
       Object.assign(account, {
         firstName: payload.firstName,
         lastName: payload.lastName,
