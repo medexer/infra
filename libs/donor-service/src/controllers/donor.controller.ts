@@ -14,21 +14,17 @@ import { SecureUserPayload } from 'libs/common/src/interface';
 import { SecureUser } from 'libs/common/src/decorator/user.decorator';
 import {
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiParam,
-  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateAppointmentCommand, UploadDonorComplianceCommand } from '../commands/impl';
+import { UploadDonorComplianceCommand } from '../commands/impl';
 import authUtils from 'libs/common/src/security/auth.utils';
-import { CreateAppointmentDTO, UploadDonorComplianceDTO } from '../interface';
+import { UploadDonorComplianceDTO } from '../interface';
 import { JwtAuthGuard } from 'libs/common/src/auth';
 import { AccountInfo } from 'libs/common/src/models/account.model';
 import { DonationCenterAvailability, DonationCenterInfo, DonationCentreDaysOfWork } from 'libs/common/src/models/donation.center.model';
-import { Appointment, AppointmentInfo } from 'libs/common/src/models/appointment.model';
-import { MedicalHistoryInfo } from 'libs/common/src/models/medical.history.model';
 
 @Controller({ path: '' })
 @ApiBearerAuth()
@@ -117,55 +113,5 @@ export class DonorController {
     @SecureUser() secureUser: SecureUserPayload,
   ): Promise<DonationCenterAvailability[]> {
     return await this.donorService.getDonationCenterAppointmentAvailability(donationCenterId);
-  }
-
-  @ApiTags('appointment')
-  @Post('create-appointment')
-  @ApiOkResponse({
-    type: AppointmentInfo,
-  })
-  @ApiQuery({ name: 'donationCenter', description: 'Donation center ID' })
-  @ApiInternalServerErrorResponse()
-  async createAppointment(
-    @Req() req: Request,
-    @Body() body: CreateAppointmentDTO,
-    @Query('donationCenter') donationCenterId: number,
-    @SecureUser() secureUser: SecureUserPayload,
-  ): Promise<AppointmentInfo> {
-    return await this.command.execute(
-      new CreateAppointmentCommand(
-        authUtils.getOriginHeader(req),
-        secureUser,
-        { ...body, donationCenter: donationCenterId },
-      ),
-    );
-  }
-
-  @ApiTags('appointment')
-  @Get('pending-appointments')
-  @ApiOkResponse({
-    isArray: true,
-    type: AppointmentInfo,
-  })
-  @ApiInternalServerErrorResponse()
-  async getPendingAppointments(
-    @Req() req: Request,
-    @SecureUser() secureUser: SecureUserPayload,
-  ): Promise<AppointmentInfo[]> {
-    return await this.donorService.getPendingDonorAppointments(secureUser);
-  }
-
-  @ApiTags('appointment')
-  @Get('completed-appointments')
-  @ApiOkResponse({
-    isArray: true,
-    type: AppointmentInfo,
-  })
-  @ApiInternalServerErrorResponse()
-  async getCompletedAppointments(
-    @Req() req: Request,
-    @SecureUser() secureUser: SecureUserPayload,
-  ): Promise<AppointmentInfo[]> {
-    return await this.donorService.getCompletedDonorAppointments(secureUser);
   }
 }

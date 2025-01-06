@@ -32,6 +32,8 @@ import {
 import {
   DonationCenterComplianceInfo,
   DonationCenterInfo,
+  DonationCenterRating,
+  DonationCenterRatingsInfo,
 } from 'libs/common/src/models/donation.center.model';
 
 @Controller({ path: '' })
@@ -52,6 +54,21 @@ export class DonationCenterController {
     @SecureUser() secureUser: SecureUserPayload,
   ): Promise<DonationCenterInfo> {
     return await this.donationCenterService.getDonationCenterProfile(
+      secureUser,
+    );
+  }
+
+  @ApiTags('ratings')
+  @Get('ratings')
+  @ApiOkResponse({
+    type: DonationCenterRatingsInfo,
+  })
+  @ApiInternalServerErrorResponse()
+  async getDonationCenterRatings(
+    @Req() req: Request,
+    @SecureUser() secureUser: SecureUserPayload,
+  ): Promise<DonationCenterRatingsInfo> {
+    return await this.donationCenterService.getDonationCenterRatings(
       secureUser,
     );
   }

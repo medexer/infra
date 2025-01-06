@@ -6,20 +6,23 @@ import {
   DaysOfWork,
   OpeningHours,
   DonationCenter,
+  DonationCenterRating,
 } from 'libs/common/src/models/donation.center.model';
 import { DonorService } from './services/donor.service';
 import { GetSystemJWTModule } from 'libs/common/src/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DonorCronService } from './jobs/donor.cron.service';
 import { setupSwaggerDocument } from 'libs/common/src/swagger';
 import { Account } from 'libs/common/src/models/account.model';
 import { DonorController } from './controllers/donor.controller';
 import { DonorServiceCommandHandlers } from './commands/handlers';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
+import { AppointmentService } from './services/appointment.service';
 import { Appointment } from 'libs/common/src/models/appointment.model';
+import { AppointmentController } from './controllers/appointment.controller';
 import { DonorCompliance } from 'libs/common/src/models/donor.compliance.model';
-import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 import { EmailSenderService } from 'libs/helper-service/src/services/email-sender.service';
-import { DonorCronService } from './jobs/donor.cron.service';
+import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 
 @Module({
   imports: [
@@ -30,6 +33,7 @@ import { DonorCronService } from './jobs/donor.cron.service';
       Account,
       DonorCompliance,
       DonationCenter,
+      DonationCenterRating,
       DaysOfWork,
       OpeningHours,
       Appointment,
@@ -42,12 +46,13 @@ import { DonorCronService } from './jobs/donor.cron.service';
       useClass: AppLogger,
     },
     DonorCronService,
+    AppointmentService,
     EmailSenderService,
     EmailNotificationService,
     ...DonorServiceCommandHandlers,
   ],
   exports: [DonorService],
-  controllers: [DonorController],
+  controllers: [DonorController, AppointmentController],
 })
 export class DonorServiceModule {
   constructor(private configService: ConfigService) {

@@ -7,6 +7,8 @@ import {
   DonationCenterInfo,
   DonationCenterOperationsInfo,
   DonationCenterConfig,
+  DonationCenterRatingsInfo,
+  DonationCenterRating,
 } from '../models/donation.center.model';
 import { Account, AccountInfo } from '../models/account.model';
 import {
@@ -21,7 +23,10 @@ import {
 import { Notification } from '../models/notification.model';
 import { NotificationInfo } from '../models/notification.model';
 import { ListItem, ListItemInfo } from '../models/list.item.model';
-import { BloodInventory, BloodInventoryInfo } from '../models/blood.inventory.model';
+import {
+  BloodInventory,
+  BloodInventoryInfo,
+} from '../models/blood.inventory.model';
 
 export function FormatAccountInfo(account: Account): AccountInfo {
   delete account.password;
@@ -72,11 +77,11 @@ export function FormatDetailedDonationCenterAccountResponse(
     ? Math.min(5, Math.max(0, weightedSum / totalRatings))
     : 0;
 
-  delete donationCenter.ratingOne;
-  delete donationCenter.ratingTwo;
-  delete donationCenter.ratingThree;
-  delete donationCenter.ratingFour;
-  delete donationCenter.ratingFive;
+  // delete donationCenter.ratingOne;
+  // delete donationCenter.ratingTwo;
+  // delete donationCenter.ratingThree;
+  // delete donationCenter.ratingFour;
+  // delete donationCenter.ratingFive;
 
   return {
     ...donationCenter,
@@ -165,6 +170,7 @@ export function FormatDonorAppointment(
     appointmentId: appointment.appointmentId,
     centerCoverPhoto: donationCenter.coverPhoto,
     verificationCode: appointment.verificationCode,
+    hasCompletedReview: appointment.hasCompletedReview,
   } as AppointmentInfo;
 }
 
@@ -260,6 +266,27 @@ export function FormatBloodInventoryInfo(
   } as BloodInventoryInfo;
 }
 
+export function FormatDonationCenterRatingsInfo(
+  donationCenter: DonationCenter,
+  ratings: DonationCenterRating[],
+): DonationCenterRatingsInfo {
+  return {
+    ratings: ratings.map((rating) => ({
+      id: rating.id.toString(),
+      rating: rating.rating,
+      comment: rating.comment,
+      createdAt: rating.createdAt,
+      donorName: rating.account.firstName.concat(' ', rating.account.lastName),
+      donorProfilePhoto: rating.account.profilePhoto,
+    })),
+    ratingOne: donationCenter.ratingOne,
+    ratingTwo: donationCenter.ratingTwo,
+    ratingThree: donationCenter.ratingThree,
+    ratingFour: donationCenter.ratingFour,
+    ratingFive: donationCenter.ratingFive,
+  } as DonationCenterRatingsInfo;
+}
+
 export default {
   FormatAccountInfo,
   FormatListItemInfo,
@@ -268,6 +295,7 @@ export default {
   FormatMedicalHistoryInfo,
   FormatBloodInventoryInfo,
   FormatDonationCenterDaysOfWork,
+  FormatDonationCenterRatingsInfo,
   FormatDonationCenterAppointment,
   FormatDonationCenterOperationsInfo,
   FormatDonationCenterComplianceInfo,

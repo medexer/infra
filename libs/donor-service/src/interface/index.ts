@@ -104,3 +104,21 @@ export class CreateAppointmentDTO {
   @IsNumber()
   donationCenter?: number;
 }
+
+export class AddDonationCenterRatingDTO {
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    example: '4',
+    description: 'Rating e.g 4',
+  })
+  rating: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({
+    example: 'This is a great donation center.',
+    description: 'Comment e.g This is a great donation center.',
+  })
+  comment: string;  
+}

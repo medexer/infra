@@ -81,6 +81,15 @@ export class Appointment {
   cancellationReason: string;
 
   @Column({
+    nullable: true,
+    default: false,
+  })
+  @ApiPropertyOptional({
+    description: 'Appointment has completed review e.g true or false.',
+  })
+  hasCompletedReview: boolean;
+
+  @Column({
     default: null,
     nullable: true,
     type: 'timestamp',

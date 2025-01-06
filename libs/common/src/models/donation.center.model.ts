@@ -264,6 +264,45 @@ export class DonationCenterCompliance {
 }
 
 @Entity()
+export class DonationCenterRating {
+  @PrimaryGeneratedColumn()
+  @ApiPropertyOptional({
+    description: 'Rating ID (Auto generated).',
+  })
+  id: number;
+
+  @Column({ default: '0', nullable: true })
+  @ApiPropertyOptional({
+    description: 'Rating e.g 4',
+  })
+  rating: string;
+
+  @Column({ default: '', nullable: true })
+  @ApiPropertyOptional({
+    description: 'Comment e.g This is a great donation center.',
+  })
+  comment: string;
+
+  @ManyToOne(() => DonationCenter, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'donationCenter' })
+  donationCenter: DonationCenter;
+
+  @ManyToOne(() => Account, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'account' })
+  account: Account;
+
+  @CreateDateColumn({ nullable: true })
+  @ApiPropertyOptional({
+    description: 'Created at e.g 2024-11-10_T_11:29:22',
+  })
+  createdAt: Date;
+}
+
+@Entity()
 export class OpeningHours {
   @PrimaryGeneratedColumn()
   id: number;
@@ -596,6 +635,31 @@ export class DonationCenterInfo {
   verificationDeclineReason: string;
 
   @ApiPropertyOptional({
+    description: 'Rating one e.g 4',
+  })
+  ratingOne: string;
+
+  @ApiPropertyOptional({
+    description: 'Rating two e.g 56',
+  })
+  ratingTwo: string;
+
+  @ApiPropertyOptional({
+    description: 'Rating three e.g 78',
+  })
+  ratingThree: string;
+
+  @ApiPropertyOptional({
+    description: 'Rating four e.g 90',
+  })
+  ratingFour: string;
+
+  @ApiPropertyOptional({
+    description: 'Rating five e.g 100',
+  })
+  ratingFive: string;
+
+  @ApiPropertyOptional({
     description: 'Average rating e.g 4.5',
   })
   averageRating: string;
@@ -658,4 +722,48 @@ export class DonationCenterOperationsInfo {
       'Indicates the maximum number of appointments the donation center can accept per day',
   })
   maxAppointmentsPerDay: number;
+}
+
+export class DonorRatingInfo {
+  @ApiPropertyOptional({ description: 'Rating ID (Auto generated)' })
+  id: string;
+
+  @ApiPropertyOptional({ description: 'Rating e.g 4' })
+  rating: string;
+
+  @ApiPropertyOptional({ description: 'Comment e.g This is a great donation center.' })
+  comment: string;
+
+  @ApiPropertyOptional({ description: 'Donor name e.g Tunde Omotayo' })
+  donorName: string;
+
+  @ApiPropertyOptional({ description: 'Donor profile picture e.g https://medexer.s3.amazonaws.com/avatars/avatar.png' })
+  donorProfilePhoto: string;
+
+  @ApiPropertyOptional({ description: 'Created at e.g 2024-11-10_T_11:29:22' })
+  createdAt: Date;
+}
+
+export class DonationCenterRatingsInfo {
+  @ApiPropertyOptional({
+    isArray: true,
+    description: 'Ratings',
+    type: DonorRatingInfo,
+  })
+  ratings: DonorRatingInfo[];
+
+  @ApiPropertyOptional({ description: 'Rating one e.g 4' })
+  ratingOne: string;
+
+  @ApiPropertyOptional({ description: 'Rating two e.g 56' })
+  ratingTwo: string;
+
+  @ApiPropertyOptional({ description: 'Rating three e.g 78' })
+  ratingThree: string;
+
+  @ApiPropertyOptional({ description: 'Rating four e.g 90' })
+  ratingFour: string;
+
+  @ApiPropertyOptional({ description: 'Rating five e.g 100' })
+  ratingFive: string;
 }

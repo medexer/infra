@@ -10,7 +10,8 @@ import {
   DonationCenterCompliance,
   DonationCenterComplianceInfo,
   DonationCenterInfo,
-  DonationCentreDaysOfWork,
+  DonationCenterRatingsInfo,
+  DonationCenterRating,
 } from 'libs/common/src/models/donation.center.model';
 import { AccountType } from 'libs/common/src/constants/enums';
 import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
@@ -27,6 +28,8 @@ export class DonationCenterService {
     private readonly donationCenterRepository: Repository<DonationCenter>,
     @InjectRepository(DonationCenterCompliance)
     private readonly donationCenterComplianceRepository: Repository<DonationCenterCompliance>,
+    @InjectRepository(DonationCenterRating)
+    private readonly donationCenterRatingRepository: Repository<DonationCenterRating>,
   ) {}
 
   async getDonationCenterProfile(
@@ -56,6 +59,40 @@ export class DonationCenterService {
     }
   }
 
+  async getDonationCenterRatings(
+    secureUser: SecureUserPayload,
+  ): Promise<DonationCenterRatingsInfo> {
+    try {
+      this.logger.log('[FETCH-DONATION-CENTER-RATINGS-PROCESSING]');
+
+      const donationCenter = await this.donationCenterRepository.findOne({
+        where: { account: { id: secureUser.id } },
+        relations: ['account'],
+      });
+
+      if (!donationCenter) {
+        throw new NotFoundException('Donation center not found');
+      }
+
+      const ratings = await this.donationCenterRatingRepository.find({
+        where: { donationCenter: { id: donationCenter.id } },
+        relations: ['account', 'donationCenter'],
+      });
+
+      
+      this.logger.log('[FETCH-DONATION-CENTER-RATINGS-SUCCESS]');
+      
+      return modelsFormatter.FormatDonationCenterRatingsInfo(
+        donationCenter,
+        ratings,
+      );
+    } catch (error) {
+      this.logger.error(`[FETCH-DONATION-CENTER-RATINGS-FAILED] :: ${error}`);
+
+      throw error;
+    }
+  }
+
   async getComplianceInfo(
     secureUser: SecureUserPayload,
   ): Promise<DonationCenterComplianceInfo> {
@@ -67,7 +104,6 @@ export class DonationCenterService {
         relations: ['account'],
       });
 
-      
       if (!donationCenter) {
         throw new NotFoundException('Donation center not found');
       }
@@ -83,7 +119,9 @@ export class DonationCenterService {
         compliance,
       );
     } catch (error) {
-      this.logger.error(`[FETCH-DONATION-CENTER-COMPLIANCE-INFO-FAILED] :: ${error}`);
+      this.logger.error(
+        `[FETCH-DONATION-CENTER-COMPLIANCE-INFO-FAILED] :: ${error}`,
+      );
 
       throw error;
     }

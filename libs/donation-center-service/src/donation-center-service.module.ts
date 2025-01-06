@@ -8,6 +8,7 @@ import {
   DonationCenter,
   DonationCenterConfig,
   DonationCenterCompliance,
+  DonationCenterRating,
 } from 'libs/common/src/models/donation.center.model';
 import { GetSystemJWTModule } from 'libs/common/src/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -45,6 +46,7 @@ import { ProfileController } from './controllers/profile.controller';
       DonationCenter,
       MedicalHistory,
       BloodInventory,
+      DonationCenterRating,
       OpeningHours,
       DonationCenterConfig,
       DonationCenterCompliance,
