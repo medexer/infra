@@ -752,6 +752,9 @@ export class DonationCenterRatingsInfo {
   })
   ratings: DonorRatingInfo[];
 
+  @ApiPropertyOptional({ description: 'Average rating e.g 4.5' })
+  averageRating: string;
+
   @ApiPropertyOptional({ description: 'Rating one e.g 4' })
   ratingOne: string;
 

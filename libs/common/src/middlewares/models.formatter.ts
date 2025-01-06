@@ -52,13 +52,7 @@ export function FormatAccountInfo(account: Account): AccountInfo {
   } as AccountInfo;
 }
 
-export function FormatDetailedDonationCenterAccountResponse(
-  donationCenter: DonationCenter,
-): DonationCenterInfo {
-  delete donationCenter.account;
-  delete donationCenter.createdAt;
-  delete donationCenter.updatedAt;
-
+function calculateAverageRating(donationCenter: DonationCenter): string  {
   const totalRatings =
     Number(donationCenter.ratingOne || 0) +
     Number(donationCenter.ratingTwo || 0) +
@@ -73,20 +67,32 @@ export function FormatDetailedDonationCenterAccountResponse(
     Number(donationCenter.ratingFour || 0) * 4 +
     Number(donationCenter.ratingFive || 0) * 5;
 
-  const averageRating = totalRatings
-    ? Math.min(5, Math.max(0, weightedSum / totalRatings))
-    : 0;
+    
 
-  // delete donationCenter.ratingOne;
-  // delete donationCenter.ratingTwo;
-  // delete donationCenter.ratingThree;
-  // delete donationCenter.ratingFour;
-  // delete donationCenter.ratingFive;
+  return totalRatings
+    ? (Math.min(5, Math.max(0, weightedSum / totalRatings))).toFixed(1).toString()
+    : '0';
+}
+
+export function FormatDetailedDonationCenterAccountResponse(
+  donationCenter: DonationCenter,
+): DonationCenterInfo {
+  delete donationCenter.account;
+  delete donationCenter.createdAt;
+  delete donationCenter.updatedAt;
+
+  const averageRating = calculateAverageRating(donationCenter);
+
+  delete donationCenter.ratingOne;
+  delete donationCenter.ratingTwo;
+  delete donationCenter.ratingThree;
+  delete donationCenter.ratingFour;
+  delete donationCenter.ratingFive;
 
   return {
     ...donationCenter,
+    averageRating: averageRating,
     id: donationCenter.id.toString(),
-    averageRating: Number(averageRating.toFixed(1)).toString(),
   } as DonationCenterInfo;
 }
 
@@ -284,6 +290,7 @@ export function FormatDonationCenterRatingsInfo(
     ratingThree: donationCenter.ratingThree,
     ratingFour: donationCenter.ratingFour,
     ratingFive: donationCenter.ratingFive,
+    averageRating: calculateAverageRating(donationCenter),
   } as DonationCenterRatingsInfo;
 }
 
