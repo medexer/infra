@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AppointmentInfo } from 'libs/common/src/models/appointment.model';
+import { AppointmentInfo, DonationCenterAppointmentInfo } from 'libs/common/src/models/appointment.model';
 
 class DashboardSummary {
   @ApiProperty({
@@ -161,11 +161,11 @@ export class DashboardInfo {
 
   @ApiProperty({
     isArray: true,
-    type: AppointmentInfo,
+    type: DonationCenterAppointmentInfo,
     description:
       'The total number of active appointments in the current period.',
   })
-  activeAppointments: AppointmentInfo[];
+  activeAppointments: DonationCenterAppointmentInfo[];
 
   @ApiProperty({
     isArray: true,

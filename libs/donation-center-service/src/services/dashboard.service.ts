@@ -247,7 +247,7 @@ export class DashboardService {
         previousMonthDonorsReached: prevMonthDonors,
       },
       activeAppointments: activeAppointments.map((appointment) =>
-        modelsFormatter.FormatDonorAppointment(appointment),
+        modelsFormatter.FormatDonationCenterAppointment(appointment),
       ),
       analytics: analyticsData,
       inventory: {
