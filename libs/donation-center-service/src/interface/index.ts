@@ -416,13 +416,15 @@ export class DashboardQueryParams {
     description: 'Start date of the report period (YYYY-MM-DD).',
     example: '2024-08-01',
   })
+  @IsOptional()
   @IsString()
   startDate: string;
-
+  
   @ApiPropertyOptional({
     description: 'End date of the report period (YYYY-MM-DD).',
     example: '2024-08-30',
   })
+  @IsOptional()
   @IsString()
   endDate: string;
 }
