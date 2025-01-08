@@ -412,14 +412,14 @@ export class UpdateDonationCenterProfileDTO {
 }
 
 export class DashboardQueryParams {
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Start date of the report period (YYYY-MM-DD).',
     example: '2024-08-01',
   })
   @IsString()
   startDate: string;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'End date of the report period (YYYY-MM-DD).',
     example: '2024-08-30',
   })
