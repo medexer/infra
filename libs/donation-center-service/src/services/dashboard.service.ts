@@ -191,7 +191,7 @@ export class DashboardService {
         },
         createdAt: Between(startDate, endDate),
       },
-      relations: ['donation_center'],
+      relations: ['donation_center', 'donor'],
     });
 
     const bloodInventory = await this.bloodInventoryRepository.find({
