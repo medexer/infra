@@ -9,12 +9,13 @@ import { AppLogger } from 'libs/common/src/logger/logger.service';
 import { SeederService } from './services/seeder.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Account } from 'libs/common/src/models/account.model';
+import { BloodInventory } from 'libs/common/src/models/blood.inventory.model';
 import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
 
 @Module({
   imports: [
     ConfigModule,
-    TypeOrmModule.forFeature([Account, DonationCenter, DonationCenterCompliance]),
+    TypeOrmModule.forFeature([Account, DonationCenter, DonationCenterCompliance, BloodInventory]),
   ],
   exports: [
     ImageUploadService,

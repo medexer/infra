@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { GetSystemJWTModule } from '../../common/src/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -9,17 +10,17 @@ import { SeederController } from 'libs/helper-service/src/controllers/seeder.con
 import { AdminController } from './controllers/admin.controller';
 import { AdminService } from './services/admin.service';
 import { SeederService } from 'libs/helper-service/src/services/seeder.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Account } from 'libs/common/src/models/account.model';
-import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
+import { BloodInventory } from 'libs/common/src/models/blood.inventory.model';
 import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
+import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
 
 @Module({
   imports: [
     ConfigModule,
     CqrsModule,
     GetSystemJWTModule(),
-    TypeOrmModule.forFeature([Account, DonationCenter, DonationCenterCompliance]),
+    TypeOrmModule.forFeature([Account, DonationCenter, DonationCenterCompliance, BloodInventory]),
   ],
   providers: [
     {

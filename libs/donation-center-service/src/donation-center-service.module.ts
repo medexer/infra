@@ -33,6 +33,8 @@ import { GoogleLocationService } from 'libs/helper-service/src/services/google-l
 import { AddressHelperController } from 'libs/helper-service/src/controllers/address.helper.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
 import { ProfileController } from './controllers/profile.controller';
+import { DashboardController } from './controllers/dashboard.controller';
+import { DashboardService } from './services/dashboard.service';
 
 @Module({
   imports: [
@@ -60,6 +62,7 @@ import { ProfileController } from './controllers/profile.controller';
       provide: 'Logger',
       useClass: AppLogger,
     },
+    DashboardService,
     OperationsService,
     EmailSenderService,
     BloodInventoryService,
@@ -69,6 +72,7 @@ import { ProfileController } from './controllers/profile.controller';
   ],
   exports: [DonationCenterService],
   controllers: [
+    DashboardController,
     ProfileController,
     OperationsController,
     AppointmentController,

@@ -1,16 +1,18 @@
 import axios from 'axios';
+import { Repository } from 'typeorm';
 import * as csvParser from 'csv-parse';
 import { ConfigService } from '@nestjs/config';
-import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { AppLogger } from '../../../common/src/logger/logger.service';
+import { Inject, Injectable } from '@nestjs/common';
 import {
   DonationCenter,
   DonationCenterCompliance,
 } from 'libs/common/src/models/donation.center.model';
 import { Account } from 'libs/common/src/models/account.model';
 import { GoogleLocationService } from './google-location.service';
+import { AppLogger } from '../../../common/src/logger/logger.service';
+import { AccountType, BloodGroup } from 'libs/common/src/constants/enums';
+import { BloodInventory } from 'libs/common/src/models/blood.inventory.model';
 
 @Injectable()
 export class SeederService {
@@ -20,11 +22,33 @@ export class SeederService {
     private readonly googleLocationService: GoogleLocationService,
     @InjectRepository(Account)
     private accountRepository: Repository<Account>,
+    @InjectRepository(BloodInventory)
+    private bloodInventoryRepository: Repository<BloodInventory>,
     @InjectRepository(DonationCenter)
     private donationCenterRepository: Repository<DonationCenter>,
     @InjectRepository(DonationCenterCompliance)
     private readonly complianceRepository: Repository<DonationCenterCompliance>,
   ) {}
+
+  private parseCSV(csvData: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      csvParser.parse(
+        csvData,
+        {
+          columns: true,
+          skip_empty_lines: true,
+          trim: true,
+        },
+        (err, records) => {
+          if (err) {
+            this.logger.error(`Error parsing CSV: ${err}`);
+            reject(err);
+          }
+          resolve(records);
+        },
+      );
+    });
+  }
 
   async initializeDonationCenters(payload: any, file: Express.Multer.File) {
     try {
@@ -120,24 +144,207 @@ export class SeederService {
     }
   }
 
-  // Add this new private method to handle CSV parsing
-  private parseCSV(csvData: string): Promise<any[]> {
-    return new Promise((resolve, reject) => {
-      csvParser.parse(
-        csvData,
-        {
-          columns: true,
-          skip_empty_lines: true,
-          trim: true,
-        },
-        (err, records) => {
-          if (err) {
-            this.logger.error(`Error parsing CSV: ${err}`);
-            reject(err);
-          }
-          resolve(records);
-        },
+  async initializeDonationCentersWithInventory(
+    payload: any,
+    file: Express.Multer.File,
+  ) {
+    try {
+      this.logger.log(
+        '[INITIALIZE-DONATION-CENTERS-WITH-INVENTORY-PROCESSING]',
       );
-    });
+
+      const failedAccounts = [];
+      const csvData = file.buffer.toString();
+
+      // Separate CSV parsing into its own Promise
+      const records = await this.parseCSV(csvData);
+      this.logger.log(`Parsed ${records.length} records from CSV`);
+
+      // Process records sequentially with delay between each
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      let recordCounter = 0;
+
+      const updates = await Promise.all(
+        records.map(async (record) => {
+          try {
+            if (recordCounter > 0) {
+              await delay(1000);
+            }
+            recordCounter++;
+
+            this.logger.log(`Processing record for email: ${record.email}`);
+
+            const account = await this.accountRepository.findOne({
+              where: { email: record.email },
+            });
+
+            if (!account) {
+              this.logger.warn(`No account found for email: ${record.email}`);
+              failedAccounts.push(record.email);
+              return null;
+            }
+
+            const donationCenter = await this.donationCenterRepository.findOne({
+              where: { account: { id: account.id } },
+              relations: ['account'],
+            });
+
+            const inventory = await this.bloodInventoryRepository.find({
+              where: { donationCenter: { id: donationCenter.id } },
+              relations: ['donationCenter'],
+            });
+
+            if (inventory.length > 0) {
+              return {
+                email: record.email,
+                status: 'INVENTORY-ALREADY-INITIALIZED',
+              };
+            }
+
+            await Promise.all(
+              Object.values(BloodGroup).map(
+                async (bloodGroup) =>
+                  await this.bloodInventoryRepository.save({
+                    bloodGroup,
+                    units: '0',
+                    price: '0',
+                    description:
+                      bloodGroup === BloodGroup.APositive
+                        ? 'Has A antigen and Rh factor'
+                        : bloodGroup === BloodGroup.ANegative
+                          ? 'Has A antigen, no Rh factor'
+                          : bloodGroup === BloodGroup.BPositive
+                            ? 'Has B antigen and Rh factor'
+                            : bloodGroup === BloodGroup.BNegative
+                              ? 'Has B antigen, no Rh factor'
+                              : bloodGroup === BloodGroup.ABPositive
+                                ? 'Has both A and B antigens and Rh factor'
+                                : bloodGroup === BloodGroup.ABNegative
+                                  ? 'Has both A and B antigens, no Rh factor'
+                                  : bloodGroup === BloodGroup.OPositive
+                                    ? 'No A or B antigens, has Rh factor'
+                                    : 'No A or B antigens, no Rh factor',
+                    donationCenter: donationCenter,
+                  }),
+              ),
+            );
+
+            return {
+              email: record.email,
+              status: 'INVENTORY-INITIALIZED',
+            };
+          } catch (error) {
+            this.logger.error(`Error processing record: ${error.message}`);
+            throw error;
+          }
+        }),
+      );
+
+      this.logger.log('[INITIALIZE-DONATION-CENTERS-WITH-INVENTORY-SUCCESS]');
+      return { updates, failedAccounts };
+    } catch (error) {
+      this.logger.error(
+        `[INITIALIZE-DONATION-CENTERS-WITH-INVENTORY-FAILED] :: ${error}`,
+      );
+      throw error;
+    }
+  }
+
+  async initializeOldDonationCentersWithInventory() {
+    try {
+      this.logger.log(
+        '[INITIALIZE-OLD-DONATION-CENTERS-WITH-INVENTORY-PROCESSING]',
+      );
+
+      const failedAccounts = [];
+
+      // Separate CSV parsing into its own Promise
+      const records = await this.accountRepository.find({
+        where: {
+          accountType: AccountType.DONATION_CENTER,
+        },
+      });
+
+      // Process records sequentially with delay between each
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      let recordCounter = 0;
+
+      const updates = await Promise.all(
+        records.map(async (account) => {
+          try {
+            if (recordCounter > 0) {
+              await delay(1000);
+            }
+            recordCounter++;
+
+            this.logger.log(`Processing record for email: ${account.email}`);
+
+            const donationCenter = await this.donationCenterRepository.findOne({
+              where: { account: { id: account.id } },
+              relations: ['account'],
+            });
+
+            const inventory = await this.bloodInventoryRepository.find({
+              where: { donationCenter: { id: donationCenter.id } },
+              relations: ['donationCenter'],
+            });
+
+            if (inventory.length > 0) {
+              return {
+                email: account.email,
+                status: 'INVENTORY-ALREADY-INITIALIZED',
+              };
+            }
+
+            await Promise.all(
+              Object.values(BloodGroup).map(
+                async (bloodGroup) =>
+                  await this.bloodInventoryRepository.save({
+                    bloodGroup,
+                    units: '0',
+                    price: '0',
+                    description:
+                      bloodGroup === BloodGroup.APositive
+                        ? 'Has A antigen and Rh factor'
+                        : bloodGroup === BloodGroup.ANegative
+                          ? 'Has A antigen, no Rh factor'
+                          : bloodGroup === BloodGroup.BPositive
+                            ? 'Has B antigen and Rh factor'
+                            : bloodGroup === BloodGroup.BNegative
+                              ? 'Has B antigen, no Rh factor'
+                              : bloodGroup === BloodGroup.ABPositive
+                                ? 'Has both A and B antigens and Rh factor'
+                                : bloodGroup === BloodGroup.ABNegative
+                                  ? 'Has both A and B antigens, no Rh factor'
+                                  : bloodGroup === BloodGroup.OPositive
+                                    ? 'No A or B antigens, has Rh factor'
+                                    : 'No A or B antigens, no Rh factor',
+                    donationCenter: donationCenter,
+                  }),
+              ),
+            );
+
+            return {
+              email: account.email,
+              status: 'INVENTORY-INITIALIZED',
+            };
+          } catch (error) {
+            this.logger.error(`Error processing record: ${error.message}`);
+            throw error;
+          }
+        }),
+      );
+
+      this.logger.log(
+        '[INITIALIZE-OLD-DONATION-CENTERS-WITH-INVENTORY-SUCCESS]',
+      );
+      return { updates, failedAccounts };
+    } catch (error) {
+      this.logger.error(
+        `[INITIALIZE-OLD-DONATION-CENTERS-WITH-INVENTORY-FAILED] :: ${error}`,
+      );
+
+      throw error;
+    }
   }
 }
