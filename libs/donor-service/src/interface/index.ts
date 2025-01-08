@@ -35,7 +35,7 @@ export class UploadDonorComplianceDTO {
 
   @IsOptional()
   @IsDateString()
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: '2023-01-01',
     description: 'Last donated blood date',
   })
