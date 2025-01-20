@@ -48,13 +48,15 @@ export class AuthService {
   async isEmailAvailable(
     email: string,
   ): Promise<AvailabilityCheckResponsePayload> {
-    const isAvailable = await this.accountRepository.findOneBy({
-      email: email,
-      signupVerificationHash: Not(In(['', null, undefined])),
+    const isAvailable = await this.accountRepository.exists({
+      where: {
+        email: email,
+        signupVerificationHash: Not(In(['', null, undefined])),
+      },
     });
 
     return {
-      isAvailable: isAvailable ? false : true,
+      isAvailable: isAvailable,
     };
   }
 

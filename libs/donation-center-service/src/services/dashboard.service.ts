@@ -194,6 +194,10 @@ export class DashboardService {
       relations: ['donation_center', 'donor'],
     });
 
+    console.log('startDate -> ', startDate);
+    console.log('endDate -> ', endDate);
+    console.log('activeAppointments -> ', activeAppointments);
+
     const bloodInventory = await this.bloodInventoryRepository.find({
       where: {
         donationCenter: {
