@@ -32,7 +32,14 @@ export class CreateAccountHandler
 
       const hashPayload = Object.fromEntries(
         Object.entries(payload).filter(
-          ([key]) => !['referralCode', 'password'].includes(key),
+          ([key]) =>
+            ![
+              'referralCode',
+              'password',
+              'firstName',
+              'lastName',
+              'phone',
+            ].includes(key),
         ),
       );
 
@@ -77,8 +84,24 @@ export class CreateAccountHandler
       });
 
       if (existingHash) {
+        const password = await authUtils.hashPassword(payload.password);
+
+        let referrer: Account;
+
+        if (payload.referralCode && payload.referralCode !== '') {
+          referrer = await this.accountRepository.findOne({
+            where: {
+              referralCode: payload.referralCode.toUpperCase(),
+            },
+          });
+        }
+
         Object.assign(existingHash, {
           ...existingHash,
+          ...payload,
+          password,
+          referrer: referrer ? referrer : null,
+          referralCode: ReferralCodeGenerator(),
           signupVerificationHash: hash,
           activationCode: activationCode,
           activationCodeExpires: activationCodeExpiration,
