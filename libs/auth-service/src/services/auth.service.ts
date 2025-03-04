@@ -69,7 +69,8 @@ export class AuthService {
     });
 
     return {
-      isAvailable: isAvailable ? false : true,
+      isAvailable: true,
+      // isAvailable: isAvailable ? false : true,
     };
   }
 }
