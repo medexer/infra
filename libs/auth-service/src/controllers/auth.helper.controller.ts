@@ -29,6 +29,6 @@ export class AuthHelperController {
     @Req() req: Request,
     @Query('phone') phone: string,
   ): Promise<AvailabilityCheckResponsePayload> {
-    return await this.authService.isEmailAvailable(phone);
+    return await this.authService.isPhoneAvailable(phone);
   }
 }
