@@ -79,7 +79,7 @@ export class CreateAppointmentHandler
 
       const newAppointment = await this.appointmentRepository.save({
         donor: account,
-        date: payload.date,
+        date: new Date(payload.date),
         time: payload.time,
         donation_center: donationCenter,
         appointmentId: GenerateUniqueTrackingNumber(),

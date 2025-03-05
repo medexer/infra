@@ -93,8 +93,8 @@ export class CreateAppointmentDTO {
     description: 'Appointment date e.g 2024-01-01.',
   })
   @IsNotEmpty()
-  @IsDateString()
-  date: Date;
+  @IsString()
+  date: string;
 
   @ApiProperty({
     example: '14',
