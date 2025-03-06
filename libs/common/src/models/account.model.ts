@@ -357,8 +357,8 @@ export class AccountInfo {
   @ApiProperty({ example: '' })
   referredBy: string;
 
-  @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
-  lastLogin: Date;
+  // @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
+  // lastLogin: Date;
 
   @ApiProperty({ example: '2024-12-16T13:03:10.747Z' })
   lastDonationDate: string;
