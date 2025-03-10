@@ -56,9 +56,9 @@ export class CreateAccountHandler
         {
           email: payload.email,
         },
-        {
-          phone: payload.phone,
-        },
+        // {
+        //   phone: payload.phone,
+        // },
       ];
 
       if (createdWithGoogle) {

@@ -10,7 +10,7 @@ import {
   IsEnum,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   trimTransformer,
   capitalizeTransformer,
@@ -56,12 +56,12 @@ export class CreateAccountDTO {
   lastName: string;
 
   @Transform(({ value }) => trimTransformer(value))
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: '+2348123456789',
     description: 'Phone number of the donor.',
   })
   @IsPhoneNumber()
-  @IsNotEmpty()
+  @IsOptional()
   phone: string;
 
   @Transform(({ value }) => trimTransformer(value))
@@ -257,7 +257,7 @@ export class SigninAsDTO {
   @IsEmail({}, { message: 'Invalid email format' })
   @Transform(({ value }) => trimTransformer(toLowerCaseTransformer(value)))
   email: string;
-  
+
   @ApiProperty({
     example: 'Password@123',
     description: 'Account password.',
@@ -265,7 +265,7 @@ export class SigninAsDTO {
   @IsString()
   @IsNotEmpty()
   password: string;
-  
+
   @ApiProperty({ enum: AccountType })
   @IsNotEmpty()
   @IsEnum(AccountType)
