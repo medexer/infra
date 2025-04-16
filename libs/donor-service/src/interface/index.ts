@@ -34,12 +34,12 @@ export class UploadDonorComplianceDTO {
   genotype: Genotype;
 
   @IsOptional()
-  @IsDateString()
+  @IsString()
   @ApiPropertyOptional({
     example: '2023-01-01',
     description: 'Last donated blood date',
   })
-  lastDonatedBloodDate?: Date;
+  lastDonatedBloodDate?: string;
 
   @IsNotEmpty()
   @IsString()
@@ -69,12 +69,13 @@ export class UploadDonorComplianceDTO {
   })
   hasPreviouslyDonatedBlood: boolean;
 
-  @IsNotEmpty()
   @ApiProperty({
     example: 'VOTERS_CARD',
     enum: DonorIdentificationType,
     description: 'Donor identification document type',
+    // default: DonorIdentificationType.NATIONAL_IDENTITY_CARD,
   })
+  @IsNotEmpty()
   @IsEnum(DonorIdentificationType)
   identificationType: DonorIdentificationType;
 }

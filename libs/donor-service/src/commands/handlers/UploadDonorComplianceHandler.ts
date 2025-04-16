@@ -62,7 +62,7 @@ export class UploadDonorComplianceHandler
         bloodGroup: payload.bloodGroup,
         hasTattoos: payload.hasTattoos,
         lastDonationDate: payload.lastDonatedBloodDate
-          ? payload.lastDonatedBloodDate
+          ? new Date(payload.lastDonatedBloodDate)
           : null,
         inRecovery: payload.hasPreviouslyDonatedBlood
           ? !authUtils.isDatePastThreeMonths(
