@@ -22,6 +22,32 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class SeederController {
   constructor(public readonly seederService: SeederService) {}
 
+  @Post('initialize-users')
+  @ApiOkResponse()
+  @ApiInternalServerErrorResponse()
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data') // Set content type as multipart/form-data
+  @ApiBody({
+    description: 'Upload an csv file',
+    required: true,
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  async initializeUsers(
+    @Req() req: Request,
+    @Body() payload: any,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return await this.seederService.initializeUsers(payload, file);
+  }
+
   @Post('initialize-donation-centers')
   @ApiOkResponse()
   @ApiInternalServerErrorResponse()

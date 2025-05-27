@@ -11,8 +11,9 @@ import {
 import { Account } from 'libs/common/src/models/account.model';
 import { GoogleLocationService } from './google-location.service';
 import { AppLogger } from '../../../common/src/logger/logger.service';
-import { AccountType, BloodGroup } from 'libs/common/src/constants/enums';
+import { AccountStatus, AccountType, BloodGroup } from 'libs/common/src/constants/enums';
 import { BloodInventory } from 'libs/common/src/models/blood.inventory.model';
+import { ReferralCodeGenerator } from 'libs/common/src/utils/id.generator';
 
 @Injectable()
 export class SeederService {
@@ -48,6 +49,75 @@ export class SeederService {
         },
       );
     });
+  }
+
+  async initializeUsers(payload: any, file: Express.Multer.File){
+ try {
+      this.logger.log('[INITIALIZE-USERS-PROCESSING]');
+
+      const failedAccounts = [];
+      const csvData = file.buffer.toString();
+
+      // Separate CSV parsing into its own Promise
+      const records = await this.parseCSV(csvData);
+      this.logger.log(`Parsed ${records.length} records from CSV`);
+
+      // Process records sequentially with delay between each
+      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+      let recordCounter = 0;
+
+      const updates = await Promise.all(
+        records.map(async (record) => {
+          try {
+            if (recordCounter > 0) {
+              await delay(1000);
+            }
+            recordCounter++;
+
+            if(record?.email?.trim()?.length === 0){
+              return;
+            }
+
+            this.logger.log(`Processing record for email: ${record.email}`);
+
+            const existingUser = await this.accountRepository.findOne({
+              where: { email: record.email },
+            });
+
+            if (existingUser) {
+              this.logger.warn(`Account info for email already exists: ${record.email}`);
+              failedAccounts.push(record.email);
+              return null;
+            }
+
+            const account = this.accountRepository.create({
+              email: record.email,
+              password: record.password,
+              firstName: record.firstName,
+              lastName: record.lastName,
+              phone: record.phoneNumber,
+              status: AccountStatus.ACTIVE,
+              referralCode: ReferralCodeGenerator(),
+            });
+
+            await this.accountRepository.save(account);
+
+            return {
+              email: record.email,
+            };
+          } catch (error) {
+            this.logger.error(`Error processing record: ${error.message}`);
+            throw error;
+          }
+        }),
+      );
+
+      this.logger.log('[INITIALIZE-USERS-SUCCESS]');
+      return { updates, failedAccounts };
+    } catch (error) {
+      this.logger.error(`[INITIALIZE-USERS-FAILED] :: ${error}`);
+      throw error;
+    }
   }
 
   async initializeDonationCenters(payload: any, file: Express.Multer.File) {
