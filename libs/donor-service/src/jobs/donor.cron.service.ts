@@ -24,8 +24,8 @@ export class DonorCronService {
     private readonly donationCenterRepository: Repository<DonationCenter>,
   ) {}
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
-  // @Cron('0 9,20 * * *')
+  // @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron('0 9,20 * * *')
   async weeklyDonorBloodDonationReminderCronHandler() {
     try {
       this.logger.log(
@@ -50,8 +50,7 @@ export class DonorCronService {
               token &&
               token !== '' &&
               token !== null &&
-              token !== undefined &&
-              donor.id == 17
+              token !== undefined
             ) {
               await FCMessaging.sendNotification(token, {
                 title: 'Save a Life Today',
