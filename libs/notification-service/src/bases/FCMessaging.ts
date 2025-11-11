@@ -1,39 +1,78 @@
 import * as messaging from 'firebase-admin/messaging';
+import { FCMNotificationPayload } from '../interface';
 
 async function sendNotification(
   token: string,
-  payload: { title: string; body: string; data: any },
+  payload: FCMNotificationPayload,
 ) {
-  console.log('Sending FCM notification');
   try {
+    console.log('Sending FCM notification');
+
+    const timestamp = new Date().getTime();
+
     const res = await messaging.getMessaging().send({
       token: token,
-      data: payload.data,
+      data: {
+        ...payload.data,
+        ...(payload.iconUrl ? { icon: String(payload.iconUrl) } : {}),
+        ...(payload.notificationImage
+          ? { image: String(payload.notificationImage) }
+          : {}),
+        timestamp: `${timestamp}`,
+      },
       notification: {
         title: payload.title,
         body: payload.body,
+        ...(payload.notificationImage
+          ? { imageUrl: String(payload.notificationImage) }
+          : {}),
       },
       android: {
         priority: 'high',
+        notification: {
+          ...(payload.iconUrl ? { icon: String(payload.iconUrl) } : {}),
+          ...(payload.notificationImage
+            ? { imageUrl: String(payload.notificationImage) }
+            : {}),
+          visibility: 'public',
+          priority: 'high',
+          tag: `notification_${timestamp}`,
+          channelId: 'default',
+          notificationCount: 0,
+        },
       },
       apns: {
         headers: {
           'apns-priority': '10',
           'apns-push-type': 'alert',
+          'apns-collapse-id': `notification_${timestamp}`,
         },
         payload: {
           aps: {
             category: 'NEW_MESSAGE_CATEGORY',
+            mutable_content: 1,
+            content_available: 1,
+            thread_id: `notification_${timestamp}`,
           },
+        },
+        fcmOptions: {
+          ...(payload.notificationImage
+            ? { imageUrl: String(payload.notificationImage) }
+            : {}),
         },
       },
       webpush: {
         headers: {},
+        notification: {
+          icon: payload?.iconUrl,
+          image: payload?.notificationImage,
+          tag: `notification_${timestamp}`,
+        },
       },
     });
     console.log('FCM notification sent', res);
   } catch (err) {
-    console.error('Failed to send notification:', err);
+    console.error('[SEND-FCM-NOTIFICATION-ERROR] : ', err);
   }
 }
 
@@ -66,11 +105,12 @@ function sendNotificationBulk(
         },
         headers: {
           'apns-priority': '10', // Sends it immediately
+          'apns-push-type': 'alert',
         },
       },
     });
   } catch (err) {
-    console.error('Failed to send bulk notification:', err);
+    console.error('[SEND-BULK-FCM-NOTIFICATION-ERROR] : ', err);
   }
 }
 

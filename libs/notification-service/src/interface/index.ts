@@ -15,6 +15,14 @@ export interface EmailRequest {
   attachment?: { url?: string; content: string; name: string }[];
 }
 
+export interface FCMNotificationPayload {
+  title: string;
+  body: string;
+  data: any;
+  iconUrl?: string | null;
+  notificationImage?: string | null;
+}
+
 export class ContactUsDTO {
   @ApiProperty({
     example: 'Gyang Ibrahim',
