@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "medexer-mobile",
+  "private_key_id": "b2fdb15121221d167b53a3d07b5dd97dad5535ee",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCW9sGlwBuRElDh\nSNs7FzsBH8/sLXF4QHHZZHAqfgD9lz75zgQ9IZyZPM8AIbM7nPGrhIBxZf0LJfns\ntjtL37MuFgLBQ7+v+lPmMRiiT35ctLIQ7IEVds2LMGSdPL2ZSufShaUNepWQBdwu\nPtaNPN2uF6FhpnJI46j6YLnhgDg7kg3N0Zehaixyojozjd+kW9Gg2t3ip4n1Seic\nYuzeyU9bfiKj2VlsT937IcdKxAblBSe38UIQ/jYqrk+R/oH5Drud3udSiF0P4AEv\nw1aEr+yLPseIcs69QfzaCmid+hMKIyn3CvR0tngCkcYv5agSs03YU8AnkXefuTgB\nhXl3w8aZAgMBAAECggEAEKFLMMqqXr9RSJgBio9jERsjiQVyiAg1YnjVgGDUFBt6\ntQMUZXWT7i+MMBwGRg1ic/4LNjLBft5mm0Rx4MhaUTvcftTLQ4QEhQmoiIzQQz8m\nlIWxLJ+jQe+JTeb4je/5/K97QLJd0nlKyY9jjDiFxR1WSk8PLOdjYH2STHyW9TzU\nvEFTuSSvLFKV3nSYsihDYkYQUcWd5UTfNrFU1LIfRb7OeKdJ99akvimQEFce4DsX\nhTFJ+a/Ejz6IoSRN6fkyiGl0rmFMBO0TQpj2JZFpls0LZ9+GUEXdMX5/pwSac6Cj\nvtEd6CJ/oyGia4qyOcCa1J7QFvT+v9vMEsfBZQDCOQKBgQDS2IKvnpb0h/iMrbc1\ncG7YP2PH2R3S/m/WURqNtzffShFAWMxSVyy7R+7+92WRJSMp8lfQgYUxjJefb8lr\n9w59aNTtzcHRxCpnMV6rkCxGT+3xWfHZ1kTKkLRuNHJDaOm6FxNp6JNMua86XEiw\nAHyj/ghrKFn/HFC3up4W4Mb7hQKBgQC3S0KIHKAKA5lyw9KwIiBfCrcfZ4aSEptu\nzkA3FZeAoeJ1xU5bhl+OQW7zBblMsVPp8J5ZSg1WI3dfdP1uJnwe3/RJss2D9yce\nW6TXQsDq9mCyjDnIY9p7lhlRyK1UC5BxAtil5UAhPrvgMkAgY/Qn/fGYIUXFdzVe\n8TjUVbN5BQKBgCG5A133bYl63eQSPMVNUE1CBkGGlmCS1Wxf2HFmJoeOHyg9i6B3\n1O23WaBqDVKjr/YbjrQIozcDl5Smmn6sKyMfyz6ltCRKzcVnfg7OpmYwjowVqLsA\nrEwBzPn7ZXMmqota+X3s9vJEmKQq8m1EBqtsDAinkY1eCAL61CIwnWLJAoGAJAL5\nU1ysZMtIPrASmOBbk9C7IcRpQBG/0AldvHTVi0RDBfh56KmB5KUec0jQmyzL286W\njdxqul3Fek+16wpMoJRHnqMulZrdaK2AuXo4BPHbFblPMPvNVTKsTtEqnLSY8Fsq\nzY05CE8XAnlc+AArXCAcc1M2LhG5vqmODMm5tTECgYBgfRHobGYEsYzYVMx2sKeK\niJU1jG8VkAg7f8g7bLiP2jiFcWMqcPrN1eLD/PJ1A4qBp7ipk1oMfLOaHQlAvpgT\nvqYK6xP0tQ1C0dC16ZnyYKAHz8bHkSBRDfFLMf+vPn2ottMXyFR4zHgpY1xrlo30\nHvSZuM7zyevPB4G9ySshuw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-tfd7p@medexer-mobile.iam.gserviceaccount.com",
+  "client_id": "109293306556695820343",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-tfd7p%40medexer-mobile.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
