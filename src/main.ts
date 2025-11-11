@@ -1,7 +1,6 @@
 import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
-import * as serviceAccount from './firebase.json';
-import admin, {ServiceAccount} from 'firebase-admin';
+import admin from 'firebase-admin';
 import { configureApp } from '../libs/common/src/config';
 
 // Initialize Firebase Admin using environment variables
@@ -18,9 +17,13 @@ const firebaseConfig = {
   client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL,
 };
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount as ServiceAccount),
-});
+if (firebaseConfig.project_id && firebaseConfig.private_key && firebaseConfig.client_email) {
+  admin.initializeApp({
+    credential: admin.credential.cert(firebaseConfig as admin.ServiceAccount),
+  });
+} else {
+  console.warn('Firebase credentials not found in environment variables. Firebase Admin will not be initialized.');
+}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
