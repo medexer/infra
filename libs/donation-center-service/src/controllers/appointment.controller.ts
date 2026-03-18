@@ -24,7 +24,7 @@ export class AppointmentController {
   constructor(
     public command: CommandBus,
     public readonly appointmentService: AppointmentService,
-  ) {}
+  ) { }
 
   @ApiTags('appointments')
   @Get('pending-appointments')
@@ -69,13 +69,13 @@ export class AppointmentController {
     @SecureUser() secureUser: SecureUserPayload,
     @Body() body: UpdateAppointmentStatusDTO,
   ): Promise<DonationCenterAppointmentInfo[]> {
-      return await this.command.execute(
-        new UpdateAppointmentStatusCommand(
-          authUtils.getOriginHeader(req),
-          secureUser,
-          body,
-        ),
-      );
+    return await this.command.execute(
+      new UpdateAppointmentStatusCommand(
+        authUtils.getOriginHeader(req),
+        secureUser,
+        body,
+      ),
+    );
   }
 
   @ApiTags('appointment')
@@ -94,13 +94,13 @@ export class AppointmentController {
     @Query('appointmentId') appointmentId: number,
     @Body() body: UploadTestResultsDTO,
   ): Promise<DonationCenterAppointmentInfo[]> {
-      return await this.command.execute(
-        new UploadTestResultsCommand(
-          authUtils.getOriginHeader(req),
-          appointmentId,
-          secureUser,
-          body,
-        ),
-      );
+    return await this.command.execute(
+      new UploadTestResultsCommand(
+        authUtils.getOriginHeader(req),
+        appointmentId,
+        secureUser,
+        body,
+      ),
+    );
   }
 }

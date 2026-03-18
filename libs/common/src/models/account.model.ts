@@ -378,3 +378,35 @@ export class AccountInfo {
   @ApiProperty({ example: false })
   isComplianceUploaded: boolean;
 }
+
+export class BloodDonorInfo {
+  @ApiProperty({ example: '75' })
+  id: string;
+
+  @ApiProperty({ example: 'Ibrahim' })
+  firstName: string;
+
+  @ApiProperty({ example: 'Gyang' })
+  lastName: string;
+
+  @ApiProperty({ example: '+2348054618649' })
+  phone: string;
+
+  @ApiProperty({ example: 'gibrahim@yopmail.com' })
+  email: string;
+
+  @ApiProperty({ example: 'AB-', enum: BloodGroup })
+  bloodGroup: BloodGroup;
+
+  @ApiProperty({ example: 'AA', enum: Genotype })
+  genotype: Genotype;
+
+  @ApiProperty({ example: '9.2928839' })
+  latitude: string;
+
+  @ApiProperty({ example: '9.481991' })
+  longitude: string;
+
+  @ApiProperty({ example: '12KM' })
+  distance: string;
+}

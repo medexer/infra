@@ -428,3 +428,41 @@ export class DashboardQueryParams {
   @IsString()
   endDate: string;
 }
+
+export class SearchBloodDonorDTO {
+  @ApiPropertyOptional({
+    example: 'O+',
+    enum: BloodGroup,
+    description: 'Filter donors by blood group',
+  })
+  @IsOptional()
+  @IsEnum(BloodGroup)
+  bloodGroup?: BloodGroup;
+
+  @ApiPropertyOptional({
+    example: 'AA',
+    enum: Genotype,
+    description: 'Filter donors by genotype',
+  })
+  @IsOptional()
+  @IsEnum(Genotype)
+  genotype?: Genotype;
+
+  @ApiPropertyOptional({
+    example: 'Plateau',
+    description: 'Filter donors by state / location',
+  })
+  @IsOptional()
+  @IsString()
+  @Transform(({ value }) => trimTransformer(value))
+  state?: string;
+
+  @ApiPropertyOptional({
+    example: 'Jos',
+    description: 'Filter donors by city',
+  })
+  @IsOptional()
+  @IsString()
+  @Transform(({ value }) => trimTransformer(value))
+  city?: string;
+}

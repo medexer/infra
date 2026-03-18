@@ -14,11 +14,16 @@ import { GetSystemJWTModule } from 'libs/common/src/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { setupSwaggerDocument } from 'libs/common/src/swagger';
 import { Account } from 'libs/common/src/models/account.model';
+import { DashboardService } from './services/dashboard.service';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
 import { OperationsService } from './services/operations.service';
+import { SearchController } from './controllers/search.controller';
 import { AppointmentService } from './services/appointment.service';
+import { ProfileController } from './controllers/profile.controller';
 import { Appointment } from 'libs/common/src/models/appointment.model';
 import { DonationCenterServiceEventHandlers } from './events/handlers';
+import { DonationCenterServiceQueryHandlers } from './queries/handlers';
+import { DashboardController } from './controllers/dashboard.controller';
 import { DonationCenterService } from './services/donation.center.service';
 import { DonationCenterServiceCommandHandlers } from './commands/handlers';
 import { BloodInventoryService } from './services/blood.inventory.service';
@@ -32,9 +37,6 @@ import { EmailSenderService } from 'libs/helper-service/src/services/email-sende
 import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
 import { AddressHelperController } from 'libs/helper-service/src/controllers/address.helper.controller';
 import { EmailNotificationService } from 'libs/notification-service/src/services/email.notification.service';
-import { ProfileController } from './controllers/profile.controller';
-import { DashboardController } from './controllers/dashboard.controller';
-import { DashboardService } from './services/dashboard.service';
 
 @Module({
   imports: [
@@ -67,6 +69,7 @@ import { DashboardService } from './services/dashboard.service';
     EmailSenderService,
     BloodInventoryService,
     EmailNotificationService,
+    ...DonationCenterServiceQueryHandlers,
     ...DonationCenterServiceEventHandlers,
     ...DonationCenterServiceCommandHandlers,
   ],
@@ -74,6 +77,7 @@ import { DashboardService } from './services/dashboard.service';
   controllers: [
     DashboardController,
     ProfileController,
+    SearchController,
     OperationsController,
     AppointmentController,
     AddressHelperController,

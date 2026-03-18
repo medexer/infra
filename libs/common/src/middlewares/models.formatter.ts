@@ -10,7 +10,7 @@ import {
   DonationCenterRatingsInfo,
   DonationCenterRating,
 } from '../models/donation.center.model';
-import { Account, AccountInfo } from '../models/account.model';
+import { Account, AccountInfo, BloodDonorInfo } from '../models/account.model';
 import {
   AppointmentInfo,
   DonationCenterAppointmentInfo,
@@ -27,6 +27,7 @@ import {
   BloodInventory,
   BloodInventoryInfo,
 } from '../models/blood.inventory.model';
+import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
 
 export function FormatAccountInfo(account: Account): AccountInfo {
   delete account.password;
@@ -294,9 +295,31 @@ export function FormatDonationCenterRatingsInfo(
   } as DonationCenterRatingsInfo;
 }
 
+export function FormatBloodDonorInfo(account: Account, donationCenter: DonationCenter): BloodDonorInfo {
+  return {
+    phone: account.phone,
+    email: account.email,
+    state: account.state,
+    id: account.id.toString(),
+    lastName: account.lastName,
+    genotype: account.genotype,
+    latitude: account.latitude,
+    firstName: account.firstName,
+    longitude: account.longitude,
+    bloodGroup: account.bloodGroup,
+    distance: GoogleLocationService.getDistanceInKm(
+      donationCenter.latitude,
+      donationCenter.longitude,
+      account.latitude,
+      account.longitude
+    ),
+  } as unknown as BloodDonorInfo;
+}
+
 export default {
   FormatAccountInfo,
   FormatListItemInfo,
+  FormatBloodDonorInfo,
   FormatNotificationInfo,
   FormatDonorAppointment,
   FormatMedicalHistoryInfo,
