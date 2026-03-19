@@ -40,13 +40,13 @@ export class SearchController {
     example: 'A+ | AS | Plateau | Jos | Keffi',
     description: 'Query params describing what user is looking for.',
   })
-  @ApiOkResponse({ type: BloodDonorInfo })
+  @ApiOkResponse({ type: BloodDonorInfo, isArray: true })
   @ApiInternalServerErrorResponse()
   async searchBloodDonors(
     @Req() req: Request,
     @Query('query') query: string,
     @SecureUser() secureUser: SecureUserPayload,
-  ): Promise<BloodDonorInfo> {
+  ): Promise<BloodDonorInfo[]> {
     return await this.queryBus.execute(
       new SearchBloodDonorsQuery(query, secureUser),
     );
