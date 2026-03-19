@@ -4,7 +4,7 @@ import { SearchBloodDonorsQuery } from '../impl';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { AppLogger } from 'libs/common/src/logger/logger.service';
-import { BloodGroup, Genotype } from 'libs/common/src/constants/enums';
+import { AccountType, BloodGroup, Genotype } from 'libs/common/src/constants/enums';
 import modelsFormatter from 'libs/common/src/middlewares/models.formatter';
 import { DonationCenter } from 'libs/common/src/models/donation.center.model';
 import { Account, BloodDonorInfo } from 'libs/common/src/models/account.model';
@@ -73,7 +73,7 @@ export class SearchBloodDonorsQueryHandler
 			}
 
 			let donors = await this.accountRepository.find({
-				where: whereConditions,
+				where: { ...whereConditions, accountType: AccountType.INDIVIDUAL },
 				take: 30,
 			});
 
