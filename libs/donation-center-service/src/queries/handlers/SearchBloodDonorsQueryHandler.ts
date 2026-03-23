@@ -73,7 +73,10 @@ export class SearchBloodDonorsQueryHandler
 			}
 
 			let donors = await this.accountRepository.find({
-				where: { ...whereConditions, accountType: AccountType.INDIVIDUAL },
+				where: whereConditions.map(condition => ({
+					...condition,
+					accountType: AccountType.INDIVIDUAL,
+				})),
 				take: 30,
 			});
 
