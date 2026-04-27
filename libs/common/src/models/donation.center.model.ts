@@ -115,20 +115,20 @@ export class DonationCenter {
 
   @Column({
     nullable: true,
-    default: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    default: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   @ApiPropertyOptional({
-    description: 'Logo e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    description: 'Logo e.g https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   logo: string;
 
   @Column({
     nullable: true,
-    default: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    default: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   @ApiPropertyOptional({
     description:
-      'Cover photo e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+      'Cover photo e.g https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   coverPhoto: string;
 
@@ -238,21 +238,21 @@ export class DonationCenterCompliance {
 
   @Column({
     nullable: true,
-    default: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    default: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   @ApiPropertyOptional({
     description:
-      'CAC Certificate e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+      'CAC Certificate e.g https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   cacCertificate: string;
 
   @Column({
     nullable: true,
-    default: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    default: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   @ApiPropertyOptional({
     description:
-      'Proof of address e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+      'Proof of address e.g https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   proofOfAddress: string;
 
@@ -590,13 +590,13 @@ export class DonationCenterInfo {
   longitude: string;
 
   @ApiPropertyOptional({
-    description: 'Logo e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    description: 'Logo e.g https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   logo: string;
 
   @ApiPropertyOptional({
     description:
-      'Cover photo e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+      'Cover photo e.g https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   coverPhoto: string;
 
@@ -737,7 +737,7 @@ export class DonorRatingInfo {
   @ApiPropertyOptional({ description: 'Donor name e.g Tunde Omotayo' })
   donorName: string;
 
-  @ApiPropertyOptional({ description: 'Donor profile picture e.g https://medexer.s3.amazonaws.com/avatars/avatar.png' })
+  @ApiPropertyOptional({ description: 'Donor profile picture e.g https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png' })
   donorProfilePhoto: string;
 
   @ApiPropertyOptional({ description: 'Created at e.g 2024-11-10_T_11:29:22' })

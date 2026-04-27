@@ -2,16 +2,18 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DocumentBuilder } from '@nestjs/swagger';
+import { AdminService } from './services/admin.service';
 import { GetSystemJWTModule } from '../../common/src/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { setupSwaggerDocument } from '../../common/src/swagger';
-import { AppLogger } from '../../common/src/logger/logger.service';
-import { SeederController } from 'libs/helper-service/src/controllers/seeder.controller';
-import { AdminController } from './controllers/admin.controller';
-import { AdminService } from './services/admin.service';
-import { SeederService } from 'libs/helper-service/src/services/seeder.service';
 import { Account } from 'libs/common/src/models/account.model';
+import { setupSwaggerDocument } from '../../common/src/swagger';
+import { AdminController } from './controllers/admin.controller';
+import { AppLogger } from '../../common/src/logger/logger.service';
 import { BloodInventory } from 'libs/common/src/models/blood.inventory.model';
+import { SeederService } from 'libs/helper-service/src/services/seeder.service';
+import { S3UploadService } from 'libs/helper-service/src/services/s3-upload.service';
+import { SeederController } from 'libs/helper-service/src/controllers/seeder.controller';
+import { ImageUploadService } from 'libs/helper-service/src/services/image-upload.service';
 import { GoogleLocationService } from 'libs/helper-service/src/services/google-location.service';
 import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models/donation.center.model';
 
@@ -29,6 +31,8 @@ import { DonationCenter, DonationCenterCompliance } from 'libs/common/src/models
     },
     AdminService,
     SeederService,
+    S3UploadService,
+    ImageUploadService,
     GoogleLocationService,
   ],
   exports: [],

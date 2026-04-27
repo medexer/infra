@@ -124,11 +124,11 @@ export class Account {
 
   @Column({
     nullable: true,
-    default: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    default: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   @ApiPropertyOptional({
     description:
-      'Profile photo e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+      'Profile photo e.g https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   profilePhoto: string;
 
@@ -338,7 +338,7 @@ export class AccountInfo {
   longitude: string;
 
   @ApiProperty({
-    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    example: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   profilePhoto: string;
 

@@ -28,7 +28,7 @@ import { DonationCentreDaysOfWork } from 'libs/common/src/models/donation.center
 
 export class DonationCenterComplianceDetailsDTO {
   @ApiProperty({
-    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    example: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
     description: 'Logo of the donation center.',
   })
   @IsString()
@@ -36,7 +36,7 @@ export class DonationCenterComplianceDetailsDTO {
   logo: string;
 
   @ApiProperty({
-    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    example: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
     description: 'Cover photo of the donation center.',
   })
   @IsString()
@@ -367,7 +367,7 @@ export class UpdateDonationCenterAccountProfileDTO {
   phone: string;
 
   @ApiProperty({
-    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    example: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
     description: 'Profile photo of the donation center administrator',
   })
   @IsString()
@@ -403,7 +403,7 @@ export class UpdateDonationCenterProfileDTO {
   phone: string;
 
   @ApiProperty({
-    example: 'https://medexer.s3.amazonaws.com/avatars/avatar.png',
+    example: 'https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
     description: 'Cover photo of the donation center',
   })
   @IsString()
@@ -419,7 +419,7 @@ export class DashboardQueryParams {
   @IsOptional()
   @IsString()
   startDate: string;
-  
+
   @ApiPropertyOptional({
     description: 'End date of the report period (YYYY-MM-DD).',
     example: '2024-08-30',

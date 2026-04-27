@@ -97,7 +97,7 @@ export class DonorCompliance {
   })
   @ApiPropertyOptional({
     description:
-      'Identification document url e.g https://medexer.s3.amazonaws.com/avatars/avatar.png',
+      'Identification document url e.g https://afritint-media.s3.eu-north-1.amazonaws.com/versions/original/f50e2049-b5da-4a32-b028-5ad4141d20bd.png',
   })
   identificationDocument: string;
 
